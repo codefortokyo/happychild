@@ -1,0 +1,209 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>Happy Child | 保育園検索サービス</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="utf-8">
+
+    <!-- External CSS libraries -->
+    <link rel="stylesheet" type="text/css" href="{% static 'css/bootstrap.min.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'css/animate.min.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'css/bootstrap-submenu.min.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'css/bootstrap-select.min.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'css/leaflet.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'css/map.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'fonts/font-awesome/css/font-awesome.min.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'fonts/flaticon/font/flaticon.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'fonts/linearicons/style.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'css/jquery.mCustomScrollbar.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'css/dropzone.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'css/magnific-popup.css' %}">
+
+    <!-- Custom stylesheet -->
+    <link rel="stylesheet" type="text/css" href="{% static 'css/style.css' %}">
+    <link rel="stylesheet" type="text/css" id="style_sheet" href="{% static 'css/skins/green-light.css' %}">
+
+    <!-- favicon -->
+    <link rel="apple-touch-icon" sizes="57x57" href="{% static 'img/favicon/apple-icon-57x57.png' %}">
+    <link rel="apple-touch-icon" sizes="60x60" href="{% static 'img/favicon/apple-icon-60x60.png' %}">
+    <link rel="apple-touch-icon" sizes="72x72" href="{% static 'img/favicon/apple-icon-72x72.png' %}">
+    <link rel="apple-touch-icon" sizes="76x76" href="{% static 'img/favicon/apple-icon-76x76.png' %}">
+    <link rel="apple-touch-icon" sizes="114x114" href="{% static 'img/favicon/apple-icon-114x114.png' %}">
+    <link rel="apple-touch-icon" sizes="120x120" href="{% static 'img/favicon/apple-icon-120x120.png' %}">
+    <link rel="apple-touch-icon" sizes="144x144" href="{% static 'img/favicon/apple-icon-144x144.png' %}">
+    <link rel="apple-touch-icon" sizes="152x152" href="{% static 'img/favicon/apple-icon-152x152.png' %}">
+    <link rel="apple-touch-icon" sizes="180x180" href="{% static 'img/favicon/apple-icon-180x180.png' %}">
+    <link rel="icon" type="image/png" sizes="192x192" href="{% static 'img/favicon/android-icon-192x192.png' %}">
+    <link rel="icon" type="image/png" sizes="32x32" href="{% static 'img/favicon/favicon-32x32.png' %}">
+    <link rel="icon" type="image/png" sizes="96x96" href="{% static 'img/favicon/favicon-96x96.png' %}">
+    <link rel="icon" type="image/png" sizes="16x16" href="{% static 'img/favicon/favicon-16x16.png' %}">
+    <link rel="manifest" href="{% static 'img/favicon/manifest.json' %}">
+    <meta name="msapplication-TileColor" content="#ffffff">
+    <meta name="msapplication-TileImage" content="{% static 'img/favicon/ms-icon-144x144.png' %}">
+    <meta name="theme-color" content="#ffffff">
+
+    <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
+    <link rel="stylesheet" type="text/css" href="{% static 'css/ie10-viewport-bug-workaround.css' %}">
+
+    <!-- Just for debugging purposes. Don't actually copy these 2 lines! -->
+    <!--[if lt IE 9]>
+    <script type="text/javascript" src="{% static 'js/ie8-responsive-file-warning.js' %}"></script><![endif]-->
+    <script src="{% static 'js/ie-emulation-modes-warning.js' %}"></script>
+
+    <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+    <!--[if lt IE 9]>
+    <script type="text/javascript" src="{% static 'js/html5shiv.min.js' %}"></script>
+    <script type="text/javascript" src="{% static 'js/respond.min.js' %}"></script>
+    <![endif]-->
+</head>
+
+<body>
+
+<div class="page_loader"></div>
+
+<!-- Main header start -->
+<header class="main-header">
+    <div class="container">
+        <nav class="navbar navbar-default">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse"
+                        data-target="#app-navigation" aria-expanded="false">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a href="{% url 'top_page' %}" class="logo">
+                    <img src="{% static 'img/logos/logo.png' %}" alt="logo">
+                </a>
+            </div>
+            <!-- Collect the nav links, forms, and other content for toggling -->
+            <div class="navbar-collapse collapse" role="navigation" aria-expanded="true" id="app-navigation">
+                <ul class="nav navbar-nav ">
+                    <li>
+                        <a href="{% url 'search_page' %}" class="button"> 保育園の検索 </a>
+                    </li>
+                    <li>
+                        <a href="#" class="button"> サービス内容 </a>
+                    </li>
+                    <li>
+                        <a href="#" class="button"> 運営メンバー </a>
+                    </li>
+                    <li>
+                        <a href="#" class="button"> ご協力のお願い </a>
+                    </li>
+                </ul>
+                <ul class="nav navbar-nav navbar-right rightside-navbar">
+                    <li>
+                        <a href="#" class="button">
+                            ログイン
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </nav>
+    </div>
+</header>
+<!-- Main header end -->
+
+{% block content %}
+{% endblock %}
+
+<!-- Copy right start -->
+<div class="copy-right">
+    <div class="container">
+        <div class="row clearfix">
+            <div class="col-md-8 col-sm-12">
+                &copy; 2018 <a href="http://themevessel.com/" target="_blank">Happy Child</a>. Trademarks and brands
+                are the property of their respective owners.
+            </div>
+            <div class="col-md-4 col-sm-12">
+                <ul class="social-list clearfix">
+                    <li>
+                        <a href="#" class="facebook">
+                            <i class="fa fa-facebook"></i>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#" class="twitter">
+                            <i class="fa fa-twitter"></i>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Copy end right-->
+
+<script src="{% static 'js/jquery-2.2.0.min.js' %}"></script>
+<script src="{% static 'js/bootstrap.min.js' %}"></script>
+<script src="{% static 'js/bootstrap-submenu.js' %}"></script>
+<script src="{% static 'js/rangeslider.js' %}"></script>
+<script src="{% static 'js/jquery.mb.YTPlayer.js' %}"></script>
+<script src="{% static 'js/wow.min.js' %}"></script>
+<script src="{% static 'js/bootstrap-select.min.js' %}"></script>
+<script src="{% static 'js/jquery.easing.1.3.js' %}"></script>
+<script src="{% static 'js/jquery.scrollUp.js' %}"></script>
+<script src="{% static 'js/jquery.mCustomScrollbar.concat.min.js' %}"></script>
+<script src="{% static 'js/leaflet.js' %}"></script>
+<script src="{% static 'js/leaflet-providers.js' %}"></script>
+<script src="{% static 'js/leaflet.markercluster.js' %}"></script>
+<script src="{% static 'js/dropzone.js' %}"></script>
+<script src="{% static 'js/jquery.filterizr.js' %}"></script>
+<script src="{% static 'js/jquery.magnific-popup.min.js' %}"></script>
+<script src="{% static 'js/maps.js' %}"></script>
+<script src="{% static 'js/app.js' %}"></script>
+<script src="{% static 'js/current_location.js' %}"></script>
+
+<!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
+<script src="{% static 'js/ie10-viewport-bug-workaround.js' %}"></script>
+<!-- Custom javascript -->
+<script src="{% static 'js/ie10-viewport-bug-workaround.js' %}"></script>
+
+<script>
+    $('#city').change(function () {
+        let city_id = document.getElementById('city').value;
+        $('select#ward option').remove();
+        $.ajax({
+            url: '{% url 'get_wards' %}',
+            dataType: 'json',
+            data: {city_id: city_id},
+            success: function (dataArray) {
+                $.each(dataArray, function (i) {
+                    $('#ward').append($('<option>', {
+                        value: dataArray[i].id,
+                        text: dataArray[i].name
+                    }));
+                });
+                $('#ward').selectpicker('refresh');
+            }
+        });
+    });
+    $('#ward').change(function () {
+        let ward_id = document.getElementById('ward').value;
+        $('select#station option').remove();
+        $.ajax({
+            url: '{% url 'get_stations' %}',
+            dataType: 'json',
+            data: {ward_id: ward_id},
+            success: function (dataArray) {
+                $.each(dataArray, function (i) {
+                    $('#station').append($('<option>', {
+                        value: dataArray[i].id,
+                        text: dataArray[i].name
+                    }));
+                });
+                $('#station').selectpicker('refresh');
+            }
+        });
+    });
+</script>
+
+{% block js %}
+{% endblock %}
+
+</body>
+</html>

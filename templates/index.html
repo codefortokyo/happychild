@@ -1,0 +1,492 @@
+{% extends "base.html" %}
+{% load static %}
+{% block content %}
+    <!-- Banner start -->
+    <div class="banner">
+        <div id="carousel-example-generic" class="carousel slide" data-ride="carousel">
+            <!-- Wrapper for slides -->
+            <div class="carousel-inner" role="listbox">
+                <div class="item banner-max-height active">
+                    <img src="{% static 'img/banner-image1.jpg' %}" alt="banner-slider-1" class="img-responsive">
+                    <div class="carousel-caption banner-slider-inner">
+                        <div class="banner-content">
+                            <h1 data-animation="animated fadeInDown delay-05s"><span>最適な保育園を</span>見つける/申し込む </h1>
+                            <p data-animation="animated fadeInUp delay-1s">Happy Child
+                                はあなたのお子様にあった保育園を簡単に検索し、見学会等への申し込みをすることができます</p>
+                            <a href="#" class="btn btn-success" data-animation="animated fadeInUp delay-15s">
+                                保育園を検索する </a>
+                            <a href="#" class="btn btn-default"
+                               data-animation="animated fadeInUp delay-15s">サービス内容をみる</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="item banner-max-height">
+                    <img src="{% static 'img/banner-image2.jpg' %}" alt="banner-slider-1" class="img-responsive">
+                    <div class="carousel-caption banner-slider-inner">
+                        <div class="banner-content">
+                            <h1 data-animation="animated fadeInDown delay-1s"> 「空きのある」「保育指数」から<br>検索 </h1>
+                            <p data-animation="animated fadeInUp delay-05s">
+                                場所による検索はもちろん、空きのある保育園や保育指数など様々な条件で保育園を検索することができます</p>
+                            <a href="#" class="btn btn-success" data-animation="animated fadeInUp delay-15s">
+                                保育園を検索する </a>
+                            <a href="#" class="btn btn-default"
+                               data-animation="animated fadeInUp delay-15s">サービス内容をみる</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="item banner-max-height">
+                    <img src="{% static 'img/banner-image3.jpg' %}" alt="banner-slider-1" class="img-responsive">
+                    <div class="carousel-caption banner-slider-inner">
+                        <div class="banner-content">
+                            <h1 data-animation="animated fadeInLeft delay-05s"> 申し込む </h1>
+                            <p data-animation="animated fadeInLeft delay-1s"> 気になった保育園の見学会などの申し込みを行うことができます</p>
+                            <a href="#" class="btn btn-success" data-animation="animated fadeInUp delay-15s">
+                                保育園を検索する </a>
+                            <a href="#" class="btn btn-default"
+                               data-animation="animated fadeInUp delay-15s">サービス内容をみる</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Controls -->
+            <a class="left carousel-control" href="#carousel-example-generic" role="button" data-slide="prev">
+            <span class="slider-mover-left" aria-hidden="true">
+                <i class="fa fa-angle-left"></i>
+            </span>
+                <span class="sr-only">Previous</span>
+            </a>
+            <a class="right carousel-control" href="#carousel-example-generic" role="button" data-slide="next">
+            <span class="slider-mover-right" aria-hidden="true">
+                <i class="fa fa-angle-right"></i>
+            </span>
+                <span class="sr-only">Next</span>
+            </a>
+        </div>
+    </div>
+    <!-- Banner end -->
+
+    <!-- Search area start -->
+    <div class="search-area">
+        <div class="container">
+            <div class="search-area-inner">
+                <div class="search-contents ">
+                    <form method="GET">
+                        <div class="row">
+                            <div class="col-lg-3 col-md-3 col-sm-6 col-xs-6">
+                                <div class="form-group">
+                                    <select class="selectpicker search-fields" name="city" data-live-search="true"
+                                            data-live-search-placeholder="市を検索" required>
+                                        <option>検索したい市を選択</option>
+                                        <option>東京</option>
+                                        <option>横浜</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-lg-3 col-md-3 col-sm-6 col-xs-6">
+                                <div class="form-group">
+                                    <select class="selectpicker search-fields" name="ward" data-live-search="true"
+                                            data-live-search-placeholder="区を検索" required>
+                                        <option>検索したい区を選択</option>
+                                        <option>品川区</option>
+                                        <option>世田谷区</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-lg-3 col-md-3 col-sm-6 col-xs-6">
+                                <div class="form-group">
+                                    <select class="selectpicker search-fields" name="location" data-live-search="true"
+                                            data-live-search-placeholder="駅を検索">
+                                        <option>最寄りの駅を選択</option>
+                                        <option>品川駅</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-lg-3 col-md-3 col-sm-6 col-xs-6">
+                                <div class="form-group">
+                                    <select class="selectpicker search-fields" name="age" data-live-search="true"
+                                            data-live-search-placeholder="年齢を検索">
+                                        <option>お子様の年齢</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-lg-3 col-md-3 col-sm-6 col-xs-6 "></div>
+                            <div class="col-lg-3 col-md-3 col-sm-6 col-xs-6 "></div>
+                            <div class="col-lg-3 col-md-3 col-sm-6 col-xs-6 "></div>
+                            <div class="col-lg-3 col-md-3 col-sm-6 col-xs-6 ">
+                                <div class="form-group">
+                                    <button class="search-button">保育園を検索する</button>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Search area start -->
+
+    <!-- Featured properties start -->
+    <div class="content-area featured-properties">
+        <div class="container">
+            <!-- Main title -->
+            <div class="main-title">
+                <h1>注目の保育園</h1>
+            </div>
+            <ul class="list-inline-listing filters filters-listing-navigation">
+                <li class="active btn filtr-button filtr" data-filter="all">全て</li>
+                <li data-filter="1" class="btn btn-inline filtr-button filtr">認可保育園</li>
+                <li data-filter="2" class="btn btn-inline filtr-button filtr">認証・認定保育園</li>
+                <li data-filter="3" class="btn btn-inline filtr-button filtr">小規模保育園</li>
+                <li data-filter="4" class="btn btn-inline filtr-button filtr">こども園</li>
+            </ul>
+            <div class="row">
+                <div class="filtr-container">
+                    <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12  filtr-item" data-category="1, 2, 3">
+                        <div class="property">
+                            <!-- Property img -->
+                            <div class="property-img">
+                                <div class="property-tag button sale">img url</div>
+                                <img src="http://placehold.it/360x240" alt="fp" class="img-responsive">
+                                <div class="property-overlay">
+                                    <a href="#" class="overlay-link">
+                                        <i class="fa fa-link"></i>
+                                    </a>
+                                    <div class="property-magnify-gallery">
+                                        <a href="http://placehold.it/750x540" class="overlay-link">
+                                            <i class="fa fa-expand"></i>
+                                        </a>
+                                        <a href="http://placehold.it/750x540" class="hidden"></a>
+                                        <a href="http://placehold.it/750x540" class="hidden"></a>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- Property content -->
+                            <div class="property-content">
+                                <!-- title -->
+                                <h1 class="title">
+                                    <a href="#">常盤保育園</a>
+                                </h1>
+                                <!-- Property address -->
+                                <h3 class="property-address">
+                                    <a href="#">
+                                        <i class="fa fa-map-marker"></i>北海道北見市常盤長,
+                                    </a>
+                                </h3>
+                                <!-- Facilities List -->
+                                <ul class="facilities-list clearfix">
+                                    <li>
+                                        <i class="flaticon-square-layouting-with-black-square-in-east-area"></i>
+                                        <span>認可保育園</span>
+                                    </li>
+                                    <li>
+                                        <i class="flaticon-bed"></i>
+                                        <span>延長保育有</span>
+                                    </li>
+                                    <li>
+                                        <i class="flaticon-monitor"></i>
+                                        <span>一時保育有</span>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12  filtr-item" data-category="1, 2, 3">
+                        <div class="property">
+                            <!-- Property img -->
+                            <div class="property-img">
+                                <div class="property-tag button sale">img url</div>
+                                <img src="http://placehold.it/360x240" alt="fp" class="img-responsive">
+                                <div class="property-overlay">
+                                    <a href="#" class="overlay-link">
+                                        <i class="fa fa-link"></i>
+                                    </a>
+                                    <div class="property-magnify-gallery">
+                                        <a href="http://placehold.it/750x540" class="overlay-link">
+                                            <i class="fa fa-expand"></i>
+                                        </a>
+                                        <a href="http://placehold.it/750x540" class="hidden"></a>
+                                        <a href="http://placehold.it/750x540" class="hidden"></a>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- Property content -->
+                            <div class="property-content">
+                                <!-- title -->
+                                <h1 class="title">
+                                    <a href="#">常盤保育園</a>
+                                </h1>
+                                <!-- Property address -->
+                                <h3 class="property-address">
+                                    <a href="#">
+                                        <i class="fa fa-map-marker"></i>北海道北見市常盤長,
+                                    </a>
+                                </h3>
+                                <!-- Facilities List -->
+                                <ul class="facilities-list clearfix">
+                                    <li>
+                                        <i class="flaticon-square-layouting-with-black-square-in-east-area"></i>
+                                        <span>認可保育園</span>
+                                    </li>
+                                    <li>
+                                        <i class="flaticon-bed"></i>
+                                        <span>延長保育有</span>
+                                    </li>
+                                    <li>
+                                        <i class="flaticon-monitor"></i>
+                                        <span>一時保育有</span>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Featured properties end -->
+
+    <!-- Our service start -->
+    <div class="mb-100 our-service">
+        <div class="container">
+            <!-- Main title -->
+            <div class="main-title">
+                <h1>サービス内容</h1>
+            </div>
+
+            <div class="row mgn-btm wow">
+                <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12 wow fadeInLeft delay-04s">
+                    <div class="content">
+                        <i class="flaticon-apartment"></i>
+                        <h4>充実の条件検索</h4>
+                        <p>地域はもちろん、「空きのある」「保育指数」「カテゴリ」などの様々な条件からあなたのお子様にあった保育園を検索することができます</P>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12 wow fadeInLeft delay-04s">
+                    <div class="content">
+                        <i class="flaticon-internet"></i>
+                        <h4>見学会の予約ができる</h4>
+                        <p>気になった保育園を見つけたら、見学会に参加しましょう</P>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12 wow fadeInRight delay-04s">
+                    <div class="content">
+                        <i class="flaticon-vehicle"></i>
+                        <h4>口コミ情報を知れる</h4>
+                        <p>保育園の口コミ情報を見ることができます</P>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12 wow fadeInRight delay-04s">
+                    <div class="content">
+                        <i class="flaticon-symbol"></i>
+                        <h4>保育園や区役所に直接質問ができる</h4>
+                        <p>気になることや疑問点がある時はフォームを通じて直接質問することができます</P>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Our service end -->
+
+    <div class="clearfix"></div>
+
+    <!-- Categories strat -->
+    <div class="categories">
+        <div class="container">
+            <!-- Main title -->
+            <div class="main-title">
+                <h1>カテゴリーから保育園を探すことができます</h1>
+            </div>
+            <div class="clearfix"></div>
+            <div class="row wow">
+                <div class="col-lg-7 col-md-7 col-sm-12">
+                    <div class="row">
+                        <div class="col-sm-6 col-pad wow fadeInLeft delay-04s">
+                            <div class="category">
+                                <div class="category_bg_box cat-1-bg">
+                                    <div class="category-overlay">
+                                        <div class="category-content">
+                                            <div class="category-subtitle">14 保育園</div>
+                                            <h3 class="category-title">
+                                                <a href="#">キャリア教育</a>
+                                            </h3>
+                                        </div><!-- /.category-content -->
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-sm-6 col-pad wow fadeInLeft delay-04s">
+                            <div class="category">
+                                <div class="category_bg_box cat-2-bg">
+                                    <div class="category-overlay">
+                                        <div class="category-content">
+                                            <div class="category-subtitle">24 保育園</div>
+                                            <h3 class="category-title">
+                                                <a href="#">広い遊び場で伸び伸びと</a>
+                                            </h3>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-sm-12 col-pad wow fadeInUp delay-04s">
+                            <div class="category">
+                                <div class="category_bg_box cat-3-bg">
+                                    <div class="category-overlay">
+                                        <div class="category-content">
+                                            <div class="category-subtitle">9 保育園</div>
+                                            <h3 class="category-title"><a href="#">地域との関わりを大切に</a></h3>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-lg-5 col-md-5 col-sm-12 col-pad wow fadeInRight delay-04s">
+                    <div class="category">
+                        <div class="category_bg_box category_long_bg cat-4-bg">
+                            <div class="category-overlay">
+                                <div class="category-content">
+                                    <div class="category-subtitle">14 保育園</div>
+                                    <h3 class="category-title"><a href="#">好奇心を大切に</a></h3>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Categories end-->
+
+    <div class="clearfix"></div>
+
+    <!-- Blog start -->
+    <div class="blog content-area">
+        <div class="container">
+            <!-- Main title -->
+            <div class="main-title">
+                <h1>ブログ</h1>
+            </div>
+            <div class="row">
+                <div class="col-lg-4 col-md-4 col-sm-6 wow fadeInLeft delay-04s">
+                    <div class="thumbnail blog-box-2 clearfix">
+                        <div class="blog-photo">
+                            <img src="http://placehold.it/360x200" alt="blog-1" class="img-responsive">
+                        </div>
+                        <div class="post-meta">
+                            <ul>
+                                <li class="profile-user">
+                                    <img src="http://placehold.it/75x75" alt="user-blog">
+                                </li>
+                                <li><span>オギワラ</span></li>
+                                <li><i class="fa fa-calendar"></i></li>
+                                <li><i class="fa fa-comments"></i></li>
+                            </ul>
+                        </div>
+                        <!-- Detail -->
+                        <div class="caption detail">
+                            <h4><a href="#">認証保育園と認可保育園の違いについて</a></h4>
+                            <!-- paragraph -->
+                            <p>hogehogehoge</p>
+                            <div class="clearfix"></div>
+                            <!-- Btn -->
+                            <a href="#" class="read-more">続きを読む...</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-4 col-md-4 col-sm-6 wow fadeInLeft delay-04s">
+                    <div class="thumbnail blog-box-2 clearfix">
+                        <div class="blog-photo">
+                            <img src="http://placehold.it/360x200" alt="blog-1" class="img-responsive">
+                        </div>
+                        <div class="post-meta">
+                            <ul>
+                                <li class="profile-user">
+                                    <img src="http://placehold.it/75x75" alt="user-blog">
+                                </li>
+                                <li><span>オギワラ</span></li>
+                                <li><i class="fa fa-calendar"></i></li>
+                                <li><i class="fa fa-comments"></i></li>
+                            </ul>
+                        </div>
+                        <!-- Detail -->
+                        <div class="caption detail">
+                            <h4><a href="#">認証保育園と認可保育園の違いについて</a></h4>
+                            <!-- paragraph -->
+                            <p>hogehogehoge</p>
+                            <div class="clearfix"></div>
+                            <!-- Btn -->
+                            <a href="#" class="read-more">続きを読む...</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-4 col-md-4 col-sm-6 wow fadeInLeft delay-04s">
+                    <div class="thumbnail blog-box-2 clearfix">
+                        <div class="blog-photo">
+                            <img src="http://placehold.it/360x200" alt="blog-1" class="img-responsive">
+                        </div>
+                        <div class="post-meta">
+                            <ul>
+                                <li class="profile-user">
+                                    <img src="http://placehold.it/75x75" alt="user-blog">
+                                </li>
+                                <li><span>オギワラ</span></li>
+                                <li><i class="fa fa-calendar"></i></li>
+                                <li><i class="fa fa-comments"></i></li>
+                            </ul>
+                        </div>
+                        <!-- Detail -->
+                        <div class="caption detail">
+                            <h4><a href="#">認証保育園と認可保育園の違いについて</a></h4>
+                            <!-- paragraph -->
+                            <p>hogehogehoge</p>
+                            <div class="clearfix"></div>
+                            <!-- Btn -->
+                            <a href="#" class="read-more">続きを読む...</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Blog end -->
+
+    <!-- Partners block start -->
+    <div class="partners-block">
+        <div class="container">
+            <h3>協賛</h3>
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="carousel our-partners slide" id="ourPartners">
+                        <div class="carousel-inner">
+                            <div class="item active">
+                                <div class="col-xs-12 col-sm-6 col-md-3 partner-box">
+                                    <a href="https://www.city.shinagawa.tokyo.jp/" target="_blank">
+                                        <img src="https://www.city.shinagawa.tokyo.jp/css/img/pc/logo_header01.png" alt="partner">
+                                    </a>
+                                </div>
+                                <div class="col-xs-12 col-sm-6 col-md-3 partner-box">
+                                    <a href="https://shinacco.net/" target="_blank">
+                                        <img src="https://shinacco.net/wp-content/uploads/2018/02/admin-ajax.png" alt="partner">
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                        <a class="left carousel-control" href="#ourPartners" data-slide="prev"><i
+                                class="fa fa-chevron-left icon-prev"></i></a>
+                        <a class="right carousel-control" href="#ourPartners" data-slide="next"><i
+                                class="fa fa-chevron-right icon-next"></i></a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Partners block end -->
+{% endblock %}

@@ -1,0 +1,16 @@
+.DS_Store
+*.pyc
+*.tsv
+*.swp
+*.csv
+*.msg
+*.egg-info
+*~
+*#
+/.idea
+.python-version
+
+npm_modules/
+log/
+
+docker-compose.yml

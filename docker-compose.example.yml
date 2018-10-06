@@ -1,0 +1,37 @@
+version: '3'
+
+services:
+  app:
+    image: happy-child
+    command: >
+      bash -c "python manage.py collectstatic --noinput
+      && gunicorn happy_child.wsgi -b 0.0.0.0:8000"
+
+    ports:
+    - "8000:8000"
+    environment:
+      ENV: DEVELOP
+      MYSQL_USR: root
+      MYSQL_HOST: mysql
+      MYSQL_PASSWORD: ""
+      MYSQL_DATABASE: happy_child
+    volumes:
+    - ../happy_child:/usr/src/app/
+    - ~/.aws:/root/.aws
+    - ~/.ssh:/root/.ssh
+    depends_on:
+    - mysql
+
+  mysql:
+    image: mysql:5.7
+    command: mysqld --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci
+    environment:
+      MYSQL_ALLOW_EMPTY_PASSWORD: "yes"
+      MYSQL_DATABASE: happy_child
+      MYSQL_USER: "root"
+      MYSQL_PASSWORD: ""
+    ports:
+    - "3306:3306"
+    volumes:
+    - ./fixtures:/docker-entrypoint-initdb.d
+    - ~/.my.cnf:/etc/mysql/conf.d/my.cnf
