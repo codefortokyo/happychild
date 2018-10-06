@@ -53,6 +53,7 @@ def get_near_stations(latitude: decimal, longitude: decimal, distance: int = 10,
           name
         ORDER BY
           distance
+        LIMIT {limit}
         """.format(latitude=latitude, longitude=longitude, distance=distance, limit=limit))
     return list(dictfetchall(cursor))
 
