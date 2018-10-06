@@ -21,7 +21,7 @@ CREATE TABLE `cities` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 
-CREATE TABLE `nursery_status` (
+CREATE TABLE `nursery_free_nums` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `age_id` int(11) UNSIGNED NOT NULL,
   `nursery_id` int(11) UNSIGNED NOT NULL,
