@@ -1,21 +1,43 @@
-/**
- * Created by Ogiwara on 2017/09/02.
- */
-//==================================================================================================
-//  位置取得 成功時に実行される
-//==================================================================================================
 function cmanGetOk() {
     navigator.geolocation.getCurrentPosition(
         function (result) {
-            document.getElementById("latitude").value = result.coords.latitude;
-            document.getElementById("longitude").value = result.coords.longitude;
+            let latitude = result.coords.latitude;
+            let longitude = result.coords.longitude;
+            document.getElementById("latitude").value = latitude;
+            document.getElementById("longitude").value = longitude;
+
+            $('select#ward option').remove();
+            $('select#station option').remove();
+            $.ajax({
+                url: '/api/v1/location/near',
+                dataType: 'json',
+                data: {latitude: latitude, longitude: longitude},
+                success: function (dataArray) {
+                    $.each(dataArray.wards, function (i) {
+                       $('#ward').append($('<option>', {
+                           value: dataArray.wards[i].id,
+                           text: dataArray.wards[i].name
+                       }))
+                    });
+                    $.each(dataArray.stations, function (i) {
+                       $('#station') .append($('<option>', {
+                           value: dataArray.stations[i].id,
+                           text: dataArray.stations[i].name
+                       }))
+                    });
+
+                    document.getElementById('city').value = dataArray.selected_city_id;
+                    document.getElementById('ward').value = dataArray.selected_ward_id;
+
+                    $('#city').selectpicker('refresh');
+                    $('#ward').selectpicker('refresh');
+                    $('#station').selectpicker('refresh');
+                }
+            })
     });
 
 }
 
-//==================================================================================================
-//  位置取得 失敗時に実行される
-//==================================================================================================
 function cmanGetErr(argErr) {
     var wErrMsg = "";
     switch (argErr.code) {
@@ -33,23 +55,15 @@ function cmanGetErr(argErr) {
         wErrMsg = argErr.message;
     }
 
-    // --- エラーメッセージ出力 --------------------------------------------------------------------
     document.getElementById("getErrMag").innerHTML = wErrMsg;
 }
 
-//==================================================================================================
-//  位置取得 実行
-//==================================================================================================
-function cmanPosGet() {
-
-    // --- ブラウザが対応しているかチェック --------------------------------------------------------
+function cmanPosGet(url) {
     if (typeof navigator.geolocation === 'undefined') {
         document.getElementById("getErrMag").innerHTML = 'ブラウザが位置情報取得に対応していません';
-        cmanGetDisplayCtrl('ERR');
         return false;
     }
 
-    // --- オプション設定 --------------------------------------------------------------------------
     var wOptions = {
         "enableHighAccuracy": true,                       // true : 高精度
         "timeout": 10000,                                 // タイムアウト : ミリ秒
