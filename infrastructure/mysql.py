@@ -1,16 +1,17 @@
 import datetime
 import json
-from typing import Dict
+from typing import Dict, List
 from urllib.parse import urlparse
+from itertools import groupby
 
 from django.db import models
 from django.utils import timezone
 from django.utils.lru_cache import lru_cache
 from django_mysql.models import Bit1BooleanField
+from django.db.models.aggregates import Max
 
+from infrastructure.consts import NURSERY_FREE_NUM_FMT
 from infrastructure.query import get_near_stations
-
-DEFAULT_THUMBNAIL_URL = ''
 
 
 class Age(models.Model):
@@ -183,14 +184,6 @@ class Nursery(models.Model):
         return Ward.objects.filter(id=self.ward_id).first().nursery_free_num_info_url
 
     @property
-    def default_thumbnail_url(self) -> str:
-        """ 保育園のサムネイル画像を返す。もし画像がなかった場合はデフォルトの画像を返す
-        """
-        if self.thumbnail_url:
-            return self.thumbnail_url
-        return DEFAULT_THUMBNAIL_URL
-
-    @property
     def default_service(self) -> str:
         if self.service:
             return self.service
@@ -226,106 +219,40 @@ class Nursery(models.Model):
             return self.close_day
         return '詳しくは公式サイトをご覧下さい'
 
-    @property
-    def free_nums(self):
-        """ 空き情報
-        :rtype: NurseryFreeNum
-        """
-        return NurseryFreeNum(self)
 
-    @property
-    def scores(self):
-        """ 実績指数情報
-        :rtype: NurseryScores
-        """
-        return NurseryScore(self)
+class NurseryFreeNum(models.Model):
+    age = models.ForeignKey(Age, models.PROTECT)
+    nursery = models.ForeignKey(Nursery, models.PROTECT)
+    free_num = models.IntegerField(null=False)
+    is_active = Bit1BooleanField(default=True)
+    modified_date = models.DateField()
+    updated_at = models.DateTimeField(auto_now=True)
+    created_at = models.DateTimeField(default=timezone.now)
 
+    class Meta:
+        db_table = 'nursery_free_nums'
+        managed = False
 
-class NurseryFreeNum:
-    def __init__(self, nursery):
-        self.nursery = nursery
-        self._status = None
-        self._latest_modified_date = None
+    @classmethod
+    def get_free_nums(cls, nursery_ids: List[int]) -> dict:
+        free_nums = cls.objects.filter(nursery__id__in=nursery_ids)
 
-    @property
-    def latest_modified_date(self) -> datetime or str:
-        if not self._latest_modified_date:
-            self._latest_modified_date = NurseryStatus.latest_modified_date(self.nursery.id)
-        return self._latest_modified_date or ''
+        ret = dict()
+        for k, g in groupby(sorted(free_nums, key=lambda x: (x.nursery_id, x.age_id)),
+                            key=lambda x: (x.nursery_id, x.age_id)):
+            free_num = sorted(list(g), key=lambda x: x.modified_date, reverse=True)[0]
+            ret[NURSERY_FREE_NUM_FMT.format(free_num.nursery_id, free_num.age_id)] = free_num.free_num
+        return ret
 
-    @property
-    def status(self) -> Dict[int, int]:
-        """ 指定された保育園の最新の空き情報を返す
-        :rtype: Dict[age_id, free_num]
-        """
-        if not self._status:
-            if not self.latest_modified_date:
-                self._status = {}
-                return self._status
-            self._status = NurseryStatus.latest_nursery_free_nums(nursery_id=self.nursery.id,
-                                                                  modified_date=self.latest_modified_date)
-        return self._status
+    @classmethod
+    def get_last_updated_date(cls, nursery_ids: List[int]) -> dict:
+        dates = cls.objects.filter(nursery__id__in=nursery_ids).values('nursery_id').annotate(
+            last_updated_date=Max('modified_date'))
 
-    @property
-    def free_num_not_one(self) -> int:
-        """ 0歳の空き情報を返す
-        """
-        return int(self.status.get(1, 0))
-
-    @property
-    def free_num_one_year_old(self) -> int:
-        """ 1歳の空き情報を返す
-        """
-        return int(self.status.get(2, 0))
-
-    @property
-    def free_num_two_year_old(self) -> int:
-        """ 2歳の空き情報を返す
-        """
-        return int(self.status.get(3, 0))
-
-    @property
-    def free_num_three_year_old(self) -> int:
-        """ 3歳の空き情報を返す
-        """
-        return int(self.status.get(4, 0))
-
-    @property
-    def free_num_four_year_old(self) -> int:
-        """ 4歳の空き情報を返す
-        """
-        return int(self.status.get(5, 0))
-
-    @property
-    def free_num_extent(self) -> int:
-        """ 延長の空き情報を返す
-        """
-        return int(self.status.get(6, 0))
-
-    @property
-    def free_num_other(self) -> int:
-        """ その他の空き情報を返す
-        """
-        return int(self.status.get(7, 0))
-
-    @property
-    def sum_free_num(self) -> int:
-        return sum(self.status.values())
-
-    def is_opening(self) -> bool:
-        """ 指定された年齢の空きがあるかを返す
-        """
-        if self.sum_free_num > 0:
-            return True
-        return False
-
-    def is_opening_by_age(self, age_id) -> bool:
-        """ 指定された年齢の空きがあるかを返す
-        """
-        free_num = self.status.get(int(age_id), 0)
-        if free_num > 0:
-            return True
-        return False
+        ret = dict()
+        for d in dates:
+            ret[d['nursery_id']] = d['last_updated_date']
+        return ret
 
 
 class NurseryScore:

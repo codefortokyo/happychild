@@ -2,7 +2,17 @@ import json
 from decimal import Decimal
 from typing import Dict, List, Tuple
 
-from infrastructure.mysql import Nursery, Station, Ward
+from infrastructure.mysql import Nursery, NurseryFreeNum, Station, Ward
+from infrastructure.consts import (
+    NURSERY_FREE_NUM_FMT,
+    NOT_ONE_AGE_ID,
+    ONE_YEAR_OLD_AGE_ID,
+    TWO_YEAR_OLD_AGE_ID,
+    THREE_YEAR_OLD_AGE_ID,
+    FOUR_YEAR_OLD_AGE_ID,
+    EXTENT_AGE_ID,
+    AGE_IDS,
+)
 from infrastructure.query import get_nearest_ward, get_near_nurseries
 from services.entities import GeoParameterEntity, SearchNurseryEntity, NurseryEntity
 
@@ -10,6 +20,12 @@ from services.entities import GeoParameterEntity, SearchNurseryEntity, NurseryEn
 def get_nurseries(search: SearchNurseryEntity, limit: int = 50) -> Tuple[List[dict], GeoParameterEntity]:
     geo_parameters = _get_geo_parameters(search)
     nurseries = _get_nurseries(search)
+
+    nursery_ids = [n.id for n in nurseries]
+    free_nums = NurseryFreeNum.get_free_nums(nursery_ids)
+    last_updated_dates = NurseryFreeNum.get_last_updated_date(nursery_ids)
+
+    nurseries = _filter_by_free_nums(nurseries, search, free_nums)
 
     return [json.loads(NurseryEntity(
         id=n.id,
@@ -20,7 +36,7 @@ def get_nurseries(search: SearchNurseryEntity, limit: int = 50) -> Tuple[List[di
         address=n.address,
         station_info=n.station_info,
         url=n.url,
-        image=n.default_thumbnail_url,
+        image=n.thumbnail_url,
         latitude=float(n.latitude),
         longitude=float(n.longitude),  # Object of type Decimal is not JSON serializable
         open_time_weekday=n.default_open_time_weekday,
@@ -36,13 +52,13 @@ def get_nurseries(search: SearchNurseryEntity, limit: int = 50) -> Tuple[List[di
         service=n.default_service,
         policy=n.default_policy,
         promise=n.promise,
-        free_num_not_one=n.free_nums.free_num_not_one,
-        free_num_one_year_old=n.free_nums.free_num_one_year_old,
-        free_num_two_year_old=n.free_nums.free_num_two_year_old,
-        free_num_three_year_old=n.free_nums.free_num_three_year_old,
-        free_num_four_year_old=n.free_nums.free_num_four_year_old,
-        free_num_extent=n.free_nums.free_num_extent,
-        free_num_updated_at=str(n.free_nums.latest_modified_date)
+        free_num_not_one=free_nums.get(NURSERY_FREE_NUM_FMT.format(n.id, NOT_ONE_AGE_ID), 0),
+        free_num_one_year_old=free_nums.get(NURSERY_FREE_NUM_FMT.format(n.id, ONE_YEAR_OLD_AGE_ID), 0),
+        free_num_two_year_old=free_nums.get(NURSERY_FREE_NUM_FMT.format(n.id, TWO_YEAR_OLD_AGE_ID), 0),
+        free_num_three_year_old=free_nums.get(NURSERY_FREE_NUM_FMT.format(n.id, THREE_YEAR_OLD_AGE_ID), 0),
+        free_num_four_year_old=free_nums.get(NURSERY_FREE_NUM_FMT.format(n.id, FOUR_YEAR_OLD_AGE_ID), 0),
+        free_num_extent=free_nums.get(NURSERY_FREE_NUM_FMT.format(n.id, EXTENT_AGE_ID), 0),
+        free_num_updated_at=str(last_updated_dates.get(n.id, '-'))
     ).to_json()) for n in nurseries[:limit]], geo_parameters
 
 
@@ -65,6 +81,23 @@ def _get_nurseries(search: SearchNurseryEntity) -> List[Nursery]:
     else:
         nurseries = Nursery.objects.select_related('license', 'school_type').filter(ward_id=search.ward_id,
                                                                                     is_active=True)
+    nurseries = _filter_by_nursery_location_and_type(nurseries, search)
+    return nurseries
+
+
+def _filter_by_nursery_location_and_type(nurseries: Nursery.objects, search: SearchNurseryEntity) -> Nursery.objects:
+    """
+    Filtering nurseries by location and types
+
+    Parameters
+    ----------
+    nurseries ``Nursery.objects``, required
+    search ``SearchNurseryEntity``, required
+
+    Returns
+    -------
+    Result of query filtering
+    """
     # filtering by nursery types
     if search.license_id:
         nurseries = nurseries.filter(license_id=search.license_id)
@@ -82,13 +115,36 @@ def _get_nurseries(search: SearchNurseryEntity) -> List[Nursery]:
         nurseries = nurseries.filter(allday_childcare=True)
     if search.evaluation:
         nurseries = nurseries.filter(evaluation=True)
-
-    if search.is_opening:
-        if search.age_id:
-            nurseries = [nursery for nursery in nurseries if nursery.free_nums.is_opening_by_age(search.age_id)]
-        else:
-            nurseries = [nursery for nursery in nurseries if nursery.free_nums.is_opening()]
     return nurseries
+
+
+def _filter_by_free_nums(nurseries: List[Nursery], search: SearchNurseryEntity, free_nums: dict) -> List[Nursery]:
+    """
+    Filtering nurseries by free nums(spaces)
+
+    Parameters
+    ----------
+    nurseries ``Nursery.objects``, required
+    search ``SearchNurseryEntity``, required
+    free_nums ``dict``, required
+        dict of free nums, key: NURSERY_FREE_NUM_FMT(nursery_id, age_id) str, value: free_num int
+
+    Returns
+    -------
+    Result of filtering by free nums
+    """
+    if not search.is_opening:
+        return nurseries
+
+    if search.age_id:
+        return [nursery for nursery in nurseries if
+                free_nums.get(NURSERY_FREE_NUM_FMT.format(nursery.id, search.age_id), 0) > 0]
+    ret = []
+    for nursery in nurseries:
+        sum_free_num = sum([free_nums.get(NURSERY_FREE_NUM_FMT.format(nursery.id, age_id), 0) for age_id in AGE_IDS])
+        if sum_free_num > 0:
+            ret.append(nursery)
+    return ret
 
 
 def _get_geo_parameters(search: SearchNurseryEntity) -> GeoParameterEntity:
