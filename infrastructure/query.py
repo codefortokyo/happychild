@@ -35,7 +35,7 @@ def get_near_nurseries(latitude: decimal, longitude: decimal, distance: int = 10
 
 
 @lru_cache(maxsize=100)
-def get_near_stations(latitude: decimal, longitude: decimal, distance: int = 10, limit: int = 30) -> List[Dict]:
+def get_near_stations(latitude: decimal, longitude: decimal, distance: int = 10, limit: int = 20) -> List[Dict]:
     """ 指定された地点に近い駅情報を取得する
     """
     cursor = connections['replica'].cursor()
