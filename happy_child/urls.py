@@ -27,6 +27,7 @@ def ping(request):
 urlpatterns = [
     url(r'^api/v1/location/ward', location.get_wards, name='get_wards'),
     url(r'^api/v1/location/station', location.get_stations, name='get_stations'),
+    url(r'^api/v1/location/near', location.get_near_ward_and_stations, name='get_near_ward_and_stations'),
 
     url(r'^search', search_views.search_nurseries, name='search_page'),
     url(r'^ping', ping, name='ping'),
