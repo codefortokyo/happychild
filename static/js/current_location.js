@@ -3,6 +3,7 @@ function cmanGetOk() {
         function (result) {
             let latitude = result.coords.latitude;
             let longitude = result.coords.longitude;
+
             document.getElementById("latitude").value = latitude;
             document.getElementById("longitude").value = longitude;
 
