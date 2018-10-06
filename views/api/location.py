@@ -23,7 +23,7 @@ def get_near_ward_and_stations(request: HttpRequest) -> HttpResponse:
     city_id = Ward.objects.filter(id=ward_id).first().city_id
 
     wards = Ward.objects.filter(city_id=city_id)
-    stations = get_near_stations(latitude, longitude, limit=20)
+    stations = get_near_stations(latitude, longitude)
     ret = json.dumps({
         'selected_city_id': city_id,
         'selected_ward_id': ward_id,

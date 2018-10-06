@@ -2,10 +2,11 @@ from typing import Optional
 from django import forms
 
 from infrastructure.mysql import Age, City, License, SchoolType, Station, Ward
+from infrastructure.query import get_near_stations
 
 
 class SearchLocationForm(forms.Form):
-    city = forms.ChoiceField(required=False,
+    city = forms.ChoiceField(required=True,
                              choices=[(0, '市を選択')] + [(city.id, city.name) for city in
                                                       City.objects.filter(is_active=True)],
                              widget=forms.Select(attrs={
@@ -14,13 +15,13 @@ class SearchLocationForm(forms.Form):
                                  'data-live-search': 'true',
                                  'data-live-search-placeholder': '市を検索'
                              }))
-    ward = forms.ChoiceField(required=False,
+    ward = forms.ChoiceField(required=True,
                              choices=[('', '区を選択')],
                              widget=forms.Select(attrs={
                                  'id': 'ward',
                                  'class': 'selectpicker search-fields',
                                  'data-live-search': 'true',
-                                 'data-live-search-placeholder': '区を検索'
+                                 'data-live-search-placeholder': '区を検索',
                              }))
     station = forms.ChoiceField(required=False,
                                 choices=[('', '駅を選択')],
@@ -28,29 +29,29 @@ class SearchLocationForm(forms.Form):
                                     'id': 'station',
                                     'class': 'selectpicker search-fields',
                                     'data-live-search': 'true',
-                                    'data-live-search-placeholder': '駅を検索'
+                                    'data-live-search-placeholder': '駅を検索',
                                 }))
-    latitude = forms.DecimalField(required=False,
-                                  max_digits=9, decimal_places=6,
-                                  widget=forms.HiddenInput(attrs={
-                                      'id': 'latitude'
-                                  }))
-    longitude = forms.DecimalField(required=False,
-                                   max_digits=9, decimal_places=6,
-                                   widget=forms.HiddenInput(attrs={
-                                       'id': 'longitude'
-                                   }))
+    latitude = forms.FloatField(required=False,
+                                widget=forms.HiddenInput(attrs={
+                                    'id': 'latitude'
+                                }))
+    longitude = forms.FloatField(required=False,
+                                 widget=forms.HiddenInput(attrs={
+                                     'id': 'longitude'
+                                 }))
 
     def clean(self):
         ward_id = self.cleaned_data.get('ward')
         latitude = self.cleaned_data.get('latitude')
         longitude = self.cleaned_data.get('longitude')
 
-        if not any([ward_id, latitude, longitude]):
-            raise forms.ValidationError('検索対象の区または現在位置情報を設定してください')
+        if not ward_id:
+            if not latitude or not longitude:
+                raise forms.ValidationError('検索対象の区または現在位置情報を設定してください')
         return self.cleaned_data
 
-    def __init__(self, city_id: Optional[int] = None, ward_id: Optional[int] = None, *args, **kwargs):
+    def __init__(self, city_id: Optional[int] = None, ward_id: Optional[int] = None, latitude: Optional[float] = None,
+                 longitude: Optional[float] = None, *args, **kwargs):
         super(SearchLocationForm, self).__init__(*args, **kwargs)
         if city_id:
             self.fields['ward'] = forms.ChoiceField(required=False,
@@ -62,7 +63,19 @@ class SearchLocationForm(forms.Form):
                                                         'data-live-search': 'true',
                                                         'data-live-search-placeholder': '区を検索'
                                                     }))
-        if ward_id:
+
+        if latitude and longitude:
+            self.fields['station'] = forms.ChoiceField(required=False,
+                                                       choices=[('', '駅を選択')] + [(s['id'], s['name']) for s in
+                                                                                 get_near_stations(latitude,
+                                                                                                   longitude)],
+                                                       widget=forms.Select(attrs={
+                                                           'id': 'station',
+                                                           'class': 'selectpicker search-fields',
+                                                           'data-live-search': 'true',
+                                                           'data-live-search-placeholder': '駅を検索'
+                                                       }))
+        elif ward_id:
             self.fields['station'] = forms.ChoiceField(required=False,
                                                        choices=[('', '駅を選択')] + [(s['id'], s['name']) for s in
                                                                                  Station.get_stations(ward_id)],
