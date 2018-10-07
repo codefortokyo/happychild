@@ -56,6 +56,20 @@
                             自宅周辺の保育園、空きのある保育園など様々な条件からあなたにあった保育園を見つけ、保存することができます。<br>
                             また見学会の予約などを直接行うことができます。
                         </p>
+                        <h5> 活動歴・資料 </h5>
+                        <a href="http://shinagawackathon.org/hackathon-app/nursery/" target="_blank">
+                            <p>2018 しながわっかそん</p>
+                        </a>
+                        <a href="https://docs.google.com/presentation/d/1mNomsA8ngLiCj3HggxApgOU-y-8etxuFkTiyPjp1mYw/edit?usp=sharing"
+                           target="_blank">
+                            <p>2017 ボヌールフェスタ vol.2 </p>
+                        </a>
+                        <a href="https://opendata.resas-portal.go.jp/contest/index.html" target="_blank">
+                            <p>2017 第一回 RESASアプリコンテスト Microsoft賞</p>
+                        </a>
+                        <a href="http://resasapi-teamlab.hatenablog.com/entry/2016/11/16/162357" target="_blank">
+                            <p>2017 東京で考える地方創生！RESAS API ハッカソン 最優秀賞</p>
+                        </a>
                     </div>
                 </div>
             </div>
@@ -195,16 +209,18 @@
                     <thead>
                     <tr>
                         <th> 名称</th>
-                        <th> 保育園データ </th>
-                        <th> 空きデータ </th>
+                        <th> 保育園データ</th>
+                        <th> 空きデータ</th>
                     </tr>
                     </thead>
                     <tbody>
                     {% for ward in wards %}
                         <tr>
                             <td><a href="{{ ward.home_url }}" target="_blank"> {{ ward.full_name }} </a></td>
-                            <td><a href="{{ ward.nursery_info_url }}" target="_blank"> {{ ward.nursery_info_name }} </a></td>
-                            <td><a href="{{ ward.nursery_free_num_info_url }}" target="_blank"> {{ ward.nursery_free_num_info }} </a></td>
+                            <td><a href="{{ ward.nursery_info_url }}" target="_blank"> {{ ward.nursery_info_name }} </a>
+                            </td>
+                            <td><a href="{{ ward.nursery_free_num_info_url }}"
+                                   target="_blank"> {{ ward.nursery_free_num_info }} </a></td>
                         </tr>
                     {% endfor %}
                     </tbody>
