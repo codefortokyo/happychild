@@ -1220,6 +1220,7 @@ input[type=checkbox]:checked + label:before {
     position: relative;
     display: block;
     overflow: hidden;
+    max-height: 250px;
 }
 
 .property-tag {
