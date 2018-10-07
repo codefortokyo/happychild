@@ -30,7 +30,7 @@ def get_nurseries(search: SearchNurseryEntity, limit: int = 50) -> Tuple[List[di
     return [json.loads(NurseryEntity(
         id=n.id,
         license=n.license.name,
-        school_type=n.license.name,
+        school_type=n.school_type.name,
         name=n.name,
         postcode=n.postcode,
         address=n.address,
