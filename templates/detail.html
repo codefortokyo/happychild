@@ -1,0 +1,200 @@
+{% extends "base.html" %}
+{% load static %}
+{% block content %}
+    <!-- Properties details page start -->
+    <div class="properties-details-page">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                    <!-- Header -->
+                    <div class="heading-properties clearfix sidebar-widget">
+                        <div class="row">
+                            <div class="col-md-8 col-sm-8 col-xs-8">
+                                <h3>{{ nursery.name }}</h3> <a href="{{ nursery.url }}" target="_blank">公式サイト</a>
+                                <div class="clearfix"></div>
+                                <p>
+                                    <i class="fa fa-map-marker"></i>{{ nursery.address }},
+                                    最寄り: {{ nursery.station_info }}
+                                </p>
+                                <p>
+                                    <i class="fa fa-check"></i> {{ nursery.license }}保育園, {{ nursery.school_type }}
+                                </p>
+                                {% if nursery.organizer %}
+                                    <p>
+                                        <i class="fa fa-bank"></i>{{ nursery.organizer }} 運営
+                                    </p>
+                                {% endif %}
+
+                                <br>
+
+                                <!-- Properties condition start -->
+                                <ul class="facilities-list clearfix">
+                                    {% if nursery.stable_food %}
+                                        <li style="display: inline">
+                                            <i class="fa flaticon-park"></i> 主食有
+                                        </li>
+                                    {% endif %}
+                                    {% if nursery.temporary_childcare %}
+                                        <li style="display: inline">
+                                            <i class="fa flaticon-summer"></i> 一時預かり有
+                                        </li>
+                                    {% endif %}
+                                    {% if nursery.overnight_childcare %}
+                                        <li style="display: inline">
+                                            <i class="fa flaticon-clock"></i> 夜間預かり有
+                                        </li>
+                                    {% endif %}
+                                    {% if nursery.allday_childcare %}
+                                        <li style="display: inline">
+                                            <i class="fa flaticon-holidays"></i> 日中預かり有
+                                        </li>
+                                    {% endif %}
+                                    {% if nursery.evaluation %}
+                                        <li style="display: inline">
+                                            <i class="fa flaticon-people"></i> 認証済
+                                        </li>
+                                    {% endif %}
+                                </ul>
+                            </div>
+                            <!-- Properties condition end -->
+                            <div class="col-md-4 col-sm-4 col-xs-4">
+                                <div class="property">
+                                    <a href="{{ nursery.image }}" class="property-img" target="_blank">
+                                        <div class="property-tag button sale"> {{ nursery.image }}</div>
+                                        <img src="{{ nursery.image }}" class="img-responsive">
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- Properties details section start -->
+            <div class="Properties-details-section sidebar-widget">
+                <!-- Property description start -->
+                <div class="panel-box properties-panel-box Property-description">
+                    <ul class="nav nav-tabs">
+                        <li class="active"><a href="#tab1default" data-toggle="tab"
+                                              aria-expanded="true">サービス内容</a></li>
+                        <li class=""><a href="#tab2default" data-toggle="tab" aria-expanded="false">イベント情報</a>
+                        </li>
+                        <li class=""><a href="#tab3default" data-toggle="tab" aria-expanded="false">空き状況</a>
+                        </li>
+                        <li class=""><a href="#tab4default" data-toggle="tab" aria-expanded="false">口コミ</a></li>
+                    </ul>
+
+                    <div class="panel with-nav-tabs panel-default">
+                        <div class="panel-body">
+                            <div class="tab-content">
+                                <div class="tab-pane fade active in" id="tab1default">
+                                    <div class="row">
+                                        <div class="col-md-12 col-sm-12 col-xs-12">
+                                            <div class="main-title-2">
+                                                <h1><span>保育園方針</span></h1>
+                                            </div>
+                                            <p> {{ nursery.policy|safe }} </p>
+                                        </div>
+                                    </div>
+                                    <br>
+                                    <div class="row">
+                                        <div class="col-md-12 col-sm-12 col-xs-12">
+                                            <div class="main-title-2">
+                                                <h1><span>独自サービス</span></h1>
+                                            </div>
+                                            <p> {{ nursery.service|safe }}</p>
+                                        </div>
+                                    </div>
+                                    <br>
+                                    <div class="row">
+                                        <div class="col-md-12 col-sm-12 col-xs-12">
+                                            <div class="main-title-2">
+                                                <h1><span>行事カレンダー</span></h1>
+                                            </div>
+                                            <p> {{ nursery.event|safe }} </p>
+                                        </div>
+                                    </div>
+
+                                </div>
+
+                                <div class="tab-pane fade" id="tab2default">
+                                    <!-- Inside properties start  -->
+                                    <div class="inside-properties">
+                                        <!-- Main Title 2 -->
+                                        <div class="main-title-2">
+                                            <h1><span>イベント情報</span></h1>
+                                        </div>
+                                    </div>
+                                    <!-- Inside properties end -->
+                                </div>
+
+                                <div class="tab-pane fade" id="tab3default">
+                                    <!-- Floor Plans start -->
+                                    <div class="floor-plans">
+                                        <div class="main-title-2">
+                                            <h1><span>空き状況</span></h1>
+                                        </div>
+                                        <p>更新日: {{ nursery.free_num_updated_at }}</p>
+                                        <table>
+                                            <tr>
+                                                <td><strong>0歳</strong></td>
+                                                <td><strong>1歳</strong></td>
+                                                <td><strong>2歳</strong></td>
+                                                <td><strong>3歳</strong></td>
+                                                <td><strong>4歳</strong></td>
+                                                <td><strong>延長</strong></td>
+                                            </tr>
+                                            <tr>
+                                                <td>{{ nursery.free_num_not_one }}</td>
+                                                <td>{{ nursery.free_num_one_year_old }}</td>
+                                                <td>{{ nursery.free_num_two_year_old }}</td>
+                                                <td>{{ nursery.free_num_three_year_old }}</td>
+                                                <td>{{ nursery.free_num_four_year_old }}</td>
+                                                <td>{{ nursery.free_num_extent }}</td>
+                                            </tr>
+                                        </table>
+                                    </div>
+                                    <!-- Floor Plans end -->
+                                </div>
+
+                                <div class="tab-pane fade" id="tab4default">
+                                    <!-- Inside properties start  -->
+                                    <div class="inside-properties">
+                                        <!-- Main Title 2 -->
+                                        <div class="main-title-2">
+                                            <h1><span>口コミ</span></h1>
+                                        </div>
+                                    </div>
+                                    <!-- Inside properties end -->
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- Property description end -->
+            </div>
+            <!-- Properties details section end -->
+
+            <!-- Location start -->
+            <div class="location sidebar-widget">
+                <div class="map">
+                    <!-- Main Title 2 -->
+                    <div class="main-title-2">
+                        <h1><span>マップ</span></h1>
+                    </div>
+                    <div id="map" class="contact-map"></div>
+                </div>
+            </div>
+            <!-- Location end -->
+
+        </div>
+    </div>
+    <!-- Properties details page end -->
+{% endblock %}
+
+{% block js %}
+    <script>
+        let providerName = 'OpenStreetMap.Mapnik';
+
+        generateMap({{ nursery.latitude }}, {{ nursery.longitude }}, providerName, 'grid_layout', {{ nursery_json|safe }});
+    </script>
+{% endblock %}

@@ -17,7 +17,7 @@ from infrastructure.query import get_nearest_ward, get_near_nurseries
 from services.entities import GeoParameterEntity, SearchNurseryEntity, NurseryEntity
 
 
-def get_nurseries(search: SearchNurseryEntity, limit: int = 50) -> Tuple[List[dict], GeoParameterEntity]:
+def get_nurseries(search: SearchNurseryEntity, limit: int = 50) -> Tuple[List[str], GeoParameterEntity]:
     geo_parameters = _get_geo_parameters(search)
     nurseries = _get_nurseries(search)
 
@@ -30,7 +30,7 @@ def get_nurseries(search: SearchNurseryEntity, limit: int = 50) -> Tuple[List[di
     return [json.loads(NurseryEntity(
         id=n.id,
         license=n.license.name,
-        school_type=n.license.name,
+        school_type=n.school_type.name,
         name=n.name,
         postcode=n.postcode,
         address=n.address,

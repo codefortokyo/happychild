@@ -1,4 +1,9 @@
 function drawInfoWindow(property) {
+    let id = '';
+    if (property.id) {
+        id = property.id
+    }
+
     let image = '/static/img/logo.png';
     if (property.image) {
         image = property.image
@@ -111,12 +116,17 @@ function drawInfoWindow(property) {
     allday_childcare +
     evaluation +
     "</div>" +
-    "<div class='map-properties-btns'><a href='' class='button-sm button-theme'>詳細情報</a></div>" +
+    "<div class='map-properties-btns'><a href='/nursery/" + id + "' class='button-sm button-theme' target='_blank'>詳細情報</a></div>" +
     "</div>";
     return ibContent;
 }
 
 function insertPropertyToArray(property, layout) {
+    let id = '';
+    if (property.id) {
+        id = property.id
+    }
+
     let image = '/static/img/logo.png';
     if (property.image) {
         image = property.image
@@ -184,17 +194,17 @@ function insertPropertyToArray(property, layout) {
 
     let temporary_childcare = '';
     if (property.temporary_childcare) {
-        temporary_childcare = '<li><i class="flaticon-summer"></i><span>一時受け有</span></li>'
+        temporary_childcare = '<li><i class="flaticon-summer"></i><span>一時預かり有</span></li>'
     }
 
     let overnight_childcare = '';
     if (property.overnight_childcare) {
-        overnight_childcare = '<li><i class="flaticon-clock"></i><span>夜間受け有</span></li>'
+        overnight_childcare = '<li><i class="flaticon-clock"></i><span>夜間預かり有</span></li>'
     }
 
     let allday_childcare = '';
     if (property.allday_childcare) {
-        allday_childcare = '<li><i class="flaticon-holidays"></i><span>日中受け有</span></li>'
+        allday_childcare = '<li><i class="flaticon-holidays"></i><span>日中預かり有</span></li>'
     }
 
     let evaluation = '';
@@ -212,7 +222,7 @@ function insertPropertyToArray(property, layout) {
     if (layout == 'grid_layout') {
         element = '<div class="col-lg-6 col-md-6 col-sm-6 col-xs-12"><div class="property">' +
             '<!-- Property img --> ' +
-            '<a href="properties-details.html" class="property-img">' +
+            '<a href="/nursery/' + id + '" class="property-img" target="_blank">' +
             '<div class="property-tag button sale">' + image + '</div> ' +
             '<img src="' + image + '" alt="properties-3" class="img-responsive"> ' +
             '</a>' +
@@ -220,7 +230,7 @@ function insertPropertyToArray(property, layout) {
             '<div class="property-content"> ' +
             '<!-- title --> ' +
             '<h1 class="title">' +
-            '<a href="">' + name + '</a> ' +
+            '<a href="/nursery/' + id + '" target="_blank">' + name + '</a> ' +
             '</h1> ' +
             '<!-- Property address --> ' +
             '<h3 class="property-address"> ' +
