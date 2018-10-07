@@ -81,18 +81,15 @@
             </div>
             <!-- Collect the nav links, forms, and other content for toggling -->
             <div class="navbar-collapse collapse" role="navigation" aria-expanded="true" id="app-navigation">
-                <ul class="nav navbar-nav ">
+                <ul class="nav navbar-nav navbar-left">
                     <li>
-                        <a href="{% url 'search_page' %}" class="button"> 保育園の検索 </a>
+                        <a href="{% url 'search_page' %}" class="button"> 検索 </a>
                     </li>
                     <li>
                         <a href="#" class="button"> コラム </a>
                     </li>
                     <li>
-                        <a href="#" class="button"> サービス </a>
-                    </li>
-                    <li>
-                        <a href="#" class="button"> 運営メンバー </a>
+                        <a href="{% url 'about_page' %}" class="button"> サービス </a>
                     </li>
                     <li>
                         <a href="#" class="button"> お問い合わせ </a>
