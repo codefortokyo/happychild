@@ -30,6 +30,7 @@ urlpatterns = [
     url(r'^api/v1/location/near', location.get_near_ward_and_stations, name='get_near_ward_and_stations'),
 
     url(r'^nursery/(?P<nursery_id>\d+)', detail_views.nursery_detail, name='detail_page'),
+    url(r'^contact', misc_views.contact, name='contact_page'),
     url(r'^about', misc_views.about, name='about_page'),
     url(r'^search', search_views.search_nurseries, name='search_page'),
     url(r'^ping', ping, name='ping'),
