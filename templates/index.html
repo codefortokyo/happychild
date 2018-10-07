@@ -13,7 +13,7 @@
                             <h1 data-animation="animated fadeInDown delay-05s"><span>最適な保育園を</span>見つける/申し込む </h1>
                             <p data-animation="animated fadeInUp delay-1s">Happy Child
                                 はあなたのお子様にあった保育園を簡単に検索し、見学会等への申し込みをすることができます</p>
-                            <a href="#" class="btn btn-success" data-animation="animated fadeInUp delay-15s">
+                            <a data-scroll href="#search" class="btn btn-success" data-animation="animated fadeInUp delay-15s">
                                 保育園を検索する </a>
                             <a href="#" class="btn btn-default"
                                data-animation="animated fadeInUp delay-15s">サービス内容をみる</a>
@@ -67,8 +67,11 @@
     <!-- Banner end -->
 
     <!-- Search area start -->
-    <div class="search-area">
+    <div class="search-area" id="search">
         <div class="container">
+            <div class="main-title">
+                <h1>保育園を検索</h1>
+            </div>
             <div class="search-area-inner">
                 <div class="search-contents">
                     <form method="GET" action="{% url 'search_page' %}">

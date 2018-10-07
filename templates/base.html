@@ -154,6 +154,8 @@
 <script src="{% static 'js/dropzone.js' %}"></script>
 <script src="{% static 'js/jquery.filterizr.js' %}"></script>
 <script src="{% static 'js/jquery.magnific-popup.min.js' %}"></script>
+<script src="{% static 'js/smooth-scroll.min.js' %}"></script>
+<script src="{% static 'js/smooth-scroll.polyfills.min.js' %}"></script>
 <script src="{% static 'js/maps.js' %}"></script>
 <script src="{% static 'js/app.js' %}"></script>
 <script src="{% static 'js/current_location.js' %}"></script>
@@ -199,6 +201,13 @@
                 $('#station').selectpicker('refresh');
             }
         });
+    });
+</script>
+<script>
+    let scroll = new SmoothScroll('a[href*="#"]', {
+        header: null,
+        speed: 800,
+        clip: true
     });
 </script>
 
