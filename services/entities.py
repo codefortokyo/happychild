@@ -57,10 +57,10 @@ class NurseryEntity:
     service: str
     policy: str
     promise: str
-    free_num_not_one: int
-    free_num_one_year_old: int
-    free_num_two_year_old: int
-    free_num_three_year_old: int
-    free_num_four_year_old: int
-    free_num_extent: int
-    free_num_updated_at: str
+    free_num_not_one: int or str
+    free_num_one_year_old: int or str
+    free_num_two_year_old: int or str
+    free_num_three_year_old: int or str
+    free_num_four_year_old: int or str
+    free_num_extent: int or str
+    free_num_updated_at: str or str
