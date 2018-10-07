@@ -219,6 +219,13 @@ class Nursery(models.Model):
             return self.close_day
         return '詳しくは公式サイトをご覧下さい'
 
+    @classmethod
+    def get_nursery(cls, nursery_id: int):
+        try:
+            return cls.objects.select_related('license', 'school_type').filter(id=nursery_id).first()
+        except cls.DoesNotExist:
+            return None
+
 
 class NurseryFreeNum(models.Model):
     age = models.ForeignKey(Age, models.PROTECT)
