@@ -81,18 +81,15 @@
             </div>
             <!-- Collect the nav links, forms, and other content for toggling -->
             <div class="navbar-collapse collapse" role="navigation" aria-expanded="true" id="app-navigation">
-                <ul class="nav navbar-nav ">
+                <ul class="nav navbar-nav navbar-left">
                     <li>
-                        <a href="{% url 'search_page' %}" class="button"> 保育園の検索 </a>
+                        <a href="{% url 'search_page' %}" class="button"> 検索 </a>
                     </li>
                     <li>
-                        <a href="#" class="button"> サービス内容 </a>
+                        <a href="{% url 'about_page' %}" class="button"> サービス </a>
                     </li>
                     <li>
-                        <a href="#" class="button"> 運営メンバー </a>
-                    </li>
-                    <li>
-                        <a href="#" class="button"> ご協力のお願い </a>
+                        <a href="{% url 'contact_page' %}" class="button"> お問い合わせ </a>
                     </li>
                 </ul>
                 <ul class="nav navbar-nav navbar-right rightside-navbar">
@@ -154,6 +151,8 @@
 <script src="{% static 'js/dropzone.js' %}"></script>
 <script src="{% static 'js/jquery.filterizr.js' %}"></script>
 <script src="{% static 'js/jquery.magnific-popup.min.js' %}"></script>
+<script src="{% static 'js/smooth-scroll.min.js' %}"></script>
+<script src="{% static 'js/smooth-scroll.polyfills.min.js' %}"></script>
 <script src="{% static 'js/maps.js' %}"></script>
 <script src="{% static 'js/app.js' %}"></script>
 <script src="{% static 'js/current_location.js' %}"></script>
@@ -199,6 +198,13 @@
                 $('#station').selectpicker('refresh');
             }
         });
+    });
+</script>
+<script>
+    let scroll = new SmoothScroll('a[href*="#"]', {
+        header: null,
+        speed: 800,
+        clip: true
     });
 </script>
 
