@@ -34,8 +34,7 @@ def search_nurseries(request: HttpRequest) -> render:
     nurseries, geo_parameters = get_nurseries(parameters)
 
     return render(request, 'search.html', context={
-        'locat'
-        'ion_form': location_form,
+        'location_form': location_form,
         'type_form': type_form,
         'feature_form': feature_form,
         'latitude': geo_parameters.origin_coordinate.get('latitude'),
