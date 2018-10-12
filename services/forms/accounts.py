@@ -1,5 +1,6 @@
 from django import forms
-from django.contrib.auth.forms import AuthenticationForm, UserCreationForm, PasswordChangeForm
+from django.contrib.auth import authenticate
+from django.contrib.auth.forms import UserCreationForm, PasswordChangeForm
 from infrastructure.models import CustomUser as User
 
 
@@ -41,14 +42,39 @@ class SignUpForm(UserCreationForm):
         )
 
 
-class LoginForm(AuthenticationForm):
-    username = forms.CharField(max_length=50,
-                               label='メールアドレス',
+class LoginForm(forms.Form):
+    error_messages = {
+        'invalid_username': "指定のメールアドレスは登録されていません",
+        'password_incorrect': "パスワードが正しくありません",
+    }
+    username = forms.CharField(max_length=255,
                                required=True,
-                               error_messages={
-                                   'required': '正しいメールアドレスを入力してください'
-                               })
-    password = forms.PasswordInput()
+                               widget=forms.EmailInput(attrs={
+                                   'class': 'input-text',
+                                   'placeholder': '登録メールアドレス'
+                               }))
+    password = forms.CharField(max_length=255,
+                               required=True,
+                               widget=forms.PasswordInput(attrs={
+                                   'class': 'input-text',
+                                   'placeholder': 'パスワード'
+                               }))
+
+    def __init__(self, *args, **kwargs):
+        super(LoginForm, self).__init__(*args, **kwargs)
+
+    def clean_username(self):
+        username = self.cleaned_data['username']
+        if not User.is_exist_username(username):
+            raise forms.ValidationError(self.error_messages['invalid_username'], code='invalid_username', )
+        return username
+
+    def clean(self):
+        username = self.cleaned_data['username']
+        password = self.cleaned_data['password']
+        if not authenticate(username=username, password=password):
+            raise forms.ValidationError(self.error_messages['password_incorrect'], code='password_incorrect', )
+        return self.cleaned_data
 
 
 class EmailChangeForm(forms.Form):

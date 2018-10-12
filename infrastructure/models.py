@@ -53,6 +53,14 @@ class CustomUser(AbstractBaseUser):
         managed = True
         db_table = 'users'
 
+    @classmethod
+    def is_exist_username(cls, username):
+        try:
+            cls.objects.get(email=username)
+            return True
+        except cls.DoesNotExist:
+            return False
+
 
 class City(models.Model):
     id = models.AutoField(primary_key=True)
