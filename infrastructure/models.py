@@ -4,6 +4,7 @@ from typing import Dict, List
 from urllib.parse import urlparse
 from itertools import groupby
 
+from django.contrib.auth.models import AbstractBaseUser
 from django.db import models
 from django.utils import timezone
 from django.utils.lru_cache import lru_cache
@@ -11,6 +12,7 @@ from django_mysql.models import Bit1BooleanField
 from django.db.models.aggregates import Max
 
 from infrastructure.consts import NURSERY_FREE_NUM_FMT
+from infrastructure.managers import MyUserManager
 from infrastructure.query import get_near_stations
 
 
@@ -23,6 +25,41 @@ class Age(models.Model):
     class Meta:
         managed = False
         db_table = 'ages'
+
+
+class CustomUser(AbstractBaseUser):
+    username = models.CharField(
+        max_length=20,
+        unique=True
+    )
+    email = models.EmailField(
+        max_length=255,
+        unique=True
+    )
+    name = models.CharField(max_length=255, null=True)
+    address = models.CharField(max_length=255, null=True)
+    phone_number = models.CharField(max_length=255, null=True)
+    child_age = models.ForeignKey(Age, models.PROTECT, null=True)
+    is_active = Bit1BooleanField(default=True)
+    is_admin = Bit1BooleanField(default=False)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+    date_joined = models.DateTimeField(auto_now_add=True)
+
+    objects = MyUserManager()
+    USERNAME_FIELD = 'email'
+
+    class Meta:
+        managed = True
+        db_table = 'users'
+
+    @classmethod
+    def is_exist_username(cls, username):
+        try:
+            cls.objects.get(email=username)
+            return True
+        except cls.DoesNotExist:
+            return False
 
 
 class City(models.Model):

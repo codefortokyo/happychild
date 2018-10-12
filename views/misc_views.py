@@ -1,7 +1,7 @@
 from django.shortcuts import render
 from django.http import HttpRequest
 
-from infrastructure.mysql import Ward
+from infrastructure.models import Ward
 
 
 def about(request: HttpRequest) -> render:

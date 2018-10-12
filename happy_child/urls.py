@@ -16,7 +16,7 @@ Including another URLconf
 from django.conf.urls import url
 from django.http import HttpResponse
 
-from views import top_views, search_views, detail_views, misc_views
+from views import account_views, top_views, search_views, detail_views, misc_views
 from views.api import location
 
 
@@ -34,5 +34,9 @@ urlpatterns = [
     url(r'^about', misc_views.about, name='about_page'),
     url(r'^search', search_views.search_nurseries, name='search_page'),
     url(r'^ping', ping, name='ping'),
+
+    url(r'^login', account_views.login_view, name='login_page'),
+    url(r'^logout', account_views.logout_view, name='logout_page'),
+    url(r'^signup', account_views.signup, name='signup_page'),
     url(r'^', top_views.index, name='top_page')
 ]

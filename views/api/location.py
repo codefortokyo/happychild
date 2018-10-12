@@ -3,7 +3,7 @@ import json
 from django.http import HttpRequest, HttpResponse
 
 from infrastructure.query import get_nearest_ward, get_near_stations
-from infrastructure.mysql import Ward, Station
+from infrastructure.models import Ward, Station
 
 
 # TODO: validate
