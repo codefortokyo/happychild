@@ -1,0 +1,41 @@
+{% extends "base.html" %}
+{% load static %}
+{% block content %}
+    <!-- Content area start -->
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12">
+                <!-- Form content box start -->
+                <div class="form-content-box">
+                    <!-- details -->
+                    <div class="details">
+                        <!-- Main title -->
+                        <div class="main-title">
+                            <h1><span>ユーザー登録</span></h1>
+                        </div>
+                        <!-- Form start-->
+                        <form action="{% url 'signup_page' %}" method="POST">
+                            {% csrf_token %}
+                            {% for field in form %}
+                                <div class="form-group">
+                                    {{ field }}
+                                </div>
+                            {% endfor %}
+                            <div class="form-group">
+                                <button type="submit" class="button-md button-theme btn-block">登録</button>
+                            </div>
+                        </form>
+                        <!-- Form end-->
+                    </div>
+                    <!-- Footer -->
+                    <div class="footer">
+                        <span>
+                            既に登録済の場合は <a href="#">ログイン</a>
+                        </span>
+                    </div>
+                </div>
+                <!-- Form content box end -->
+            </div>
+        </div>
+    </div>
+{% endblock %}

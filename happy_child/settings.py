@@ -196,6 +196,9 @@ STATICFILES_DIRS = (
     os.path.join(BASE_DIR, "static"),
 )
 
+AUTH_USER_MODEL = 'infrastructure.CustomUser'
+LOGIN_REDIRECT_URL = '/'
+
 AWS_REGION = os.getenv('AWS_REGION', 'ap-northeast-1')
 ENV = os.getenv('ENV', 'DEVELOP')
 
