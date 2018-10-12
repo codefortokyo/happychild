@@ -93,11 +93,24 @@
                     </li>
                 </ul>
                 <ul class="nav navbar-nav navbar-right rightside-navbar">
-                    <li>
-                        <a href="{% url 'signup_page' %}" class="button">
-                            ユーザー登録
-                        </a>
-                    </li>
+                    {% if user.is_authenticated %}
+                        <li>
+                            <a href="{% url 'signup_page' %}" class="button">
+                                ユーザー登録
+                            </a>
+                        </li>
+                        <li>
+                            <a href="{% url 'login_page' %}" class="button">
+                                ログイン
+                            </a>
+                        </li>
+                    {% else %}
+                        <li>
+                            <a href="" class="button">
+                                Myページ
+                            </a>
+                        </li>
+                    {% endif %}
                 </ul>
             </div>
         </nav>
