@@ -26,6 +26,9 @@ class Age(models.Model):
         managed = False
         db_table = 'ages'
 
+    def __str__(self):
+        return self.name
+
 
 class CustomUser(AbstractBaseUser):
     username = models.CharField(
@@ -60,6 +63,10 @@ class CustomUser(AbstractBaseUser):
             return True
         except cls.DoesNotExist:
             return False
+
+    @classmethod
+    def get_user(cls, user_id: int):
+        return cls.objects.get(pk=user_id)
 
 
 class City(models.Model):

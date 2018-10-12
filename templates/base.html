@@ -101,7 +101,7 @@
                         </li>
                     {% else %}
                         <li>
-                            <a href="" class="button">
+                            <a href="{% url 'user_profile_page' user_id=user.id %}" class="button">
                                 Myページ
                             </a>
                         </li>

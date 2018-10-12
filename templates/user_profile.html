@@ -1,0 +1,83 @@
+{% extends "base.html" %}
+{% load static %}
+{% block content %}
+    <!-- My profile start -->
+    <div class="content-area my-profile">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-4 col-md-4 col-sm-12">
+                    <!-- User account box start -->
+                    <div class="user-account-box">
+                        <div class="header clearfix">
+                            <div class="edit-profile-photo">
+                                <img src="http://placehold.it/150x150" alt="agent-1" class="img-responsive">
+                                <div class="change-photo-btn">
+                                    <div class="photoUpload">
+                                        <span><i class="fa fa-upload"></i> Upload</span>
+                                        <input type="file" class="upload">
+                                    </div>
+                                </div>
+                            </div>
+                            <h3>{{ user.username }}</h3>
+                            <p>{{ user.email }}</p>
+                        </div>
+                        <div class="content">
+                            <ul>
+                                <li>
+                                    <a href="{% url 'user_profile_page' user_id=user.id %}" class="active">
+                                        <i class="flaticon-social"></i>ユーザー設定
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="#">
+                                        <i class="fa fa-heart"></i> My保育園リスト
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="">
+                                        <i class="fa fa-plus"></i> 申し込み状況　
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="">
+                                        <i class="flaticon-security"></i>パスワードを変更する　
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="{% url 'logout_page' %}">
+                                        <i class="flaticon-sign-out-option"></i>ログアウト
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                    <!-- User account box end -->
+                </div>
+                <div class="col-lg-8 col-md-8 col-sm-12">
+                    <!-- My address start-->
+                    <div class="my-address">
+                        <div class="main-title-2">
+                            <h1>ユーザー設定</h1>
+                        </div>
+
+                        <form action="{% url 'user_profile_page' user_id=user.id %}" method="POST">
+                            {% csrf_token %}
+                            {% for field in form %}
+                                <div class="form-group">
+                                    {{ field.label }}
+                                    {{ field }}
+                                </div>
+                            {% endfor %}
+
+                            <div class="form-group">
+                                <button class="btn button-md button-theme pull-right" type="submit">変更を保存</button>
+                            </div>
+                        </form>
+                    </div>
+                    <!-- My address end -->
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- My profile end -->
+{% endblock %}
