@@ -9,7 +9,7 @@ from infrastructure.consts import (
     FOUR_YEAR_OLD_AGE_ID,
     EXTENT_AGE_ID,
 )
-from infrastructure.mysql import Nursery, NurseryFreeNum
+from infrastructure.models import Nursery, NurseryFreeNum
 from services.entities import NurseryEntity
 
 

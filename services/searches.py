@@ -2,7 +2,7 @@ import json
 from decimal import Decimal
 from typing import Dict, List, Tuple
 
-from infrastructure.mysql import Nursery, NurseryFreeNum, Station, Ward
+from infrastructure.models import Nursery, NurseryFreeNum, Station, Ward
 from infrastructure.consts import (
     NURSERY_FREE_NUM_FMT,
     NOT_ONE_AGE_ID,
