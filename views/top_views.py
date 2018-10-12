@@ -1,7 +1,7 @@
 from django.shortcuts import render
 from django.http import HttpRequest
 
-from services.forms import SearchLocationForm, SearchTypeForm, SearchFeatureForm
+from services.forms.searches import SearchLocationForm, SearchTypeForm, SearchFeatureForm
 
 
 def index(request: HttpRequest) -> render:

@@ -1,4 +1,4 @@
-from services.forms import SearchLocationForm, SearchTypeForm, SearchFeatureForm
+from services.forms.searches import SearchLocationForm, SearchTypeForm, SearchFeatureForm
 from services.entities import SearchNurseryEntity
 
 
