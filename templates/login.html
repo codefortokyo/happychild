@@ -1,0 +1,48 @@
+{% extends "base.html" %}
+{% load static %}
+{% block content %}
+    <!-- Content area start -->
+    <div class="content-area">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12">
+                    <!-- Form content box start -->
+                    <div class="form-content-box">
+                        <!-- details -->
+                        <div class="details">
+                            <!-- Main title -->
+                            <div class="main-title">
+                                <h1>ログイン</h1>
+                            </div>
+                            <!-- Form start -->
+                            {% for error in form.non_field_errors %}
+                                <div class="form-group has-errors text-danger small">
+                                    {{ error }}
+                                </div>
+                            {% endfor %}
+                            <form action="{% url 'login_page' %}" method="POST">
+                                {% csrf_token %}
+                                {% for field in form %}
+                                    <div class="form-group">
+                                        {{ field }}
+                                    </div>
+                                {% endfor %}
+                                <div class="form-group">
+                                    <button type="submit" class="button-md button-theme btn-block">ログイン</button>
+                                </div>
+                            </form>
+                            <!-- Form end -->
+                        </div>
+                        <!-- Footer -->
+                        <div class="footer">
+                        <span>
+                            まだ登録済でない方は <a href="{% url 'signup_page' %}">ユーザー登録</a>
+                        </span>
+                        </div>
+                    </div>
+                    <!-- Form content box end -->
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
