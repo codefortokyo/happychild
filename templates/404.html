@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+{% load static %}
+{% block content %}
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12">
+                <!-- Error404 content start -->
+                <div class="error404-content">
+                    <h1>404</h1>
+                    <h2>ご指定のページが見つかりません</h2>
+                    <p>お探しのページは一時的にアクセスができない状況にあるか、<br/>移動もしくは削除された可能性がございます。</p>
+                    <a href="{% url 'top_page' %}">
+                        <button type="button" class="button-sm out-line-btn">トップページに戻る</button>
+                    </a>
+                </div>
+                <!-- Error404 content end -->
+            </div>
+        </div>
+    </div>
+{% endblock %}
