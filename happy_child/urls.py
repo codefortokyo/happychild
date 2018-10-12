@@ -36,6 +36,7 @@ urlpatterns = [
     url(r'^ping', ping, name='ping'),
 
     url(r'^login', account_views.login_view, name='login_page'),
+    url(r'^logout', account_views.logout_view, name='logout_page'),
     url(r'^signup', account_views.signup, name='signup_page'),
     url(r'^', top_views.index, name='top_page')
 ]
