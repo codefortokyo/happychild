@@ -1,7 +1,8 @@
 from django import forms
 from django.contrib.auth import authenticate
-from django.contrib.auth.forms import UserCreationForm, PasswordChangeForm
+from django.contrib.auth.forms import UserCreationForm
 from infrastructure.models import CustomUser as User
+from infrastructure.models import Age
 
 
 class SignUpForm(UserCreationForm):
@@ -139,22 +140,30 @@ class EmailChangeForm(forms.Form):
         return self.user
 
 
-class EditProfilePassword(PasswordChangeForm):
-    error_css_class = 'has-error'
-    error_messages = {'password_incorrect': "入力されたパスワードは間違っています"}
-    old_password = forms.CharField(required=True, label='現在のパスワード',
-                                   widget=forms.PasswordInput(attrs={
-                                       'class': 'form-control'}),
-                                   error_messages={
-                                       'required': '現在のパスワードを入力してください'})
+class ProfileForm(forms.ModelForm):
+    address = forms.CharField(max_length=255,
+                              required=False,
+                              label='住所',
+                              widget=forms.TextInput(attrs={
+                                  'class': 'input-text',
+                                  'placeholder': '住所を登録できます(見学会予約時などに入力を省略できます)'
+                              }))
+    phone_number = forms.CharField(max_length=255,
+                                   required=False,
+                                   label='電話番号',
+                                   widget=forms.TextInput(attrs={
+                                       'class': 'input-text',
+                                       'placeholder': '電話番号'
+                                   }))
+    child_age = forms.ModelChoiceField(required=False,
+                                       label='お子様の年齢',
+                                       queryset=Age.objects.filter(is_active=True),
+                                       widget=forms.Select(attrs={
+                                           'class': 'selectpicker search-fields'
+                                       }))
 
-    new_password1 = forms.CharField(required=True, label='新しいパスワード',
-                                    widget=forms.PasswordInput(attrs={
-                                        'class': 'form-control'}),
-                                    error_messages={
-                                        'required': '新しいパスワードを入力してください'})
-    new_password2 = forms.CharField(required=True, label='新しいパスワード(確認用)',
-                                    widget=forms.PasswordInput(attrs={
-                                        'class': 'form-control'}),
-                                    error_messages={
-                                        'required': '新しいパスワードを入力してください'})
+    class Meta:
+        model = User
+        fields = (
+            "address", "phone_number", "child_age",
+        )

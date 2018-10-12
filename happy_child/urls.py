@@ -35,6 +35,7 @@ urlpatterns = [
     url(r'^search', search_views.search_nurseries, name='search_page'),
     url(r'^ping', ping, name='ping'),
 
+    url(r'^user/(?P<user_id>\d+)/', account_views.user_profile, name='user_profile_page'),
     url(r'^login', account_views.login_view, name='login_page'),
     url(r'^logout', account_views.logout_view, name='logout_page'),
     url(r'^signup', account_views.signup, name='signup_page'),
