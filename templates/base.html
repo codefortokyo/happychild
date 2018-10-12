@@ -93,15 +93,10 @@
                     </li>
                 </ul>
                 <ul class="nav navbar-nav navbar-right rightside-navbar">
-                    {% if user.is_authenticated %}
-                        <li>
-                            <a href="{% url 'signup_page' %}" class="button">
-                                ユーザー登録
-                            </a>
-                        </li>
+                    {% if not user.is_authenticated %}
                         <li>
                             <a href="{% url 'login_page' %}" class="button">
-                                ログイン
+                                ログイン or 登録
                             </a>
                         </li>
                     {% else %}
