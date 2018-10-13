@@ -214,6 +214,10 @@ class Nursery(models.Model):
         db_table = 'nurseries'
 
     @property
+    def default_thumbnail_url(self) -> str:
+        return self.thumbnail_url or 'http://placehold.it/555x370'
+
+    @property
     def thumbnail_search_word(self) -> str:
         """ 画像検索用の文字列を返す
         """

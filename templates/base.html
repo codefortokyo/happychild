@@ -93,6 +93,31 @@
                     </li>
                 </ul>
                 <ul class="nav navbar-nav navbar-right rightside-navbar">
+                    {% if user.is_authenticated and user.is_admin %}
+                        <li>
+                            <div class="form-group">
+                                <form name="admin_form">
+                                    <select name="ward_id" onchange="dropselect()" class="form-control">
+                                        <option value=""> 編集する区を選択 </option>
+                                        <option value="{% url 'admin_nurseries_page' ward_id=9 %}"> 品川区</option>
+                                        <option value="{% url 'admin_nurseries_page' ward_id=1 %}"> 千代田区</option>
+                                        <option value="{% url 'admin_nurseries_page' ward_id=2 %}"> 中央区</option>
+                                        <option value="{% url 'admin_nurseries_page' ward_id=3 %}"> 港区</option>
+                                        <option value="{% url 'admin_nurseries_page' ward_id=4 %}"> 新宿区</option>
+                                        <option value="{% url 'admin_nurseries_page' ward_id=5 %}"> 文京区</option>
+                                        <option value="{% url 'admin_nurseries_page' ward_id=5 %}"> 台東区</option>
+                                        <option value="{% url 'admin_nurseries_page' ward_id=7 %}"> 隅田区</option>
+                                        <option value="{% url 'admin_nurseries_page' ward_id=8 %}"> 江東区</option>
+                                        <option value="{% url 'admin_nurseries_page' ward_id=10 %}"> 目黒区</option>
+                                        <option value="{% url 'admin_nurseries_page' ward_id=11 %}"> 大田区</option>
+                                        <option value="{% url 'admin_nurseries_page' ward_id=12 %}"> 世田谷区</option>
+                                        <option value="{% url 'admin_nurseries_page' ward_id=13 %}"> 渋谷区</option>
+                                        <option value="{% url 'admin_nurseries_page' ward_id=14 %}"> 中野区</option>
+                                    </select>
+                                </form>
+                            </div>
+                        </li>
+                    {% endif %}
                     {% if not user.is_authenticated %}
                         <li>
                             <a href="{% url 'login_page' %}" class="button">
@@ -214,6 +239,12 @@
         speed: 800,
         clip: true
     });
+</script>
+<script>
+    function dropselect() {
+        var browser = document.admin_form.ward_id.value;
+        location.href = browser
+    }
 </script>
 
 {% block js %}

@@ -1,0 +1,32 @@
+{% extends "base.html" %}
+{% load static %}
+{% block content %}
+    <div class="my-profile">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12 col-md-12 col-sm-12">
+                    <!-- My address start-->
+                    <div class="my-address">
+                        <div class="main-title-2">
+                            <h1>基本情報</h1>
+                        </div>
+
+                        <form action="{% url 'admin_nursery_page' ward_id=ward.id nursery_id=nursery_id %}" method="POST">
+                            {% csrf_token %}
+                            {% for field in form %}
+                                <div class="form-group">
+                                    {{ field.label }}
+                                    {{ field }}
+                                </div>
+                            {% endfor %}
+                            <div class="form-group">
+                                <button class="btn button-md button-theme pull-right" type="submit">変更を保存</button>
+                            </div>
+                        </form>
+                    </div>
+                    <!-- My address end -->
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

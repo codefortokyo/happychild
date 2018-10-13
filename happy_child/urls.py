@@ -16,7 +16,7 @@ Including another URLconf
 from django.conf.urls import url
 from django.http import HttpResponse
 
-from views import account_views, top_views, search_views, detail_views, misc_views
+from views import account_views, admin_views, top_views, search_views, detail_views, misc_views
 from views.api import location
 
 
@@ -28,6 +28,10 @@ urlpatterns = [
     url(r'^api/v1/location/ward', location.get_wards, name='get_wards'),
     url(r'^api/v1/location/station', location.get_stations, name='get_stations'),
     url(r'^api/v1/location/near', location.get_near_ward_and_stations, name='get_near_ward_and_stations'),
+
+    url(r'^admin/wards/(?P<ward_id>\d+)/nurseries/(?P<nursery_id>\d+)/', admin_views.nursery,
+        name='admin_nursery_page'),
+    url(r'^admin/wards/(?P<ward_id>\d+)', admin_views.nursery_list, name='admin_nurseries_page'),
 
     url(r'^nursery/(?P<nursery_id>\d+)', detail_views.nursery_detail, name='detail_page'),
     url(r'^contact', misc_views.contact, name='contact_page'),

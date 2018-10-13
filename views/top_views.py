@@ -8,5 +8,5 @@ def index(request: HttpRequest) -> render:
     return render(request, 'index.html', context={
         'location_form': SearchLocationForm(),
         'type_form': SearchTypeForm(),
-        'feature_form': SearchFeatureForm()
+        'feature_form': SearchFeatureForm(),
     })
