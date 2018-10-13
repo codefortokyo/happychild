@@ -185,3 +185,16 @@ CREATE TABLE `crawled_guid` (
   PRIMARY KEY (`id`),
   KEY `idx_guid` (`guid`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+
+CREATE TABLE `user_nursery_mappings` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `user_id` int(11) UNSIGNED NOT NULL,
+  `nursery_id` int(11) UNSIGNED NOT NULL,
+  `is_active` tinyint(1) DEFAULT '1',
+  `created_at` datetime(6) NOT NULL,
+  `updated_at` datetime(6) NOT NULL,
+  PRIMARY KEY (`id`),
+  KEY `idx_user_id_andis_active` (`user_id`, `is_active`),
+  KEY `idx_nursery_id_andis_active` (`nursery_id`, `is_active`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;

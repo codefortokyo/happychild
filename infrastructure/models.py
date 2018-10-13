@@ -510,3 +510,16 @@ class Contact(models.Model):
     class Meta:
         managed = False
         db_table = 'contacts'
+
+
+class UserNurseryMapping(models.Model):
+    id = models.AutoField(primary_key=True)
+    user = models.ForeignKey(CustomUser, models.PROTECT)
+    nursery = models.ForeignKey(Nursery, models.PROTECT)
+    is_active = Bit1BooleanField(default=True)
+    created_at = models.DateTimeField(default=timezone.now)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        managed = False
+        db_table = 'user_nursery_mappings'
