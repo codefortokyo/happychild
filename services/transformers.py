@@ -11,8 +11,8 @@ from infrastructure.consts import (
     EXTENT_AGE_ID
 )
 from services.forms.searches import SearchLocationForm, SearchTypeForm, SearchFeatureForm
-from services.forms.admins import NurseryFreeNumForm
-from services.entities import SearchNurseryEntity, NurseryFreeNumEntity
+from services.forms.admins import NurseryFreeNumForm, NurseryScoreForm
+from services.entities import SearchNurseryEntity, NurseryFreeNumEntity, NurseryScoreEntity
 
 
 def transform_forms_to_search_nursery(location_form: SearchLocationForm, type_form: SearchTypeForm,
@@ -83,3 +83,59 @@ def transform_free_num_form_to_free_num(form: NurseryFreeNumForm, nursery_id: in
             modified_date=modified_date
         ))
     return nursery_free_nums
+
+
+def transform_score_form_to_score(form: NurseryScoreForm, nursery_id: int):
+    year = form.cleaned_data['year']
+    nursery = Nursery.objects.get(pk=nursery_id)
+
+    nursery_scores = []
+    if 'score_not_one' in form.cleaned_data and 'hierarchy_not_one' in form.cleaned_data:
+        nursery_scores.append(NurseryScoreEntity(
+            year=year,
+            nursery=nursery,
+            age=Age.objects.get(pk=NOT_ONE_AGE_ID),
+            score=form.cleaned_data['score_not_one'],
+            hierarchy=form.cleaned_data['hierarchy_not_one']
+        ))
+    if 'score_one_year_old' in form.cleaned_data and 'hierarchy_one_year_old' in form.cleaned_data:
+        nursery_scores.append(NurseryScoreEntity(
+            year=year,
+            nursery=nursery,
+            age=Age.objects.get(pk=ONE_YEAR_OLD_AGE_ID),
+            score=form.cleaned_data['score_one_year_old'],
+            hierarchy=form.cleaned_data['hierarchy_one_year_old']
+        ))
+    if 'score_two_year_old' in form.cleaned_data and 'hierarchy_two_year_old' in form.cleaned_data:
+        nursery_scores.append(NurseryScoreEntity(
+            year=year,
+            nursery=nursery,
+            age=Age.objects.get(pk=TWO_YEAR_OLD_AGE_ID),
+            score=form.cleaned_data['score_two_year_old'],
+            hierarchy=form.cleaned_data['hierarchy_two_year_old']
+        ))
+    if 'score_three_year_old' in form.cleaned_data and 'hierarchy_three_year_old' in form.cleaned_data:
+        nursery_scores.append(NurseryScoreEntity(
+            year=year,
+            nursery=nursery,
+            age=Age.objects.get(pk=THREE_YEAR_OLD_AGE_ID),
+            score=form.cleaned_data['score_three_year_old'],
+            hierarchy=form.cleaned_data['hierarchy_three_year_old']
+        ))
+    if 'score_four_year_old' in form.cleaned_data and 'hierarchy_four_year_old' in form.cleaned_data:
+        nursery_scores.append(NurseryScoreEntity(
+            year=year,
+            nursery=nursery,
+            age=Age.objects.get(pk=FOUR_YEAR_OLD_AGE_ID),
+            score=form.cleaned_data['score_four_year_old'],
+            hierarchy=form.cleaned_data['hierarchy_four_year_old']
+        ))
+    if 'score_extent' in form.cleaned_data and 'hierarchy_extent' in form.cleaned_data:
+        nursery_scores.append(NurseryScoreEntity(
+            year=year,
+            nursery=nursery,
+            age=Age.objects.get(pk=FOUR_YEAR_OLD_AGE_ID),
+            score=form.cleaned_data['score_extent'],
+            hierarchy=form.cleaned_data['hierarchy_extent']
+        ))
+    return nursery_scores

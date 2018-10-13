@@ -41,6 +41,15 @@ class NurseryFreeNumEntity:
     modified_date: datetime.datetime.date
 
 
+@dataclass
+class NurseryScoreEntity:
+    nursery: Nursery
+    age: Age
+    year: str
+    score: int
+    hierarchy: str
+
+
 @dataclass_json
 @dataclass
 class NurseryEntity:

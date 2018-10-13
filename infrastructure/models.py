@@ -314,65 +314,7 @@ class NurseryFreeNum(models.Model):
                                      modified_date=entity.modified_date) for entity in entities])
 
 
-class NurseryScore:
-    def __init__(self, nursery):
-        self.nursery = nursery
-        self._score = None
-        self._latest_updated_year = None
-
-    @property
-    def latest_updated_year(self) -> int or None:
-        if not self._latest_updated_year:
-            self._latest_updated_year = NurseryScores.latest_updated_year(self.nursery.id)
-        return self._latest_updated_year
-
-    @property
-    def score(self) -> Dict[int, int]:
-        if not self._score:
-            if not self.latest_updated_year:
-                self._score = {}
-                return self._score
-            self._score = NurseryScores.latest_nursery_scores(self.nursery.id, self.latest_updated_year)
-        return self._score
-
-    @property
-    def score_not_one(self) -> str:
-        """ 0歳の実績入所指数を返す
-        """
-        return str(self.score.get(1, '-') or '-')
-
-    @property
-    def score_one_year_old(self) -> str:
-        """ 1歳の実績入所指数を返す
-        """
-        return str(self.score.get(2, '-') or '-')
-
-    @property
-    def score_two_year_old(self) -> str:
-        """ 2歳の実績入所指数を返す
-        """
-        return str(self.score.get(3, '-') or '-')
-
-    @property
-    def score_three_year_old(self) -> str:
-        """ 3歳の実績入所指数を返す
-        """
-        return str(self.score.get(4, '-') or '-')
-
-    @property
-    def score_four_year_old(self) -> str:
-        """ 4歳の実績入所指数を返す
-        """
-        return str(self.score.get(5, '-') or '-')
-
-    @property
-    def score_extent(self) -> str:
-        """ 延長の実績入所指数を返す
-        """
-        return str(self.score.get(6, '-') or '-')
-
-
-class NurseryScores(models.Model):
+class NurseryScore(models.Model):
     id = models.AutoField(primary_key=True)
     nursery = models.ForeignKey(Nursery, models.PROTECT)
     age = models.ForeignKey(Age, models.PROTECT)
@@ -389,20 +331,10 @@ class NurseryScores(models.Model):
         db_table = 'nursery_scores'
 
     @classmethod
-    @lru_cache()
-    def latest_updated_year(cls, nursery_id: int) -> int or None:
-        try:
-            latest_updated_year = cls.objects.filter(
-                nursery_id=nursery_id).latest('year').year
-            return latest_updated_year
-        except NurseryScores.DoesNotExist:
-            return None
-
-    @classmethod
-    @lru_cache()
-    def latest_nursery_scores(cls, nursery_id: int, year: int) -> Dict[int, int]:
-        return {ns.age.id: ns.score for ns in cls.objects.select_related('age').filter(
-            nursery_id=nursery_id, year=year, is_active=True)}
+    def upsert(cls, entities):
+        for entity in entities:
+            cls.objects.update_or_create(nursery=entity.nursery, age=entity.age, year=entity.year,
+                                         defaults={'score': entity.score, 'hierarchy': entity.hierarchy})
 
 
 class CrawledGuid(models.Model):
