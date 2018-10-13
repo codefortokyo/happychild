@@ -1,8 +1,11 @@
+import datetime
 from decimal import Decimal
 from dataclasses import dataclass
 from typing import Dict, Optional
 
 from dataclasses_json import dataclass_json
+
+from infrastructure.models import Nursery, Age
 
 
 @dataclass
@@ -28,6 +31,23 @@ class GeoParameterEntity:
     ward_id: int
     origin_coordinate: Optional[Dict[Decimal, Decimal]]
     destination_coordinate: Optional[Dict[Decimal, Decimal]]
+
+
+@dataclass
+class NurseryFreeNumEntity:
+    nursery: Nursery
+    age: Age
+    free_num: int
+    modified_date: datetime.datetime.date
+
+
+@dataclass
+class NurseryScoreEntity:
+    nursery: Nursery
+    age: Age
+    year: str
+    score: int
+    hierarchy: str
 
 
 @dataclass_json

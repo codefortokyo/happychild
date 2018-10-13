@@ -2,8 +2,13 @@ from django.contrib.auth.decorators import login_required
 from django.http import HttpRequest
 from django.shortcuts import render, redirect
 
-from infrastructure.models import Nursery, Ward
-from services.forms.admins import NurseryForm
+from infrastructure.models import Nursery, NurseryFreeNum, NurseryScore, Ward
+from infrastructure.consts import NURSERY_INFO, NURSERY_FREE_NUM, NURSERY_SCORE
+from services.forms.admins import NurseryForm, NurseryFreeNumForm, NurseryScoreForm
+from services.transformers import (
+    transform_free_num_form_to_free_num,
+    transform_score_form_to_score
+)
 
 
 @login_required
@@ -20,15 +25,36 @@ def nursery(request: HttpRequest, ward_id: int, nursery_id: int) -> render or re
         return render(request, 'admin/nursery.html', context={
             'ward': Ward.objects.filter(id=ward_id).first(),
             'nursery_id': nursery_id,
-            'form': NurseryForm(instance=Nursery.objects.get(pk=nursery_id))
+            'form': NurseryForm(instance=Nursery.objects.get(pk=nursery_id)),
+            'form_free_num': NurseryFreeNumForm(),
+            'form_score': NurseryScoreForm()
         })
-    form = NurseryForm(request.POST, instance=Nursery.objects.get(pk=nursery_id))
-    if form.is_valid():
-        form.save()
-        return redirect('/admin/wards/{}/nurseries/'.format(ward_id))
+
+    form_type = request.POST.get('form_type')
+
+    if form_type == NURSERY_INFO:
+        form = NurseryForm(request.POST, instance=Nursery.objects.get(pk=nursery_id))
+        if form.is_valid():
+            form.save()
+            return redirect('/admin/wards/{}/nurseries/'.format(ward_id))
+
+    elif form_type == NURSERY_FREE_NUM:
+        form = NurseryFreeNumForm(request.POST)
+        if form.is_valid():
+            entities = transform_free_num_form_to_free_num(form, nursery_id)
+            NurseryFreeNum.bulk_insert(entities)
+            return redirect('/admin/wards/{}/nurseries/'.format(ward_id))
+    elif form_type == NURSERY_SCORE:
+        form = NurseryScoreForm(request.POST)
+        if form.is_valid():
+            entities = transform_score_form_to_score(form, nursery_id)
+            NurseryScore.upsert(entities)
+            return redirect('/admin/wards/{}/nurseries/'.format(ward_id))
+
     return render(request, 'admin/nursery.html', context={
         'ward': Ward.objects.filter(id=ward_id).first(),
         'nursery_id': nursery_id,
-        'form': form
+        'form': NurseryForm(request.POST, instance=Nursery.objects.get(pk=nursery_id)),
+        'form_free_num': NurseryForm(request.POST),
+        'form_score': NurseryScoreForm(request.POST)
     })
-

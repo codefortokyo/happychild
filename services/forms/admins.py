@@ -184,3 +184,110 @@ class NurseryForm(forms.ModelForm):
             'overnight_childcare', 'allday_childcare', 'evaluation', 'evaluation_url',
             'organizer', 'event', 'service', 'policy', 'promise'
         )
+
+
+class NurseryFreeNumForm(forms.Form):
+    free_num_not_one = forms.IntegerField(required=True,
+                                          label='0歳',
+                                          widget=forms.TextInput(attrs={
+                                              'class': 'input-text'
+                                          }))
+    free_num_one_year_old = forms.IntegerField(required=True,
+                                               label='1歳',
+                                               widget=forms.TextInput(attrs={
+                                                   'class': 'input-text'
+                                               }))
+    free_num_two_year_old = forms.IntegerField(required=True,
+                                               label='2歳',
+                                               widget=forms.TextInput(attrs={
+                                                   'class': 'input-text'
+                                               }))
+    free_num_three_year_old = forms.IntegerField(required=True,
+                                                 label='3歳',
+                                                 widget=forms.TextInput(attrs={
+                                                     'class': 'input-text'
+                                                 }))
+    free_num_four_year_old = forms.IntegerField(required=True,
+                                                label='4歳',
+                                                widget=forms.TextInput(attrs={
+                                                    'class': 'input-text'
+                                                }))
+    free_num_extent = forms.IntegerField(required=True,
+                                         label='延長',
+                                         widget=forms.TextInput(attrs={
+                                             'class': 'input-text'
+                                         }))
+
+
+class NurseryScoreForm(forms.Form):
+    year = forms.IntegerField(required=True,
+                              label='年度',
+                              widget=forms.TextInput(attrs={
+                                  'class': 'input-text'
+                              }))
+    score_not_one = forms.IntegerField(required=False,
+                                       label='0歳 指数',
+                                       widget=forms.TextInput(attrs={
+                                           'class': 'input-text'
+                                       }))
+    hierarchy_not_one = forms.CharField(required=False,
+                                        max_length=255,
+                                        label='0歳 階層',
+                                        widget=forms.TextInput(attrs={
+                                            'class': 'input-text'
+                                        }))
+    score_one_year_old = forms.IntegerField(required=False,
+                                            label='1歳 指数',
+                                            widget=forms.TextInput(attrs={
+                                                'class': 'input-text'
+                                            }))
+    hierarchy_one_year_old = forms.CharField(required=False,
+                                             max_length=255,
+                                             label='1歳 階層',
+                                             widget=forms.TextInput(attrs={
+                                                 'class': 'input-text'
+                                             }))
+    score_two_year_old = forms.IntegerField(required=False,
+                                            label='2歳 指数',
+                                            widget=forms.TextInput(attrs={
+                                                'class': 'input-text'
+                                            }))
+    hierarchy_two_year_old = forms.CharField(required=False,
+                                             max_length=255,
+                                             label='2歳 階層',
+                                             widget=forms.TextInput(attrs={
+                                                 'class': 'input-text'
+                                             }))
+    score_three_year_old = forms.IntegerField(required=False,
+                                              label='3歳 指数',
+                                              widget=forms.TextInput(attrs={
+                                                  'class': 'input-text'
+                                              }))
+    hierarchy_three_year_old = forms.CharField(required=False,
+                                               max_length=255,
+                                               label='3歳 階層',
+                                               widget=forms.TextInput(attrs={
+                                                   'class': 'input-text'
+                                               }))
+    score_four_year_old = forms.IntegerField(required=False,
+                                             label='4歳 指数',
+                                             widget=forms.TextInput(attrs={
+                                                 'class': 'input-text'
+                                             }))
+    hierarchy_four_year_old = forms.CharField(required=False,
+                                              max_length=255,
+                                              label='4歳 階層',
+                                              widget=forms.TextInput(attrs={
+                                                  'class': 'input-text'
+                                              }))
+    score_extent = forms.IntegerField(required=False,
+                                      label='延長 指数',
+                                      widget=forms.TextInput(attrs={
+                                          'class': 'input-text'
+                                      }))
+    hierarchy_extent = forms.CharField(required=False,
+                                       max_length=255,
+                                       label='延長 階層',
+                                       widget=forms.TextInput(attrs={
+                                           'class': 'input-text'
+                                       }))
