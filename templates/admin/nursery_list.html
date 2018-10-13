@@ -1,0 +1,56 @@
+{% extends "base.html" %}
+{% load static %}
+{% block content %}
+    <!-- Agent section start -->
+    <div class="agent-section">
+        <div class="container">
+            <!-- option bar start -->
+            <div class="option-bar">
+                <div class="row">
+                    <div class="col-lg-6 col-md-5 col-sm-5 col-xs-2">
+                        <h4>
+                        <span class="heading-icon">
+                            <i class="fa fa-th-large"></i>
+                        </span>
+                            {{ ward.name }}の保育園リスト
+                        </h4>
+                    </div>
+                    <div class="col-lg-6 col-md-7 col-sm-7 col-xs-10 cod-pad">
+                        <div class="sorting-options">
+                            <select class="sorting">
+                                <option>更新順</option>
+                            </select>
+                            <a href="" class="change-view-btn"><i class="fa fa-th-list"></i></a>
+                            <a href="" class="change-view-btn active-view-btn"><i class="fa fa-th-large"></i></a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- option bar end -->
+            <div class="clearfix"></div>
+
+            <div class="row">
+                {% for nursery in nurseries %}
+                    <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12">
+                        <!-- Agent 1 start -->
+                        <div class="agent-1">
+                            <!-- Agent img -->
+                            <a href="{% url 'admin_nursery_page' ward_id=ward.id nursery_id=nursery.id %}" class="agent-img">
+                                <img src="{{ nursery.default_thumbnail_url }}" alt="team-1" class="img-responsive" width="320">
+                            </a>
+                            <!-- Agent content -->
+                            <div class="agent-content">
+                                <h5><a href="{% url 'admin_nursery_page' ward_id=ward.id nursery_id=nursery.id %}">{{ nursery.name }}</a></h5>
+                                <h6>{{ nursery.station_info }}</h6>
+                                <p> 最終更新日<br> {{ nursery.updated_at }}</p>
+                            </div>
+                        </div>
+                        <!-- Agent 1 end -->
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+    <!-- Agent section end -->
+
+{% endblock %}

@@ -214,6 +214,10 @@ class Nursery(models.Model):
         db_table = 'nurseries'
 
     @property
+    def default_thumbnail_url(self) -> str:
+        return self.thumbnail_url or 'http://placehold.it/555x370'
+
+    @property
     def thumbnail_search_word(self) -> str:
         """ 画像検索用の文字列を返す
         """
@@ -510,3 +514,16 @@ class Contact(models.Model):
     class Meta:
         managed = False
         db_table = 'contacts'
+
+
+class UserNurseryMapping(models.Model):
+    id = models.AutoField(primary_key=True)
+    user = models.ForeignKey(CustomUser, models.PROTECT)
+    nursery = models.ForeignKey(Nursery, models.PROTECT)
+    is_active = Bit1BooleanField(default=True)
+    created_at = models.DateTimeField(default=timezone.now)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        managed = False
+        db_table = 'user_nursery_mappings'
