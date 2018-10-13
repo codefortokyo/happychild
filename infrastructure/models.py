@@ -1,4 +1,3 @@
-import datetime
 import json
 from typing import Dict, List
 from urllib.parse import urlparse
@@ -309,6 +308,11 @@ class NurseryFreeNum(models.Model):
             ret[d['nursery_id']] = d['last_updated_date']
         return ret
 
+    @classmethod
+    def bulk_insert(cls, entities):
+        cls.objects.bulk_create([cls(age=entity.age, nursery=entity.nursery, free_num=entity.free_num,
+                                     modified_date=entity.modified_date) for entity in entities])
+
 
 class NurseryScore:
     def __init__(self, nursery):
@@ -366,37 +370,6 @@ class NurseryScore:
         """ 延長の実績入所指数を返す
         """
         return str(self.score.get(6, '-') or '-')
-
-
-class NurseryStatus(models.Model):
-    id = models.AutoField(primary_key=True)
-    age = models.ForeignKey(Age, models.PROTECT)
-    nursery = models.ForeignKey(Nursery, models.PROTECT)
-    free_num = models.IntegerField()
-    is_active = Bit1BooleanField(default=True)
-    modified_date = models.DateField()
-    updated_at = models.DateTimeField(auto_now=True)
-    created_at = models.DateTimeField(default=timezone.now)
-
-    class Meta:
-        managed = False
-        db_table = 'nursery_status'
-
-    @classmethod
-    @lru_cache()
-    def latest_modified_date(cls, nursery_id: int) -> datetime or None:
-        try:
-            latest_modified_date = cls.objects.filter(
-                nursery_id=nursery_id).latest('modified_date').modified_date
-            return latest_modified_date
-        except NurseryStatus.DoesNotExist:
-            return None
-
-    @classmethod
-    @lru_cache()
-    def latest_nursery_free_nums(cls, nursery_id: int, modified_date: datetime) -> Dict[int, int]:
-        return {ns.age.id: ns.free_num for ns in cls.objects.select_related('age').filter(
-            nursery_id=nursery_id, modified_date=modified_date, is_active=True)}
 
 
 class NurseryScores(models.Model):
