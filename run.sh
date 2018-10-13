@@ -1,4 +1,4 @@
-#!/usr/bin/env bash
+#!/bin/bash
 
 python manage.py collectstatic --clear --noinput
 python manage.py collectstatic --noinput
