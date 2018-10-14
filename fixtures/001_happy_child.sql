@@ -218,7 +218,7 @@ CREATE TABLE `nursery_default_tour_settings` (
   `start_time` time NOT NULL,
   `end_time` time NOT NULL,
   `capacity` int(11) UNSIGNED NOT NULL,
-  `note` varchar(255) DEFAULT NULL,
+  `note` varchar(1000) DEFAULT NULL,
   `created_at` datetime(6) NOT NULL,
   `updated_at` datetime(6) NOT NULL,
   PRIMARY KEY (`id`),

@@ -49,6 +49,8 @@ urlpatterns = [
                   url(r'^search', search_views.search_nurseries, name='search_page'),
                   url(r'^ping', ping, name='ping'),
 
+                  url(r'^user/(?P<user_id>\d+)/nurseries/(?P<nursery_id>\d+)/tour', profile_views.nursery_tour_profile,
+                      name='user_nursery_tour_page'),
                   url(r'^user/(?P<user_id>\d+)/nurseries/(?P<nursery_id>\d+)/free', profile_views.nursery_free_num_profile,
                       name='user_nursery_free_num_page'),
                   url(r'^user/(?P<user_id>\d+)/nurseries/(?P<nursery_id>\d+)/basic', profile_views.nursery_basic_profile,

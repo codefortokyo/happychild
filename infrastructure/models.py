@@ -453,3 +453,33 @@ class NurseryBookmarks(models.Model):
     class Meta:
         managed = False
         db_table = 'nursery_bookmarks'
+
+
+class NurseryDefaultTourSetting(models.Model):
+    id = models.AutoField(primary_key=True)
+    nursery = models.OneToOneField(Nursery, models.PROTECT)
+    start_time = models.TimeField(null=False)
+    end_time = models.TimeField(null=False)
+    capacity = models.IntegerField(null=False)
+    note = models.CharField(max_length=255, null=True)
+    is_active = Bit1BooleanField(default=True)
+    created_at = models.DateTimeField(default=timezone.now)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        managed = False
+        db_table = 'nursery_default_tour_settings'
+
+
+class NurseryTours(models.Model):
+    id = models.AutoField(primary_key=True)
+    nursery = models.ForeignKey(Nursery, models.PROTECT)
+    start_at = models.DateTimeField(null=False)
+    close_at = models.DateTimeField(null=False)
+    is_active = Bit1BooleanField(default=True)
+    created_at = models.DateTimeField(default=timezone.now)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        managed = False
+        db_table = 'nursery_tours'

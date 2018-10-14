@@ -2,15 +2,10 @@ from django.contrib.auth.decorators import login_required
 from django.http import HttpRequest
 from django.shortcuts import render, redirect
 
-from infrastructure.consts import NURSERY_INFO, NURSERY_FREE_NUM, NURSERY_SCORE
 from infrastructure.models import CustomUser as User
-from infrastructure.models import Nursery, NurseryFreeNum, NurseryScore, UserNurseryMapping
+from infrastructure.models import Nursery, UserNurseryMapping
 from services.forms.accounts import ProfileForm
-from services.forms.admins import NurseryForm, NurseryFreeNumForm, NurseryScoreForm
-from services.transformers import (
-    transform_free_num_form_to_free_num,
-    transform_score_form_to_score
-)
+from services.forms.admins import NurseryForm, NurseryFreeNumForm, NurseryDefaultTourForm
 
 
 @login_required
@@ -49,7 +44,7 @@ def nursery_basic_profile(request: HttpRequest, user_id: int, nursery_id: int) -
     form = NurseryForm(request.POST, instance=Nursery.objects.get(pk=nursery_id))
     if form.is_valid():
         form.save()
-        return redirect('/user/{}/nurseries'.format(user_id))
+        return redirect('/user/{}/nurseries/{}/basic'.format(user_id, nursery_id))
     return render(request, 'profile/nursery.html', context={
         'nursery_id': nursery_id,
         'form': form,
@@ -66,7 +61,24 @@ def nursery_free_num_profile(request: HttpRequest, user_id: int, nursery_id: int
     form = NurseryFreeNumForm(request.POST)
     if form.is_valid():
         form.save()
-        return redirect('/user/{}/nurseries'.format(user_id))
+        return redirect('/user/{}/nurseries/{}/free'.format(user_id, nursery_id))
+    return render(request, 'profile/nursery.html', context={
+        'nursery_id': nursery_id,
+        'form': form,
+    })
+
+
+@login_required
+def nursery_tour_profile(request: HttpRequest, user_id: int, nursery_id: int) -> render or redirect:
+    if request.method == 'GET':
+        return render(request, 'profile/nursery_tour.html', context={
+            'nursery_id': nursery_id,
+            'form': NurseryDefaultTourForm(),
+        })
+    form = NurseryDefaultTourForm(request.POST)
+    if form.is_valid():
+        form.save()
+        return redirect('/user/{}/nurseries/{}/tour'.format(user_id, nursery_id))
     return render(request, 'profile/nursery.html', context={
         'nursery_id': nursery_id,
         'form': form,
