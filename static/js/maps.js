@@ -346,7 +346,8 @@ function generateMap(latitude, longitude, mapProvider, layout, properties, zoom)
     L.tileLayer.provider(mapProvider).addTo(map);
     var markers = L.markerClusterGroup({
         showCoverageOnHover: false,
-        zoomToBoundsOnClick: false
+        disableClusteringAtZoom: 17,
+        zoomToBoundsOnClick: true
     });
     var propertiesMarkers = [];
 
