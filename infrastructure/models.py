@@ -67,6 +67,14 @@ class CustomUser(AbstractBaseUser):
     def get_user(cls, user_id: int):
         return cls.objects.get(pk=user_id)
 
+    @property
+    def is_organizer(self):
+        try:
+            UserNurseryMapping.objects.get(user_id=self.id)
+            return True
+        except self.DoesNotExist:
+            return False
+
 
 class City(models.Model):
     id = models.AutoField(primary_key=True)
