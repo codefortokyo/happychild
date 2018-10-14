@@ -12,5 +12,7 @@
 
 npm_modules/
 log/
+staticfiles
+fixtures/dataset
 
 docker-compose.yml
