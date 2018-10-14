@@ -303,15 +303,15 @@ class NurseryDefaultTourForm(forms.ModelForm):
     start_time = forms.TimeField(required=True,
                                  label='見学会開始予定時間',
                                  widget=forms.TimeInput(attrs={
-                                     'class': 'input-text'
+                                     'class': 'input-text timepicker',
                                  }))
     end_time = forms.TimeField(required=True,
                                label='見学会終了予定時間',
                                widget=forms.TimeInput(attrs={
-                                   'class': 'input-text'
+                                   'class': 'input-text timepicker',
                                }))
     capacity = forms.IntegerField(required=True,
-                                  label='見学会上限',
+                                  label='見学会上限人数',
                                   widget=forms.TextInput(attrs={
                                       'class': 'input-text'
                                   }))
