@@ -3,7 +3,9 @@ version: '3'
 services:
   app:
     image: happy-child
-    command: run
+    command: >
+      bash -c "sleep 20s
+      && ./run.sh"
     ports:
     - "8000:8000"
     environment:
