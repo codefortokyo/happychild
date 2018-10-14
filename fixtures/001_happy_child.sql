@@ -210,3 +210,30 @@ CREATE TABLE `nursery_bookmarks` (
   KEY `idx_user_id_and_status` (`user_id`, `status`),
   KEY `idx_nursery_id_and_status` (`nursery_id`, `status`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+
+CREATE TABLE `nursery_default_tour_settings` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `nursery_id` int(11) UNSIGNED NOT NULL,
+  `start_time` time NOT NULL,
+  `end_time` time NOT NULL,
+  `capacity` int(11) UNSIGNED NOT NULL,
+  `note` varchar(255) DEFAULT NULL,
+  `created_at` datetime(6) NOT NULL,
+  `updated_at` datetime(6) NOT NULL,
+  PRIMARY KEY (`id`),
+  KEY `idx_nursery_id` (`nursery_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+CREATE TABLE `nursery_tours` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `nursery_id` int(11) UNSIGNED NOT NULL,
+  `start_at` datetime(6) NOT NULL,
+  `close_at` datetime(6) NOT NULL,
+  `is_active` tinyint(1) DEFAULT '1',
+  `created_at` datetime(6) NOT NULL,
+  `updated_at` datetime(6) NOT NULL,
+  PRIMARY KEY (`id`),
+  KEY `idx_nursery_id_and_is_active` (`nursery_id`, `is_active`),
+  KEY `idx_start_at` (`start_at`),
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
