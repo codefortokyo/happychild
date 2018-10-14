@@ -27,6 +27,8 @@ def get_nurseries(search: SearchNurseryEntity, limit: int = 50) -> Tuple[List[st
 
     nurseries = _filter_by_free_nums(nurseries, search, free_nums)
 
+    nurseries = sorted(nurseries, key=lambda x: x.updated_at, reverse=True)
+
     return [json.loads(NurseryEntity(
         id=n.id,
         license=n.license.name,
