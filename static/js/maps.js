@@ -335,11 +335,11 @@ function animatedMarkers(map, propertiesMarkers, properties, layout) {
     $('.fetching-properties').html(propertiesArray);
 }
 
-function generateMap(latitude, longitude, mapProvider, layout, properties) {
+function generateMap(latitude, longitude, mapProvider, layout, properties, zoom) {
 
     var map = L.map('map', {
         center: [latitude, longitude],
-        zoom: 14,
+        zoom: zoom,
         scrollWheelZoom: false
     });
 
