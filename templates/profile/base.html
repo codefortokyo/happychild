@@ -24,10 +24,17 @@
                         <div class="content">
                             <ul>
                                 <li>
-                                    <a href="{% url 'user_profile_page' user_id=user.id %}" class="active">
+                                    <a href="{% url 'user_profile_page' user_id=user.id %}">
                                         <i class="flaticon-social"></i>ユーザー設定
                                     </a>
                                 </li>
+                                {% if user.is_organizer %}
+                                    <li>
+                                        <a href="{% url 'user_nursery_list_page' user_id=user.id %}">
+                                            <i class="flaticon-apartment"></i>運営保育園設定
+                                        </a>
+                                    </li>
+                                {% endif %}
                                 <li>
                                     <a href="#">
                                         <i class="fa fa-heart"></i> My保育園リスト
@@ -54,30 +61,10 @@
                     <!-- User account box end -->
                 </div>
                 <div class="col-lg-8 col-md-8 col-sm-12">
-                    <!-- My address start-->
-                    <div class="my-address">
-                        <div class="main-title-2">
-                            <h1>ユーザー設定</h1>
-                        </div>
-
-                        <form action="{% url 'user_profile_page' user_id=user.id %}" method="POST">
-                            {% csrf_token %}
-                            {% for field in form %}
-                                <div class="form-group">
-                                    {{ field.label }}
-                                    {{ field }}
-                                </div>
-                            {% endfor %}
-
-                            <div class="form-group">
-                                <button class="btn button-md button-theme pull-right" type="submit">変更を保存</button>
-                            </div>
-                        </form>
-                    </div>
-                    <!-- My address end -->
+                    {% block profile %}
+                    {% endblock %}
                 </div>
             </div>
         </div>
     </div>
-    <!-- My profile end -->
 {% endblock %}

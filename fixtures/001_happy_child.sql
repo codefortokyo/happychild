@@ -195,6 +195,18 @@ CREATE TABLE `user_nursery_mappings` (
   `created_at` datetime(6) NOT NULL,
   `updated_at` datetime(6) NOT NULL,
   PRIMARY KEY (`id`),
-  KEY `idx_user_id_andis_active` (`user_id`, `is_active`),
-  KEY `idx_nursery_id_andis_active` (`nursery_id`, `is_active`)
+  KEY `idx_user_id_and_is_active` (`user_id`, `is_active`),
+  KEY `idx_nursery_id_and_is_active` (`nursery_id`, `is_active`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+CREATE TABLE `nursery_bookmarks` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `user_id` int(11) UNSIGNED NOT NULL,
+  `nursery_id` int(11) UNSIGNED NOT NULL,
+  `status` tinyint(6) DEFAULT '1',
+  `created_at` datetime(6) NOT NULL,
+  `updated_at` datetime(6) NOT NULL,
+  PRIMARY KEY (`id`),
+  KEY `idx_user_id_and_status` (`user_id`, `status`),
+  KEY `idx_nursery_id_and_status` (`nursery_id`, `status`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;

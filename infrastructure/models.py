@@ -67,6 +67,14 @@ class CustomUser(AbstractBaseUser):
     def get_user(cls, user_id: int):
         return cls.objects.get(pk=user_id)
 
+    @property
+    def is_organizer(self):
+        try:
+            UserNurseryMapping.objects.get(user_id=self.id)
+            return True
+        except self.DoesNotExist:
+            return False
+
 
 class City(models.Model):
     id = models.AutoField(primary_key=True)
@@ -432,3 +440,16 @@ class UserNurseryMapping(models.Model):
     class Meta:
         managed = False
         db_table = 'user_nursery_mappings'
+
+
+class NurseryBookmarks(models.Model):
+    id = models.AutoField(primary_key=True)
+    user = models.ForeignKey(CustomUser, models.PROTECT)
+    nursery = models.ForeignKey(Nursery, models.PROTECT)
+    status = models.IntegerField(default=1)
+    created_at = models.DateTimeField(default=timezone.now)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        managed = False
+        db_table = 'nursery_bookmarks'

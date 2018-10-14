@@ -1,0 +1,24 @@
+{% extends "profile/base.html" %}
+{% block profile %}
+    <!-- My address start-->
+    <div class="my-address">
+        <div class="main-title-2">
+            <h1>ユーザー設定</h1>
+        </div>
+
+        <form action="{% url 'user_profile_page' user_id=user.id %}" method="POST">
+            {% csrf_token %}
+            {% for field in form %}
+                <div class="form-group">
+                    {{ field.label }}
+                    {{ field }}
+                </div>
+            {% endfor %}
+
+            <div class="form-group">
+                <button class="btn button-md button-theme pull-right" type="submit">変更を保存</button>
+            </div>
+        </form>
+    </div>
+    <!-- My address end -->
+{% endblock %}

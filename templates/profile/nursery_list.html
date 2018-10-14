@@ -1,0 +1,28 @@
+{% extends "profile/base.html" %}
+{% block profile %}
+    <div class="main-title-2">
+        <h1>運営保育園リスト</h1>
+    </div>
+    <!-- table start -->
+    <table class="manage-table responsive-table">
+        <tbody>
+        {% for nursery in nurseries %}
+            <tr>
+                <td class="title-container">
+                    <img src="{{ nursery.default_thumbnail_url }}" alt="nursery" class="img-responsive hidden-xs">
+                    <div class="title">
+                        <h4><a href="#"> {{ nursery.name }} </a></h4>
+                        <span><i class="fa fa-map-marker"></i> {{ nursery.address }} </span>
+                    </div>
+                </td>
+                <td width="200">
+                    <a href="{% url 'user_nursery_basic_page' user_id=user.id nursery_id=nursery.id %}"><i class="fa fa-pencil"></i> 基本情報の編集 </a><br>
+                    <a href="{% url 'user_nursery_free_num_page' user_id=user.id nursery_id=nursery.id %}"><i class="fa fa-pencil"></i> 空き情報の編集 </a><br>
+                    <a href=""><i class="fa fa-pencil"></i> 見学会予定の編集 </a>
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+    <!-- table end -->
+{% endblock %}
