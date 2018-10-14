@@ -51,9 +51,11 @@ urlpatterns = [
 
                   url(r'^user/(?P<user_id>\d+)/nurseries/(?P<nursery_id>\d+)/tour', profile_views.nursery_tour_profile,
                       name='user_nursery_tour_page'),
-                  url(r'^user/(?P<user_id>\d+)/nurseries/(?P<nursery_id>\d+)/free', profile_views.nursery_free_num_profile,
+                  url(r'^user/(?P<user_id>\d+)/nurseries/(?P<nursery_id>\d+)/free',
+                      profile_views.nursery_free_num_profile,
                       name='user_nursery_free_num_page'),
-                  url(r'^user/(?P<user_id>\d+)/nurseries/(?P<nursery_id>\d+)/basic', profile_views.nursery_basic_profile,
+                  url(r'^user/(?P<user_id>\d+)/nurseries/(?P<nursery_id>\d+)/basic',
+                      profile_views.nursery_basic_profile,
                       name='user_nursery_basic_page'),
                   url(r'^user/(?P<user_id>\d+)/nurseries', profile_views.nursery_list_profile,
                       name='user_nursery_list_page'),
