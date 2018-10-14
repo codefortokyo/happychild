@@ -3,7 +3,7 @@ from django.http import HttpRequest
 from django.shortcuts import render, redirect
 
 from infrastructure.models import CustomUser as User
-from infrastructure.models import Nursery, UserNurseryMapping
+from infrastructure.models import Nursery, UserNurseryMapping, NurseryDefaultTourSetting
 from services.forms.accounts import ProfileForm
 from services.forms.admins import NurseryForm, NurseryFreeNumForm, NurseryDefaultTourForm
 
@@ -73,11 +73,17 @@ def nursery_tour_profile(request: HttpRequest, user_id: int, nursery_id: int) ->
     if request.method == 'GET':
         return render(request, 'profile/nursery_tour.html', context={
             'nursery_id': nursery_id,
-            'form': NurseryDefaultTourForm(),
+            'form': NurseryDefaultTourForm(instance=NurseryDefaultTourSetting.get_settings(nursery_id)),
         })
-    form = NurseryDefaultTourForm(request.POST)
+    form = NurseryDefaultTourForm(request.POST, instance=NurseryDefaultTourSetting.get_settings(nursery_id))
     if form.is_valid():
-        form.save()
+        NurseryDefaultTourSetting(
+            nursery=Nursery.get_nursery(nursery_id),
+            start_time=form.cleaned_data['start_time'],
+            end_time=form.cleaned_data['end_time'],
+            capacity=form.cleaned_data['capacity'],
+            note=form.cleaned_data['note']
+        ).save()
         return redirect('/user/{}/nurseries/{}/tour'.format(user_id, nursery_id))
     return render(request, 'profile/nursery.html', context={
         'nursery_id': nursery_id,
