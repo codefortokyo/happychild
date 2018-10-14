@@ -3,10 +3,7 @@ version: '3'
 services:
   app:
     image: happy-child
-    command: >
-      bash -c "python manage.py collectstatic --noinput
-      && gunicorn happy_child.wsgi -b 0.0.0.0:8000"
-
+    command: run
     ports:
     - "8000:8000"
     environment:
@@ -16,7 +13,6 @@ services:
       MYSQL_PASSWORD: ""
       MYSQL_DATABASE: happy_child
     volumes:
-    - ../happy_child:/usr/src/app/
     - ~/.aws:/root/.aws
     - ~/.ssh:/root/.ssh
     depends_on:
