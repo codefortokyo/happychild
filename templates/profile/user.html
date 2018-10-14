@@ -28,6 +28,13 @@
                                         <i class="flaticon-social"></i>ユーザー設定
                                     </a>
                                 </li>
+                                {% if user.is_organizer %}
+                                    <li>
+                                        <a href="">
+                                            <i class="flaticon-social"></i>保育園設定
+                                        </a>
+                                    </li>
+                                {% endif %}
                                 <li>
                                     <a href="#">
                                         <i class="fa fa-heart"></i> My保育園リスト
