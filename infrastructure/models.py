@@ -470,6 +470,13 @@ class NurseryDefaultTourSetting(models.Model):
         managed = False
         db_table = 'nursery_default_tour_settings'
 
+    @classmethod
+    def get_settings(cls, nursery_id):
+        try:
+            return cls.objects.get(nursery__id=nursery_id)
+        except cls.DoesNotExist:
+            return None
+
 
 class NurseryTours(models.Model):
     id = models.AutoField(primary_key=True)
