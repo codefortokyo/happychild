@@ -2,8 +2,15 @@ from django.contrib.auth.decorators import login_required
 from django.http import HttpRequest
 from django.shortcuts import render, redirect
 
+from infrastructure.consts import NURSERY_INFO, NURSERY_FREE_NUM, NURSERY_SCORE
 from infrastructure.models import CustomUser as User
+from infrastructure.models import Nursery, NurseryFreeNum, NurseryScore, UserNurseryMapping
 from services.forms.accounts import ProfileForm
+from services.forms.admins import NurseryForm, NurseryFreeNumForm, NurseryScoreForm
+from services.transformers import (
+    transform_free_num_form_to_free_num,
+    transform_score_form_to_score
+)
 
 
 @login_required
@@ -20,4 +27,47 @@ def user_profile(request: HttpRequest, user_id: int) -> redirect:
     return render(request, 'profile/user.html', context={
         'user': User.get_user(user_id),
         'form': form
+    })
+
+
+@login_required
+def nursery_list_profile(request: HttpRequest, user_id: int) -> render or redirect:
+    return render(request, 'profile/nursery_list.html', context={
+        'nurseries': sorted([n.nursery for n in
+                             UserNurseryMapping.objects.select_related('nursery').filter(user_id=user_id)],
+                            key=lambda x: x.updated_at, reverse=True)
+    })
+
+
+@login_required
+def nursery_basic_profile(request: HttpRequest, user_id: int, nursery_id: int) -> render or redirect:
+    if request.method == 'GET':
+        return render(request, 'profile/nursery.html', context={
+            'nursery_id': nursery_id,
+            'form': NurseryForm(instance=Nursery.objects.get(pk=nursery_id)),
+        })
+    form = NurseryForm(request.POST, instance=Nursery.objects.get(pk=nursery_id))
+    if form.is_valid():
+        form.save()
+        return redirect('/user/{}/nurseries'.format(user_id))
+    return render(request, 'profile/nursery.html', context={
+        'nursery_id': nursery_id,
+        'form': form,
+    })
+
+
+@login_required
+def nursery_free_num_profile(request: HttpRequest, user_id: int, nursery_id: int) -> render or redirect:
+    if request.method == 'GET':
+        return render(request, 'profile/nursery_free_num.html', context={
+            'nursery_id': nursery_id,
+            'form': NurseryFreeNumForm(),
+        })
+    form = NurseryFreeNumForm(request.POST)
+    if form.is_valid():
+        form.save()
+        return redirect('/user/{}/nurseries'.format(user_id))
+    return render(request, 'profile/nursery.html', context={
+        'nursery_id': nursery_id,
+        'form': form,
     })

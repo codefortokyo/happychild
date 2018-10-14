@@ -1,9 +1,9 @@
 {% extends "profile/base.html" %}
 {% block profile %}
     <div class="main-title-2">
-        <h1>基本情報</h1>
+        <h1>空き情報</h1>
     </div>
-    <form action="{% url 'user_nursery_basic_page' user_id=user.id nursery_id=nursery_id %}"
+    <form action="{% url 'user_nursery_free_num_page' user_id=user.id nursery_id=nursery_id %}"
           method="POST">
         {% csrf_token %}
         {% for field in form %}
