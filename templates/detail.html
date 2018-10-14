@@ -195,6 +195,6 @@
     <script>
         let providerName = 'OpenStreetMap.Mapnik';
 
-        generateMap({{ nursery.latitude }}, {{ nursery.longitude }}, providerName, 'grid_layout', {{ nursery_json|safe }});
+        generateMap({{ nursery.latitude }}, {{ nursery.longitude }}, providerName, 'grid_layout', {{ nursery_json|safe }}, 17);
     </script>
 {% endblock %}
