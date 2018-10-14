@@ -8,7 +8,7 @@ from services.transformers import transform_forms_to_search_nursery
 from services.entities import SearchNurseryEntity
 from services.searches import get_nurseries
 
-DEFAULT_WARD_ID = 24
+DEFAULT_WARD_ID = 9
 
 
 def search_nurseries(request: HttpRequest) -> render:
