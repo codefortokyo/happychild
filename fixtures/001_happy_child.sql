@@ -211,7 +211,6 @@ CREATE TABLE `nursery_bookmarks` (
   KEY `idx_nursery_id_and_status` (`nursery_id`, `status`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
-
 CREATE TABLE `nursery_default_tour_settings` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `nursery_id` int(11) UNSIGNED NOT NULL,
@@ -235,5 +234,5 @@ CREATE TABLE `nursery_tours` (
   `updated_at` datetime(6) NOT NULL,
   PRIMARY KEY (`id`),
   KEY `idx_nursery_id_and_is_active` (`nursery_id`, `is_active`),
-  KEY `idx_start_at` (`start_at`),
+  KEY `idx_start_at` (`start_at`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
