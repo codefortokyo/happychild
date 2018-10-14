@@ -15,6 +15,7 @@ services:
       MYSQL_PASSWORD: ""
       MYSQL_DATABASE: happy_child
     volumes:
+    - ../happy_child:/usr/src/app/
     - ~/.aws:/root/.aws
     - ~/.ssh:/root/.ssh
     depends_on:
