@@ -5,7 +5,7 @@ services:
     image: happy-child
     command: >
       bash -c "sleep 20s
-      && ./run.sh"
+      && ./run_develop.sh"
     ports:
     - "8000:8000"
     environment:
