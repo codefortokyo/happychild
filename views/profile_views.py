@@ -77,13 +77,14 @@ def nursery_tour_profile(request: HttpRequest, user_id: int, nursery_id: int) ->
         })
     form = NurseryDefaultTourForm(request.POST, instance=NurseryDefaultTourSetting.get_settings(nursery_id))
     if form.is_valid():
-        NurseryDefaultTourSetting(
+        NurseryDefaultTourSetting.objects.update_or_create(
             nursery=Nursery.get_nursery(nursery_id),
-            start_time=form.cleaned_data['start_time'],
-            end_time=form.cleaned_data['end_time'],
-            capacity=form.cleaned_data['capacity'],
-            note=form.cleaned_data['note']
-        ).save()
+            defaults={
+                'start_time': form.cleaned_data['start_time'],
+                'end_time': form.cleaned_data['end_time'],
+                'capacity': form.cleaned_data['capacity'],
+                'note': form.cleaned_data['note'],
+            })
         return redirect('/user/{}/nurseries/{}/tour'.format(user_id, nursery_id))
     return render(request, 'profile/nursery.html', context={
         'nursery_id': nursery_id,

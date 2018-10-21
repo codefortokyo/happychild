@@ -473,7 +473,7 @@ class NurseryDefaultTourSetting(models.Model):
     @classmethod
     def get_settings(cls, nursery_id):
         try:
-            return cls.objects.get(nursery__id=nursery_id)
+            return cls.objects.get(nursery_id=nursery_id)
         except cls.DoesNotExist:
             return None
 

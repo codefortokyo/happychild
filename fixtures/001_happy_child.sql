@@ -222,7 +222,8 @@ CREATE TABLE `nursery_default_tour_settings` (
   `created_at` datetime(6) NOT NULL,
   `updated_at` datetime(6) NOT NULL,
   PRIMARY KEY (`id`),
-  KEY `idx_nursery_id` (`nursery_id`)
+  KEY `idx_nursery_id` (`nursery_id`),
+  UNIQUE KEY `nursery_id` (`nursery_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 CREATE TABLE `nursery_tours` (
