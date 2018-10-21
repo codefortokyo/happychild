@@ -1,3 +1,4 @@
+import datetime
 import json
 from typing import Dict, List
 from urllib.parse import urlparse
@@ -495,3 +496,36 @@ class NurseryTours(models.Model):
     class Meta:
         managed = False
         db_table = 'nursery_tours'
+
+    @classmethod
+    def create_tour_schedules_in_a_month(cls, nursery_id: int, held_days: List[int],
+                                         default_setting_is_changed: bool = False):
+        today = timezone.now().date()
+        last_date = cls.objects.values('nursery_id').filter(nursery_id=nursery_id).annotate(
+            last_date=Max('date')).first()
+
+        dates = [today + datetime.timedelta(days=i) for i in range(1, 30)]
+
+        if default_setting_is_changed:
+            scheduled = cls.objects.filter(nursery_id=nursery_id, date__gte=today)
+            if scheduled:
+                scheduled.delete()
+            target_dates = [d for d in dates if d.weekday() in held_days]
+        elif last_date:
+            target_dates = [d for d in dates if d.weekday() in held_days and d > last_date]
+        else:
+            target_dates = [d for d in dates if d.weekday() in held_days]
+
+        default_settings = NurseryDefaultTourSetting.objects.filter(nursery_id=nursery_id)
+        if not default_settings:
+            return
+        nursery = Nursery.objects.get(pk=nursery_id)
+        schedules = []
+        for target_date in target_dates:
+            for default_setting in default_settings:
+                schedules.append(cls(
+                    nursery=nursery,
+                    nursery_default_tour_setting=default_setting,
+                    date=target_date
+                ))
+        cls.objects.bulk_create(schedules)

@@ -2,8 +2,9 @@ from django.contrib.auth.decorators import login_required
 from django.http import HttpRequest
 from django.shortcuts import render, redirect
 
+from infrastructure.consts import DayOfWeek
 from infrastructure.models import CustomUser as User
-from infrastructure.models import Nursery, UserNurseryMapping, NurseryDefaultTourSetting
+from infrastructure.models import Nursery, UserNurseryMapping, NurseryDefaultTourSetting, NurseryTours
 from services.forms.accounts import ProfileForm
 from services.forms.admins import NurseryForm, NurseryFreeNumForm, NurseryDefaultTourForm
 
@@ -86,6 +87,7 @@ def nursery_tour_profile(request: HttpRequest, user_id: int, nursery_id: int) ->
                 'description': form.cleaned_data['description'],
                 'note': form.cleaned_data['note'],
             })
+        NurseryTours.create_tour_schedules_in_a_month(nursery_id, DayOfWeek.get_default_held_days(), True)
         return redirect('/user/{}/nurseries/{}/tour'.format(user_id, nursery_id))
     return render(request, 'profile/nursery.html', context={
         'nursery_id': nursery_id,
