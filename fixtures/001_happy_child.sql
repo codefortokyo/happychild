@@ -217,24 +217,32 @@ CREATE TABLE `nursery_default_tour_settings` (
   `start_time` time NOT NULL,
   `end_time` time NOT NULL,
   `capacity` int(11) UNSIGNED NOT NULL,
+  `description` varchar(1000) NOT NULL,
   `note` varchar(1000) DEFAULT NULL,
   `is_active` tinyint(1) DEFAULT '1',
   `created_at` datetime(6) NOT NULL,
   `updated_at` datetime(6) NOT NULL,
   PRIMARY KEY (`id`),
   KEY `idx_nursery_id` (`nursery_id`),
-  UNIQUE KEY `nursery_id` (`nursery_id`)
+  UNIQUE KEY `nursery_id_and_start_time` (`nursery_id`, `start_time`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 CREATE TABLE `nursery_tours` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `nursery_id` int(11) UNSIGNED NOT NULL,
-  `start_at` datetime(6) NOT NULL,
-  `close_at` datetime(6) NOT NULL,
+  `nursery_default_tour_setting_id` int(11) UNSIGNED,
+  `special_start_time` time DEFAULT NULL,
+  `special_end_time` time DEFAULT NULL,
+  `special_capacity` int(11) UNSIGNED DEFAULT NULL,
+  `special_note` varchar(1000) DEFAULT NULL,
+  `date` date NOT NULL,
   `is_active` tinyint(1) DEFAULT '1',
   `created_at` datetime(6) NOT NULL,
   `updated_at` datetime(6) NOT NULL,
   PRIMARY KEY (`id`),
   KEY `idx_nursery_id_and_is_active` (`nursery_id`, `is_active`),
-  KEY `idx_start_at` (`start_at`)
+  KEY `idx_nursery_setting_id` (`nursery_default_tour_setting_id`),
+  KEY `idx_date` (`date`),
+  UNIQUE KEY `nursery_id_and_date_and_setting_id` (`nursery_id`, `date`, `nursery_default_tour_setting_id`),
+  UNIQUE KEY `nursery_id_and_date_special_time` (`nursery_id`, `date`, `special_start_time`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;

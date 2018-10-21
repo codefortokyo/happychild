@@ -83,6 +83,7 @@ def nursery_tour_profile(request: HttpRequest, user_id: int, nursery_id: int) ->
                 'start_time': form.cleaned_data['start_time'],
                 'end_time': form.cleaned_data['end_time'],
                 'capacity': form.cleaned_data['capacity'],
+                'description': form.cleaned_data['description'],
                 'note': form.cleaned_data['note'],
             })
         return redirect('/user/{}/nurseries/{}/tour'.format(user_id, nursery_id))

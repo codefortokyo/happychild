@@ -315,12 +315,17 @@ class NurseryDefaultTourForm(forms.ModelForm):
                                   widget=forms.TextInput(attrs={
                                       'class': 'input-text'
                                   }))
+    description = forms.CharField(required=True,
+                                  label='見学会の内容',
+                                  widget=forms.Textarea(attrs={
+                                      'class': 'input-text'
+                                  }))
     note = forms.CharField(required=False,
-                           label='見学会の内容',
+                           label='メモ',
                            widget=forms.Textarea(attrs={
                                'class': 'input-text'
                            }))
 
     class Meta:
         model = NurseryDefaultTourSetting
-        fields = ('start_time', 'end_time', 'capacity', 'note')
+        fields = ('start_time', 'end_time', 'capacity', 'description', 'note')
