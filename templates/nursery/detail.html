@@ -55,6 +55,16 @@
                                         </li>
                                     {% endif %}
                                 </ul>
+
+                                {% if user and is_bookmarked %}
+                                    <button class="btn btn-success pull-left" type="button">
+                                        <span class="glyph-icon glyphicon-bookmark"></span>お気に入り追加済
+                                    </button>
+                                {% elif user %}
+                                    <button class="btn btn-info pull-left" type="button" id="bookmark-btn">
+                                        <span class="glyph-icon glyphicon-bookmark"></span>お気に入りに追加
+                                    </button>
+                                {% endif %}
                             </div>
                             <!-- Properties condition end -->
                             <div class="col-md-4 col-sm-4 col-xs-4">
@@ -185,5 +195,31 @@
         let providerName = 'OpenStreetMap.Mapnik';
 
         generateMap({{ nursery.latitude }}, {{ nursery.longitude }}, providerName, 'grid_layout', {{ nursery_json|safe }}, 17);
+    </script>
+
+    {% csrf_token %}
+    <script>
+        //bookmark button
+        $(function () {
+            let csrftoken = $("[name=csrfmiddlewaretoken]").val();
+            let userID = {{ user.id }};
+            let nurseryID = {{ nursery.id }};
+
+            $('#bookmark-btn').on('click', function () {
+                $.ajax({
+                    type: 'POST',
+                    url: '/api/v1/bookmark/nursery/register',
+                    headers: {
+                        "X-CSRFToken": csrftoken
+                    },
+                    dataType: 'json',
+                    data: {user_id: userID, nursery_id: nurseryID},
+                    success: function () {
+                        $('#bookmark-btn').addClass('btn btn-success pull-left').removeClass('btn btn-info pull-left');
+                        $('#bookmark-btn').html('<span class="glyph-icon glyphicon-bookmark"></span>お気に入りに追加しました');
+                    }
+                })
+            })
+        });
     </script>
 {% endblock %}

@@ -27,7 +27,7 @@ from views import (
     misc_views
 )
 from views.profile_views import organizer_views, user_views
-from views.api import location
+from views.api import locations, bookmarks
 
 
 def ping(request):
@@ -35,9 +35,12 @@ def ping(request):
 
 
 urlpatterns = [
-                  url(r'^api/v1/location/ward', location.get_wards, name='get_wards'),
-                  url(r'^api/v1/location/station', location.get_stations, name='get_stations'),
-                  url(r'^api/v1/location/near', location.get_near_ward_and_stations, name='get_near_ward_and_stations'),
+                  url(r'^api/v1/location/ward', locations.get_wards, name='get_wards'),
+                  url(r'^api/v1/location/station', locations.get_stations, name='get_stations'),
+                  url(r'^api/v1/location/near', locations.get_near_ward_and_stations,
+                      name='get_near_ward_and_stations'),
+                  url(r'^api/v1/bookmark/nursery/register', bookmarks.register_bookmark,
+                      name='register_nursery_bookmark'),
 
                   url(r'^admin/wards/(?P<ward_id>\d+)/nurseries/(?P<nursery_id>\d+)/', admin_views.nursery,
                       name='admin_nursery_page'),
@@ -49,7 +52,8 @@ urlpatterns = [
                   url(r'^search', search_views.search_nurseries, name='search_page'),
                   url(r'^ping', ping, name='ping'),
 
-                  url(r'^user/(?P<user_id>\d+)/nurseries/(?P<nursery_id>\d+)/tour', organizer_views.nursery_tour_profile,
+                  url(r'^user/(?P<user_id>\d+)/nurseries/(?P<nursery_id>\d+)/tour',
+                      organizer_views.nursery_tour_profile,
                       name='user_nursery_tour_page'),
                   url(r'^user/(?P<user_id>\d+)/nurseries/(?P<nursery_id>\d+)/free',
                       organizer_views.nursery_free_num_profile,

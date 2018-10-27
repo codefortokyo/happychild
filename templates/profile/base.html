@@ -26,7 +26,7 @@
                                 {% if user.is_organizer %}
                                     <li>
                                         <a href="#">
-                                            <i class="fa fa-heart"></i> 見学会応募状況
+                                            <i class="fa fa-pagelines"></i> 見学会応募状況
                                         </a>
                                     </li>
                                     <li>
@@ -34,13 +34,12 @@
                                             <i class="flaticon-apartment"></i>運営保育園設定
                                         </a>
                                     </li>
-                                {% else %}
-                                    <li>
-                                        <a href="#">
-                                            <i class="fa fa-heart"></i> My保育園
-                                        </a>
-                                    </li>
                                 {% endif %}
+                                <li>
+                                    <a href="#">
+                                        <i class="fa fa-heart"></i> お気に入りの保育園
+                                    </a>
+                                </li>
                                 <li>
                                     <a href="{% url 'user_profile_page' user_id=user.id %}">
                                         <i class="flaticon-social"></i>ユーザー設定
