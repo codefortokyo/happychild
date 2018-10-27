@@ -2,7 +2,7 @@ from typing import Optional
 from django import forms
 
 from infrastructure.models import Age, City, License, SchoolType, Station, Ward
-from infrastructure.query import get_near_stations
+from infrastructure.repository.query import get_near_stations
 
 
 class SearchLocationForm(forms.Form):

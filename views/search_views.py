@@ -5,7 +5,7 @@ from django.http import HttpRequest
 from infrastructure.models import Ward
 from services.forms.searches import SearchLocationForm, SearchTypeForm, SearchFeatureForm
 from services.transformers import transform_forms_to_search_nursery
-from services.entities import SearchNurseryEntity
+from infrastructure.entities.searches import SearchNurseryEntity
 from services.searches import get_nurseries
 
 DEFAULT_WARD_ID = 9

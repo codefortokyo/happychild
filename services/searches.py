@@ -13,7 +13,7 @@ from infrastructure.consts import (
     EXTENT_AGE_ID,
     AGE_IDS,
 )
-from infrastructure.query import get_nearest_ward, get_near_nurseries
+from infrastructure.repository.query import get_nearest_ward, get_near_nurseries
 from infrastructure.entities.nurseries import NurseryEntity
 from infrastructure.entities.searches import GeoParameterEntity, SearchNurseryEntity
 

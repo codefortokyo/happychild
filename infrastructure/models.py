@@ -12,8 +12,8 @@ from django_mysql.models import Bit1BooleanField
 from django.db.models.aggregates import Max
 
 from infrastructure.consts import NURSERY_FREE_NUM_FMT
-from infrastructure.managers import MyUserManager
-from infrastructure.query import get_near_stations
+from infrastructure.repository.managers import MyUserManager
+from infrastructure.repository.query import get_near_stations
 
 
 class Age(models.Model):

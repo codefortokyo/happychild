@@ -8,7 +8,14 @@ from services.forms.admins import NurseryForm, NurseryFreeNumForm, NurseryDefaul
 
 
 @login_required
-def nursery_list_profile(request: HttpRequest, user_id: int) -> render or redirect:
+def nursery_tour_status(request: HttpRequest, user_id: int) -> render:
+    return render(request, 'profile/organizer/nursery_tour_list.html', context={
+
+    })
+
+
+@login_required
+def nursery_list_profile(request: HttpRequest, user_id: int) -> render:
     return render(request, 'profile/organizer/nursery_list.html', context={
         'nurseries': sorted([n.nursery for n in
                              UserNurseryMapping.objects.select_related('nursery').filter(user_id=user_id)],
