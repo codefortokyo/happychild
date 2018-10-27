@@ -18,7 +18,7 @@
                 <td width="200">
                     <a href="{% url 'user_nursery_basic_page' user_id=user.id nursery_id=nursery.id %}"><i class="fa fa-pencil"></i> 基本情報の編集 </a><br>
                     <a href="{% url 'user_nursery_free_num_page' user_id=user.id nursery_id=nursery.id %}"><i class="fa fa-pencil"></i> 空き情報の編集 </a><br>
-                    <a href=""><i class="fa fa-pencil"></i> 見学会予定の編集 </a>
+                    <a href="{% url 'user_nursery_tour_page' user_id=user.id nursery_id=nursery.id %}"><i class="fa fa-pencil"></i> 見学会情報の編集 </a>
                 </td>
             </tr>
         {% endfor %}

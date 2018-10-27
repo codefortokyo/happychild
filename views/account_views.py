@@ -8,7 +8,7 @@ from services.forms.accounts import LoginForm, SignUpForm, ProfileForm
 
 def signup(request: HttpRequest) -> redirect or render:
     if request.method == 'GET':
-        return render(request, 'signup.html', context={
+        return render(request, 'account/signup.html', context={
             'form': SignUpForm()
         })
 
@@ -20,14 +20,14 @@ def signup(request: HttpRequest) -> redirect or render:
                             password=form.cleaned_data['password1'])
         login(request, user)
         return redirect('/')
-    return render(request, 'signup.html', context={
+    return render(request, 'account/signup.html', context={
         'form': form
     })
 
 
 def login_view(request: HttpRequest) -> redirect or render:
     if request.method == 'GET':
-        return render(request, 'login.html', context={
+        return render(request, 'account/login.html', context={
             'form': LoginForm()
         })
     form = LoginForm(request.POST)
@@ -37,7 +37,7 @@ def login_view(request: HttpRequest) -> redirect or render:
         if user is not None:
             login(request, user)
             return redirect('/')
-    return render(request, 'login.html', context={
+    return render(request, 'account/login.html', context={
         'form': form
     })
 

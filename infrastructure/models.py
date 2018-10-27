@@ -1,3 +1,4 @@
+import datetime
 import json
 from typing import Dict, List
 from urllib.parse import urlparse
@@ -11,8 +12,8 @@ from django_mysql.models import Bit1BooleanField
 from django.db.models.aggregates import Max
 
 from infrastructure.consts import NURSERY_FREE_NUM_FMT
-from infrastructure.managers import MyUserManager
-from infrastructure.query import get_near_stations
+from infrastructure.repository.managers import MyUserManager
+from infrastructure.repository.query import get_near_stations
 
 
 class Age(models.Model):
@@ -453,3 +454,78 @@ class NurseryBookmarks(models.Model):
     class Meta:
         managed = False
         db_table = 'nursery_bookmarks'
+
+
+class NurseryDefaultTourSetting(models.Model):
+    id = models.AutoField(primary_key=True)
+    nursery = models.OneToOneField(Nursery, models.PROTECT)
+    start_time = models.TimeField(null=False)
+    end_time = models.TimeField(null=False)
+    capacity = models.IntegerField(null=False)
+    description = models.CharField(max_length=255, null=False)
+    note = models.CharField(max_length=255, default=None)
+    is_active = Bit1BooleanField(default=True)
+    created_at = models.DateTimeField(default=timezone.now)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        managed = False
+        db_table = 'nursery_default_tour_settings'
+
+    @classmethod
+    def get_settings(cls, nursery_id):
+        try:
+            return cls.objects.get(nursery_id=nursery_id)
+        except cls.DoesNotExist:
+            return None
+
+
+class NurseryTours(models.Model):
+    id = models.AutoField(primary_key=True)
+    nursery = models.ForeignKey(Nursery, models.PROTECT)
+    nursery_default_tour_setting = models.ForeignKey(NurseryDefaultTourSetting, models.PROTECT, null=True)
+    date = models.DateField(null=False)
+    special_start_time = models.TimeField(default=None)
+    special_end_time = models.TimeField(default=None)
+    special_capacity = models.TimeField(default=None)
+    special_note = models.CharField(max_length=255, default=None)
+    is_active = Bit1BooleanField(default=True)
+    created_at = models.DateTimeField(default=timezone.now)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        managed = False
+        db_table = 'nursery_tours'
+
+    @classmethod
+    def create_tour_schedules_in_a_month(cls, nursery_id: int, held_days: List[int],
+                                         default_setting_is_changed: bool = False):
+        today = timezone.now().date()
+        last_date = cls.objects.values('nursery_id').filter(nursery_id=nursery_id).annotate(
+            last_date=Max('date')).first()
+
+        dates = [today + datetime.timedelta(days=i) for i in range(1, 30)]
+
+        if default_setting_is_changed:
+            scheduled = cls.objects.filter(nursery_id=nursery_id, date__gte=today)
+            if scheduled:
+                scheduled.delete()
+            target_dates = [d for d in dates if d.weekday() in held_days]
+        elif last_date:
+            target_dates = [d for d in dates if d.weekday() in held_days and d > last_date]
+        else:
+            target_dates = [d for d in dates if d.weekday() in held_days]
+
+        default_settings = NurseryDefaultTourSetting.objects.filter(nursery_id=nursery_id)
+        if not default_settings:
+            return
+        nursery = Nursery.objects.get(pk=nursery_id)
+        schedules = []
+        for target_date in target_dates:
+            for default_setting in default_settings:
+                schedules.append(cls(
+                    nursery=nursery,
+                    nursery_default_tour_setting=default_setting,
+                    date=target_date
+                ))
+        cls.objects.bulk_create(schedules)

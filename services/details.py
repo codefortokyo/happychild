@@ -10,7 +10,7 @@ from infrastructure.consts import (
     EXTENT_AGE_ID,
 )
 from infrastructure.models import Nursery, NurseryFreeNum
-from services.entities import NurseryEntity
+from infrastructure.entities.nurseries import NurseryEntity
 
 
 def get_nursery(nursery_id: int) -> Optional[NurseryEntity]:

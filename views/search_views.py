@@ -5,10 +5,10 @@ from django.http import HttpRequest
 from infrastructure.models import Ward
 from services.forms.searches import SearchLocationForm, SearchTypeForm, SearchFeatureForm
 from services.transformers import transform_forms_to_search_nursery
-from services.entities import SearchNurseryEntity
+from infrastructure.entities.searches import SearchNurseryEntity
 from services.searches import get_nurseries
 
-DEFAULT_WARD_ID = 24
+DEFAULT_WARD_ID = 9
 
 
 def search_nurseries(request: HttpRequest) -> render:
@@ -33,7 +33,7 @@ def search_nurseries(request: HttpRequest) -> render:
 
     nurseries, geo_parameters = get_nurseries(parameters)
 
-    return render(request, 'search.html', context={
+    return render(request, 'search/nursery.html', context={
         'location_form': location_form,
         'type_form': type_form,
         'feature_form': feature_form,

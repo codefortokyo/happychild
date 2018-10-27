@@ -1,6 +1,12 @@
 from django import forms
 
-from infrastructure.models import Nursery, Ward, License, SchoolType
+from infrastructure.models import (
+    Nursery,
+    Ward,
+    License,
+    SchoolType,
+    NurseryDefaultTourSetting,
+)
 
 
 class NurseryForm(forms.ModelForm):
@@ -291,3 +297,35 @@ class NurseryScoreForm(forms.Form):
                                        widget=forms.TextInput(attrs={
                                            'class': 'input-text'
                                        }))
+
+
+class NurseryDefaultTourForm(forms.ModelForm):
+    start_time = forms.TimeField(required=True,
+                                 label='見学会開始予定時間',
+                                 widget=forms.TimeInput(attrs={
+                                     'class': 'input-text timepicker',
+                                 }))
+    end_time = forms.TimeField(required=True,
+                               label='見学会終了予定時間',
+                               widget=forms.TimeInput(attrs={
+                                   'class': 'input-text timepicker',
+                               }))
+    capacity = forms.IntegerField(required=True,
+                                  label='見学会上限人数',
+                                  widget=forms.TextInput(attrs={
+                                      'class': 'input-text'
+                                  }))
+    description = forms.CharField(required=True,
+                                  label='見学会の内容',
+                                  widget=forms.Textarea(attrs={
+                                      'class': 'input-text'
+                                  }))
+    note = forms.CharField(required=False,
+                           label='メモ',
+                           widget=forms.Textarea(attrs={
+                               'class': 'input-text'
+                           }))
+
+    class Meta:
+        model = NurseryDefaultTourSetting
+        fields = ('start_time', 'end_time', 'capacity', 'description', 'note')

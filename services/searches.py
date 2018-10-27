@@ -13,8 +13,9 @@ from infrastructure.consts import (
     EXTENT_AGE_ID,
     AGE_IDS,
 )
-from infrastructure.query import get_nearest_ward, get_near_nurseries
-from services.entities import GeoParameterEntity, SearchNurseryEntity, NurseryEntity
+from infrastructure.repository.query import get_nearest_ward, get_near_nurseries
+from infrastructure.entities.nurseries import NurseryEntity
+from infrastructure.entities.searches import GeoParameterEntity, SearchNurseryEntity
 
 
 def get_nurseries(search: SearchNurseryEntity, limit: int = 50) -> Tuple[List[str], GeoParameterEntity]:
@@ -26,6 +27,8 @@ def get_nurseries(search: SearchNurseryEntity, limit: int = 50) -> Tuple[List[st
     last_updated_dates = NurseryFreeNum.get_last_updated_date(nursery_ids)
 
     nurseries = _filter_by_free_nums(nurseries, search, free_nums)
+
+    nurseries = sorted(nurseries, key=lambda x: x.updated_at, reverse=True)
 
     return [json.loads(NurseryEntity(
         id=n.id,

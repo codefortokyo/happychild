@@ -23,10 +23,10 @@ from views import (
     admin_views,
     top_views,
     search_views,
-    detail_views,
-    misc_views,
-    profile_views
+    nursery_views,
+    misc_views
 )
+from views.profile_views import organizer_views, user_views
 from views.api import location
 
 
@@ -43,19 +43,23 @@ urlpatterns = [
                       name='admin_nursery_page'),
                   url(r'^admin/wards/(?P<ward_id>\d+)', admin_views.nursery_list, name='admin_nurseries_page'),
 
-                  url(r'^nursery/(?P<nursery_id>\d+)', detail_views.nursery_detail, name='detail_page'),
+                  url(r'^nursery/(?P<nursery_id>\d+)', nursery_views.nursery_detail, name='detail_page'),
                   url(r'^contact', misc_views.contact, name='contact_page'),
                   url(r'^about', misc_views.about, name='about_page'),
                   url(r'^search', search_views.search_nurseries, name='search_page'),
                   url(r'^ping', ping, name='ping'),
 
-                  url(r'^user/(?P<user_id>\d+)/nurseries/(?P<nursery_id>\d+)/free', profile_views.nursery_free_num_profile,
+                  url(r'^user/(?P<user_id>\d+)/nurseries/(?P<nursery_id>\d+)/tour', organizer_views.nursery_tour_profile,
+                      name='user_nursery_tour_page'),
+                  url(r'^user/(?P<user_id>\d+)/nurseries/(?P<nursery_id>\d+)/free',
+                      organizer_views.nursery_free_num_profile,
                       name='user_nursery_free_num_page'),
-                  url(r'^user/(?P<user_id>\d+)/nurseries/(?P<nursery_id>\d+)/basic', profile_views.nursery_basic_profile,
+                  url(r'^user/(?P<user_id>\d+)/nurseries/(?P<nursery_id>\d+)/basic',
+                      organizer_views.nursery_basic_profile,
                       name='user_nursery_basic_page'),
-                  url(r'^user/(?P<user_id>\d+)/nurseries', profile_views.nursery_list_profile,
+                  url(r'^user/(?P<user_id>\d+)/nurseries', organizer_views.nursery_list_profile,
                       name='user_nursery_list_page'),
-                  url(r'^user/(?P<user_id>\d+)', profile_views.user_profile, name='user_profile_page'),
+                  url(r'^user/(?P<user_id>\d+)', user_views.user_profile, name='user_profile_page'),
                   url(r'^login', account_views.login_view, name='login_page'),
                   url(r'^logout', account_views.logout_view, name='logout_page'),
                   url(r'^signup', account_views.signup, name='signup_page'),
