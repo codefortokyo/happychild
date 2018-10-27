@@ -33,7 +33,7 @@ def search_nurseries(request: HttpRequest) -> render:
 
     nurseries, geo_parameters = get_nurseries(parameters)
 
-    return render(request, 'search.html', context={
+    return render(request, 'search/nursery.html', context={
         'location_form': location_form,
         'type_form': type_form,
         'feature_form': feature_form,

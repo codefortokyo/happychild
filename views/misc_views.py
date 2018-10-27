@@ -5,10 +5,10 @@ from infrastructure.models import Ward
 
 
 def about(request: HttpRequest) -> render:
-    return render(request, 'about.html', context={
+    return render(request, 'misc/about.html', context={
         'wards': Ward.objects.filter(is_active=True)
     })
 
 
 def contact(request: HttpRequest) -> render:
-    return render(request, 'contact.html')
+    return render(request, 'misc/contact.html')
