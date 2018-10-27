@@ -14,7 +14,8 @@ from infrastructure.consts import (
     AGE_IDS,
 )
 from infrastructure.query import get_nearest_ward, get_near_nurseries
-from services.entities import GeoParameterEntity, SearchNurseryEntity, NurseryEntity
+from infrastructure.entities.nurseries import NurseryEntity
+from infrastructure.entities.searches import GeoParameterEntity, SearchNurseryEntity
 
 
 def get_nurseries(search: SearchNurseryEntity, limit: int = 50) -> Tuple[List[str], GeoParameterEntity]:

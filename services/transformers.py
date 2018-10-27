@@ -12,7 +12,8 @@ from infrastructure.consts import (
 )
 from services.forms.searches import SearchLocationForm, SearchTypeForm, SearchFeatureForm
 from services.forms.admins import NurseryFreeNumForm, NurseryScoreForm
-from services.entities import SearchNurseryEntity, NurseryFreeNumEntity, NurseryScoreEntity
+from infrastructure.entities.nurseries import NurseryFreeNumEntity, NurseryScoreEntity
+from infrastructure.entities.searches import SearchNurseryEntity
 
 
 def transform_forms_to_search_nursery(location_form: SearchLocationForm, type_form: SearchTypeForm,
