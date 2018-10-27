@@ -23,26 +23,27 @@
                         </div>
                         <div class="content">
                             <ul>
-                                <li>
-                                    <a href="{% url 'user_profile_page' user_id=user.id %}">
-                                        <i class="flaticon-social"></i>ユーザー設定
-                                    </a>
-                                </li>
                                 {% if user.is_organizer %}
+                                    <li>
+                                        <a href="#">
+                                            <i class="fa fa-heart"></i> 見学会応募状況
+                                        </a>
+                                    </li>
                                     <li>
                                         <a href="{% url 'user_nursery_list_page' user_id=user.id %}">
                                             <i class="flaticon-apartment"></i>運営保育園設定
                                         </a>
                                     </li>
+                                {% else %}
+                                    <li>
+                                        <a href="#">
+                                            <i class="fa fa-heart"></i> My保育園
+                                        </a>
+                                    </li>
                                 {% endif %}
                                 <li>
-                                    <a href="#">
-                                        <i class="fa fa-heart"></i> My保育園リスト
-                                    </a>
-                                </li>
-                                <li>
-                                    <a href="">
-                                        <i class="fa fa-plus"></i> 申し込み状況　
+                                    <a href="{% url 'user_profile_page' user_id=user.id %}">
+                                        <i class="flaticon-social"></i>ユーザー設定
                                     </a>
                                 </li>
                                 <li>

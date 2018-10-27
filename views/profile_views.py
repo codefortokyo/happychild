@@ -28,7 +28,7 @@ def user_profile(request: HttpRequest, user_id: int) -> redirect:
 
 @login_required
 def nursery_list_profile(request: HttpRequest, user_id: int) -> render or redirect:
-    return render(request, 'profile/nursery_list.html', context={
+    return render(request, 'profile/organizer/nursery_list.html', context={
         'nurseries': sorted([n.nursery for n in
                              UserNurseryMapping.objects.select_related('nursery').filter(user_id=user_id)],
                             key=lambda x: x.updated_at, reverse=True)
@@ -38,7 +38,7 @@ def nursery_list_profile(request: HttpRequest, user_id: int) -> render or redire
 @login_required
 def nursery_basic_profile(request: HttpRequest, user_id: int, nursery_id: int) -> render or redirect:
     if request.method == 'GET':
-        return render(request, 'profile/nursery.html', context={
+        return render(request, 'profile/organizer/nursery.html', context={
             'nursery_id': nursery_id,
             'form': NurseryForm(instance=Nursery.objects.get(pk=nursery_id)),
         })
@@ -46,7 +46,7 @@ def nursery_basic_profile(request: HttpRequest, user_id: int, nursery_id: int) -
     if form.is_valid():
         form.save()
         return redirect('/user/{}/nurseries/{}/basic'.format(user_id, nursery_id))
-    return render(request, 'profile/nursery.html', context={
+    return render(request, 'profile/organizer/nursery.html', context={
         'nursery_id': nursery_id,
         'form': form,
     })
@@ -55,7 +55,7 @@ def nursery_basic_profile(request: HttpRequest, user_id: int, nursery_id: int) -
 @login_required
 def nursery_free_num_profile(request: HttpRequest, user_id: int, nursery_id: int) -> render or redirect:
     if request.method == 'GET':
-        return render(request, 'profile/nursery_free_num.html', context={
+        return render(request, 'profile/organizer/nursery_free_num.html', context={
             'nursery_id': nursery_id,
             'form': NurseryFreeNumForm(),
         })
@@ -63,7 +63,7 @@ def nursery_free_num_profile(request: HttpRequest, user_id: int, nursery_id: int
     if form.is_valid():
         form.save()
         return redirect('/user/{}/nurseries/{}/free'.format(user_id, nursery_id))
-    return render(request, 'profile/nursery.html', context={
+    return render(request, 'profile/organizer/nursery.html', context={
         'nursery_id': nursery_id,
         'form': form,
     })
@@ -72,7 +72,7 @@ def nursery_free_num_profile(request: HttpRequest, user_id: int, nursery_id: int
 @login_required
 def nursery_tour_profile(request: HttpRequest, user_id: int, nursery_id: int) -> render or redirect:
     if request.method == 'GET':
-        return render(request, 'profile/nursery_tour.html', context={
+        return render(request, 'profile/organizer/nursery_tour.html', context={
             'nursery_id': nursery_id,
             'form': NurseryDefaultTourForm(instance=NurseryDefaultTourSetting.get_settings(nursery_id)),
         })
@@ -89,7 +89,7 @@ def nursery_tour_profile(request: HttpRequest, user_id: int, nursery_id: int) ->
             })
         NurseryTours.create_tour_schedules_in_a_month(nursery_id, DayOfWeek.get_default_held_days(), True)
         return redirect('/user/{}/nurseries/{}/tour'.format(user_id, nursery_id))
-    return render(request, 'profile/nursery.html', context={
+    return render(request, 'profile/organizer/nursery.html', context={
         'nursery_id': nursery_id,
         'form': form,
     })
