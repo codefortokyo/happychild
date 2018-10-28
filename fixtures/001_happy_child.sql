@@ -203,12 +203,12 @@ CREATE TABLE `nursery_bookmarks` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `user_id` int(11) UNSIGNED NOT NULL,
   `nursery_id` int(11) UNSIGNED NOT NULL,
-  `status` tinyint(6) DEFAULT '1',
   `created_at` datetime(6) NOT NULL,
   `updated_at` datetime(6) NOT NULL,
   PRIMARY KEY (`id`),
-  KEY `idx_user_id_and_status` (`user_id`, `status`),
-  KEY `idx_nursery_id_and_status` (`nursery_id`, `status`)
+  KEY `idx_user_id` (`user_id`),
+  KEY `idx_nursery_id` (`nursery_id`),
+  UNIQUE KEY `nursery_id_and_user_id` (`nursery_id`, `user_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 CREATE TABLE `nursery_default_tour_settings` (

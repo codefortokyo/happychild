@@ -443,17 +443,30 @@ class UserNurseryMapping(models.Model):
         db_table = 'user_nursery_mappings'
 
 
-class NurseryBookmarks(models.Model):
+class NurseryBookmark(models.Model):
     id = models.AutoField(primary_key=True)
     user = models.ForeignKey(CustomUser, models.PROTECT)
     nursery = models.ForeignKey(Nursery, models.PROTECT)
-    status = models.IntegerField(default=1)
     created_at = models.DateTimeField(default=timezone.now)
     updated_at = models.DateTimeField(auto_now=True)
 
     class Meta:
         managed = False
         db_table = 'nursery_bookmarks'
+
+    @classmethod
+    def register_bookmark(cls, user_id: int, nursery_id: int) -> None:
+        if cls.objects.filter(user_id=user_id, nursery_id=nursery_id).exists():
+            return
+        cls.objects.create(user=CustomUser.objects.get(pk=user_id), nursery=Nursery.objects.get(pk=nursery_id))
+
+    @classmethod
+    def get_bookmarked(cls, user_id: int) -> List[Nursery]:
+        return [n.nursery for n in cls.objects.filter(user_id=user_id)]
+
+    @classmethod
+    def is_bookmarked(cls, user_id: int, nursery_id: int) -> bool:
+        return cls.objects.filter(user_id=user_id, nursery_id=nursery_id).exists()
 
 
 class NurseryDefaultTourSetting(models.Model):
