@@ -147,7 +147,6 @@ class Ward(models.Model):
         return 'リンク'
 
     @classmethod
-    @lru_cache()
     def get_wards(cls, city_id: int) -> Dict[int, str]:
         wards = cls.objects.filter(city_id=city_id, is_active=True).values('id', 'name')
         return json.dumps(list(wards))
@@ -191,10 +190,10 @@ class Nursery(models.Model):
     postcode = models.CharField(max_length=8)
     address = models.CharField(max_length=255, null=False)
     station_info = models.CharField(max_length=255, null=True)
-    url = models.URLField()
+    url = models.URLField(max_length=1000)
     phone_number = models.CharField(max_length=15, null=False)
     fax_number = models.CharField(max_length=15)
-    thumbnail_url = models.URLField()
+    thumbnail_url = models.URLField(max_length=1000)
     latitude = models.DecimalField(max_digits=12, decimal_places=9, null=False)
     longitude = models.DecimalField(max_digits=12, decimal_places=9, null=False)
     open_time_weekday = models.CharField(max_length=255)
@@ -208,7 +207,7 @@ class Nursery(models.Model):
     allday_childcare = Bit1BooleanField()
     evaluation = Bit1BooleanField()
     eco = Bit1BooleanField()
-    evaluation_url = models.URLField()
+    evaluation_url = models.URLField(max_length=1000)
     organizer = models.CharField(max_length=255)
     event = models.CharField(max_length=1000)
     service = models.CharField(max_length=1000)
@@ -233,7 +232,6 @@ class Nursery(models.Model):
         return "{} {}".format(self.ward.city.name, name)
 
     @property
-    @lru_cache()
     def free_num_info_url(self) -> str:
         """ 空き情報掲載URLを返す
         """
