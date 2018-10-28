@@ -79,7 +79,7 @@
                     <span class="icon-bar"></span>
                 </button>
                 <a href="{% url 'top_page' %}" class="logo">
-                    <img src="{% static 'img/logos/logo.png' %}" alt="logo">
+                    <img src="{% static 'img/logos/logo.gif' %}" alt="logo">
                 </a>
             </div>
             <!-- Collect the nav links, forms, and other content for toggling -->
@@ -96,12 +96,25 @@
                     </li>
                 </ul>
                 <ul class="nav navbar-nav navbar-right rightside-navbar">
+                    {% if not user.is_authenticated %}
+                        <li>
+                            <a href="{% url 'login_page' %}" class="button">
+                                ログイン or 登録
+                            </a>
+                        </li>
+                    {% else %}
+                        <li>
+                            <a href="{% url 'user_bookmarked_page' user_id=user.id %}" class="button">
+                                Myページ
+                            </a>
+                        </li>
+                    {% endif %}
                     {% if user.is_authenticated and user.is_admin %}
                         <li>
                             <div class="form-group">
                                 <form name="admin_form">
-                                    <select name="ward_id" onchange="dropselect()" class="form-control">
-                                        <option value=""> 編集する区を選択 </option>
+                                    <select name="ward_id" onchange="dropselect()" class="selectpicker">
+                                        <option value=""> 管理ツール </option>
                                         <option value="{% url 'admin_nurseries_page' ward_id=9 %}"> 品川区</option>
                                         <option value="{% url 'admin_nurseries_page' ward_id=1 %}"> 千代田区</option>
                                         <option value="{% url 'admin_nurseries_page' ward_id=2 %}"> 中央区</option>
@@ -119,19 +132,6 @@
                                     </select>
                                 </form>
                             </div>
-                        </li>
-                    {% endif %}
-                    {% if not user.is_authenticated %}
-                        <li>
-                            <a href="{% url 'login_page' %}" class="button">
-                                ログイン or 登録
-                            </a>
-                        </li>
-                    {% else %}
-                        <li>
-                            <a href="{% url 'user_profile_page' user_id=user.id %}" class="button">
-                                Myページ
-                            </a>
                         </li>
                     {% endif %}
                 </ul>

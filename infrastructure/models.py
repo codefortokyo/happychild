@@ -461,6 +461,10 @@ class NurseryBookmark(models.Model):
         cls.objects.create(user=CustomUser.objects.get(pk=user_id), nursery=Nursery.objects.get(pk=nursery_id))
 
     @classmethod
+    def get_bookmarked(cls, user_id: int) -> List[Nursery]:
+        return [n.nursery for n in cls.objects.filter(user_id=user_id)]
+
+    @classmethod
     def is_bookmarked(cls, user_id: int, nursery_id: int) -> bool:
         return cls.objects.filter(user_id=user_id, nursery_id=nursery_id).exists()
 

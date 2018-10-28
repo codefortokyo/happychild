@@ -63,6 +63,7 @@ urlpatterns = [
                       name='user_nursery_basic_page'),
                   url(r'^user/(?P<user_id>\d+)/nurseries', organizer_views.nursery_list_profile,
                       name='user_nursery_list_page'),
+                  url(r'^user/(?P<user_id>\d+)/bookmark', user_views.bookmarked_nurseries, name='user_bookmarked_page'),
                   url(r'^user/(?P<user_id>\d+)', user_views.user_profile, name='user_profile_page'),
                   url(r'^login', account_views.login_view, name='login_page'),
                   url(r'^logout', account_views.logout_view, name='logout_page'),

@@ -1,10 +1,24 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
-
-</body>
-</html>
+{% extends "profile/base.html" %}
+{% block profile %}
+    <div class="main-title-2">
+        <h1>お気に入りの保育園</h1>
+    </div>
+    <!-- table start -->
+    <table class="manage-table responsive-table">
+        <tbody>
+        {% for nursery in nurseries %}
+            <tr>
+                <td class="title-container">
+                    <img src="{{ nursery.default_thumbnail_url }}" alt="nursery" class="img-responsive hidden-xs">
+                    <div class="title">
+                        <h4><a href="{% url 'detail_page' nursery_id=nursery.id %}"> {{ nursery.name }} </a></h4>
+                        <span><i class="fa fa-map-marker"></i> {{ nursery.address }} </span>
+                        <p>{{ nursery.station_info }} </p>
+                    </div>
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+    <!-- table end -->
+{% endblock %}
