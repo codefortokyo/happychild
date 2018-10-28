@@ -54,7 +54,7 @@ class NurseryForm(forms.ModelForm):
                                    }))
     url = forms.CharField(required=False,
                           label='公式サイトURL',
-                          max_length=255,
+                          max_length=1000,
                           widget=forms.TextInput(attrs={
                               'class': 'input-text'
                           }))
@@ -72,7 +72,7 @@ class NurseryForm(forms.ModelForm):
                                  }))
     thumbnail_url = forms.URLField(required=False,
                                    label='サムネイル画像URL',
-                                   max_length=255,
+                                   max_length=1000,
                                    widget=forms.URLInput(attrs={
                                        'class': 'input-text'
                                    }))
