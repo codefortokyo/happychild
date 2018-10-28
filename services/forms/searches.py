@@ -56,7 +56,7 @@ class SearchLocationForm(forms.Form):
         if city_id:
             self.fields['ward'] = forms.ChoiceField(required=False,
                                                     choices=[(w.id, w.name) for w in
-                                                             Ward.objects.filter(city_id=city_id)],
+                                                             Ward.objects.filter(city_id=city_id, is_active=True)],
                                                     widget=forms.Select(attrs={
                                                         'id': 'ward',
                                                         'class': 'selectpicker search-fields',
