@@ -1,6 +1,6 @@
 import datetime
 import json
-from typing import Dict, List
+from typing import Dict, List, Optional
 from urllib.parse import urlparse
 from itertools import groupby
 
@@ -284,7 +284,7 @@ class Nursery(models.Model):
 class NurseryFreeNum(models.Model):
     age = models.ForeignKey(Age, models.PROTECT)
     nursery = models.ForeignKey(Nursery, models.PROTECT)
-    free_num = models.IntegerField(null=False)
+    free_num = models.IntegerField(null=True)
     is_active = Bit1BooleanField(default=True)
     modified_date = models.DateField()
     updated_at = models.DateTimeField(auto_now=True)
@@ -316,6 +316,18 @@ class NurseryFreeNum(models.Model):
         return ret
 
     @classmethod
+    def upsert(cls, nursery: Nursery, age: Age, modified_date: datetime.date, free_num: Optional[int]):
+        NurseryFreeNum.objects.update_or_create(
+            nursery=nursery,
+            age=age,
+            modified_date=modified_date,
+            defaults={
+                'free_num': free_num,
+                'updated_at': timezone.now()
+            }
+        )
+
+    @classmethod
     def bulk_insert(cls, entities):
         cls.objects.bulk_create([cls(age=entity.age, nursery=entity.nursery, free_num=entity.free_num,
                                      modified_date=entity.modified_date) for entity in entities])
@@ -338,10 +350,15 @@ class NurseryScore(models.Model):
         db_table = 'nursery_scores'
 
     @classmethod
-    def upsert(cls, entities):
-        for entity in entities:
-            cls.objects.update_or_create(nursery=entity.nursery, age=entity.age, year=entity.year,
-                                         defaults={'score': entity.score, 'hierarchy': entity.hierarchy})
+    def upsert(cls, nursery: Nursery, age: Age, year: str, score: int, hierarchy: str):
+        cls.objects.update_or_create(
+            nursery=nursery, age=age, year=year,
+            defaults={
+                'score': score,
+                'hierarchy': hierarchy,
+                'updated_at': timezone.now()
+            }
+        )
 
 
 class CrawledGuid(models.Model):
