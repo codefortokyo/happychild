@@ -5,10 +5,19 @@ run() {
   exec ./run.sh
 }
 
+update_shinagawa() {
+  exec python manage.py update_shinagawa_nursery_free_num
+
+}
+
 case $1 in
   run)
     shift
     run
+    ;;
+  update_shinagawa)
+    shift
+    update_shinagawa
     ;;
   *)
     exec "$@"
