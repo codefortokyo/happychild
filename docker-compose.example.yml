@@ -2,7 +2,7 @@ version: '3'
 
 services:
   app:
-    image: happy-child
+    image: happychild
     command: >
       bash -c "sleep 20s
       && ./run_develop.sh"

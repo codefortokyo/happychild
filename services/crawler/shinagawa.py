@@ -4,7 +4,7 @@ import pandas as pd
 
 from infrastructure.models import Age, Nursery, NurseryFreeNum, NurseryScore
 from services.consts import AGE_LABELS, SHINAGAWA_OPEN_DATA, SHINAGAWA_WARD_ID
-from happy_child import logging
+from happychild import logging
 
 logger = logging.getLogger(__name__)
 
