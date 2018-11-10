@@ -11,6 +11,6 @@ import os
 
 from django.core.wsgi import get_wsgi_application
 
-os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'happy_child.settings')
+os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'happychild.settings')
 
 application = get_wsgi_application()

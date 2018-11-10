@@ -12,7 +12,7 @@ RUN pip3 install -r requirements.txt
 
 COPY fixtures/ /docker-entrypoint-initdb.d/
 
-ADD happy_child happy_child
+ADD happychild happychild
 ADD infrastructure infrastructure
 ADD services services
 ADD static static

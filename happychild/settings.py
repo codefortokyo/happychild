@@ -36,7 +36,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'django_mysql',
-    'happy_child',
+    'happychild',
     'infrastructure',
 ]
 
@@ -50,7 +50,7 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
-ROOT_URLCONF = 'happy_child.urls'
+ROOT_URLCONF = 'happychild.urls'
 
 TEMPLATES = [
     {
@@ -68,7 +68,7 @@ TEMPLATES = [
     },
 ]
 
-WSGI_APPLICATION = 'happy_child.wsgi.application'
+WSGI_APPLICATION = 'happychild.wsgi.application'
 
 # Database
 # https://docs.djangoproject.com/en/2.1/ref/settings/#databases
@@ -112,7 +112,7 @@ USE_L10N = True
 USE_TZ = True
 
 # Logging
-LOGGING_PREFIX = 'happy_child'
+LOGGING_PREFIX = 'happychild'
 LOGGING = {
     'version': 1,
     'disable_existing_loggers': False,

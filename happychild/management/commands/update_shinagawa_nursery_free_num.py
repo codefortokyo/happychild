@@ -1,6 +1,6 @@
 from django.core.management.base import BaseCommand
 
-from happy_child import logging
+from happychild import logging
 from services.crawler.shinagawa import shinagawa_crawler
 
 logger = logging.getLogger(__name__)
