@@ -204,6 +204,9 @@ LOGIN_REDIRECT_URL = '/'
 AWS_REGION = os.getenv('AWS_REGION', 'ap-northeast-1')
 ENV = os.getenv('ENV', 'DEVELOP')
 
+if ENV != 'DEVELOP':
+    DEBUG = False
+
 try:
     from .database import *
 except ImportError:
