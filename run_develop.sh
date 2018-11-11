@@ -2,4 +2,5 @@
 
 python manage.py makemigrations
 python manage.py migrate
-python manage.py runserver 0.0.0.0:8000 --insecure
+
+exec gunicorn happychild.wsgi:application -b 0.0.0.0:8000 -w 4
