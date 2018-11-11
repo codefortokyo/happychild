@@ -6,7 +6,7 @@ run() {
 }
 
 run_develop() {
-  exec /run_develop.sh
+  exec ./run_develop.sh
 }
 
 update_shinagawa() {
