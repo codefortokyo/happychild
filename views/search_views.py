@@ -17,12 +17,15 @@ def search_nurseries(request: HttpRequest) -> render:
     latitude = request.GET.get('latitude')
     longitude = request.GET.get('longitude')
 
+    score = request.GET.get('score')
+    hierarchy = request.GET.get('hierarchy')
+
     location_form = SearchLocationForm(city_id, ward_id, latitude, longitude, data=request.GET)
     type_form = SearchTypeForm(data=request.GET)
     feature_form = SearchFeatureForm(data=request.GET)
 
     if location_form.is_valid() and type_form.is_valid() and feature_form.is_valid():
-        parameters = transform_forms_to_search_nursery(location_form, type_form, feature_form)
+        parameters = transform_forms_to_search_nursery(location_form, type_form, feature_form, score, hierarchy)
     else:
         ward = Ward.objects.filter(id=DEFAULT_WARD_ID).first()
         parameters = SearchNurseryEntity(city_id=ward.city_id, ward_id=ward.id)

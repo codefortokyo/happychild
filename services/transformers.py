@@ -1,5 +1,5 @@
 import datetime
-from typing import List
+from typing import List, Optional
 
 from infrastructure.models import Nursery, Age
 from infrastructure.consts import (
@@ -16,8 +16,11 @@ from infrastructure.entities.nurseries import NurseryFreeNumEntity, NurseryScore
 from infrastructure.entities.searches import SearchNurseryEntity
 
 
-def transform_forms_to_search_nursery(location_form: SearchLocationForm, type_form: SearchTypeForm,
-                                      feature_form: SearchFeatureForm) -> SearchNurseryEntity:
+def transform_forms_to_search_nursery(location_form: SearchLocationForm,
+                                      type_form: SearchTypeForm,
+                                      feature_form: SearchFeatureForm,
+                                      score: Optional[int],
+                                      hierarchy: Optional[str]) -> SearchNurseryEntity:
     return SearchNurseryEntity(
         city_id=location_form.cleaned_data.get('city'),
         ward_id=location_form.cleaned_data.get('ward'),
@@ -32,7 +35,9 @@ def transform_forms_to_search_nursery(location_form: SearchLocationForm, type_fo
         temporary_childcare=feature_form.cleaned_data.get('temporary_childcare'),
         overnight_childcare=feature_form.cleaned_data.get('overnight_childcare'),
         allday_childcare=feature_form.cleaned_data.get('allday_childcare'),
-        evaluation=feature_form.cleaned_data.get('evaludation')
+        evaluation=feature_form.cleaned_data.get('evaludation'),
+        score=score,
+        hierarchy=hierarchy
     )
 
 
