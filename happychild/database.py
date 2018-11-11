@@ -9,7 +9,6 @@ DATABASES = {
         'PASSWORD': os.getenv('MYSQL_PASSWORD'),
         'OPTIONS': {
             'charset': 'utf8mb4',
-            'init_command': "SET sql_mode='STRICT_TRANS_TABLES'",
         },
     },
     'primary': {
@@ -20,7 +19,6 @@ DATABASES = {
         'PASSWORD': os.getenv('MYSQL_PASSWORD'),
         'OPTIONS': {
             'charset': 'utf8mb4',
-            'init_command': "SET sql_mode='STRICT_TRANS_TABLES'",
         },
     },
     'replica': {
@@ -31,7 +29,6 @@ DATABASES = {
         'PASSWORD': os.getenv('MYSQL_PASSWORD'),
         'OPTIONS': {
             'charset': 'utf8mb4',
-            'init_command': "SET sql_mode='STRICT_TRANS_TABLES'",
         },
     },
 }
