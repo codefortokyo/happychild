@@ -13,9 +13,9 @@ services:
       MYSQL_USR: root
       MYSQL_HOST: mysql
       MYSQL_PASSWORD: ""
-      MYSQL_DATABASE: happy_child
+      MYSQL_DATABASE: happychild
     volumes:
-    - ./happy_child:/usr/src/app/happy_child
+    - ./happychild:/usr/src/app/happychild
     - ./infrastructure:/usr/src/app/infrastructure
     - ./services:/usr/src/app/services
     - ./static:/usr/src/app/static
@@ -31,7 +31,7 @@ services:
     command: mysqld --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci
     environment:
       MYSQL_ALLOW_EMPTY_PASSWORD: "yes"
-      MYSQL_DATABASE: happy_child
+      MYSQL_DATABASE: happychild
       MYSQL_USER: "root"
       MYSQL_PASSWORD: ""
     ports:
