@@ -398,13 +398,13 @@ class Station(models.Model):
     @classmethod
     @lru_cache()
     def get_stations(cls, ward_id: int):
-        ward = cls.objects.filter(id=ward_id).first()
+        ward = Ward.objects.filter(id=ward_id).first()
         return get_near_stations(ward.latitude, ward.longitude)
 
     @classmethod
     @lru_cache()
     def get_stations_api(cls, ward_id: int) -> Dict[int, str]:
-        ward = cls.objects.filter(id=ward_id).first()
+        ward = Ward.objects.filter(id=ward_id).first()
         stations = []
         for i, station in enumerate(get_near_stations(ward.latitude, ward.longitude)):
             stations.append({
