@@ -10,7 +10,17 @@
                     <div class="heading-properties clearfix sidebar-widget">
                         <div class="row">
                             <div class="col-md-8 col-sm-8 col-xs-8">
-                                <h3>{{ nursery.name }}</h3> <a href="{{ nursery.url }}" target="_blank">公式サイト</a>
+                                <h3>
+                                    {{ nursery.name }}
+                                    {% if user.is_authenticated  and is_bookmarked %}
+                                        <span class="fa fa-star"></span>
+                                    {% elif user.is_authenticated %}
+                                        <span class="favorite-btn" id="add-bookmark">
+                                            <span class="fa fa-star-o favorite-fa"></span>
+                                            <p class="favorite-info" style="text-align: right">お気に入りに追加しました
+                                        </span>
+                                    {% endif %}
+                                </h3>
                                 <div class="clearfix"></div>
                                 <p>
                                     <i class="fa fa-map-marker"></i>{{ nursery.address }},
@@ -56,15 +66,9 @@
                                     {% endif %}
                                 </ul>
 
-                                {% if user and is_bookmarked %}
-                                    <button class="btn btn-success pull-left" type="button">
-                                        <span class="glyph-icon glyphicon-bookmark"></span>お気に入り追加済
-                                    </button>
-                                {% elif user %}
-                                    <button class="btn btn-info pull-left" type="button" id="bookmark-btn">
-                                        <span class="glyph-icon glyphicon-bookmark"></span>お気に入りに追加
-                                    </button>
-                                {% endif %}
+                                <a href="{{ nursery.url }}" target="_blank"
+                                   class="btn button-sm border-button-theme pull-right">
+                                    公式(または関連)サイト </a>
                             </div>
                             <!-- Properties condition end -->
                             <div class="col-md-4 col-sm-4 col-xs-4">
@@ -84,19 +88,16 @@
                 <!-- Property description start -->
                 <div class="panel-box properties-panel-box Property-description">
                     <ul class="nav nav-tabs">
-                        <li class="active"><a href="#tab1default" data-toggle="tab"
+                        <li class="active"><a href="#service" data-toggle="tab"
                                               aria-expanded="true">サービス内容</a></li>
-                        <li class=""><a href="#tab2default" data-toggle="tab" aria-expanded="false">イベント情報</a>
+                        <li class=""><a href="#free-num" data-toggle="tab" aria-expanded="false">空き状況</a>
                         </li>
-                        <li class=""><a href="#tab3default" data-toggle="tab" aria-expanded="false">空き状況</a>
-                        </li>
-                        <li class=""><a href="#tab4default" data-toggle="tab" aria-expanded="false">口コミ</a></li>
                     </ul>
 
                     <div class="panel with-nav-tabs panel-default">
                         <div class="panel-body">
                             <div class="tab-content">
-                                <div class="tab-pane fade active in" id="tab1default">
+                                <div class="tab-pane fade active in" id="service">
                                     <div class="row">
                                         <div class="col-md-12 col-sm-12 col-xs-12">
                                             <div class="main-title-2">
@@ -109,7 +110,7 @@
                                     <div class="row">
                                         <div class="col-md-12 col-sm-12 col-xs-12">
                                             <div class="main-title-2">
-                                                <h1><span>独自サービス</span></h1>
+                                                <h1><span>特徴</span></h1>
                                             </div>
                                             <p> {{ nursery.service|safe }}</p>
                                         </div>
@@ -126,13 +127,13 @@
 
                                 </div>
 
-                                <div class="tab-pane fade" id="tab3default">
+                                <div class="tab-pane fade" id="free-num">
                                     <!-- Floor Plans start -->
                                     <div class="floor-plans">
                                         <div class="main-title-2">
                                             <h1><span>空き状況</span></h1>
                                         </div>
-                                        <p>更新日: {{ nursery.free_num_updated_at }}</p>
+                                        <p> 最終更新日: {{ nursery.free_num_updated_at }}</p>
                                         <table>
                                             <tr>
                                                 <td><strong>0歳</strong></td>
@@ -153,17 +154,6 @@
                                         </table>
                                     </div>
                                     <!-- Floor Plans end -->
-                                </div>
-
-                                <div class="tab-pane fade" id="tab4default">
-                                    <!-- Inside properties start  -->
-                                    <div class="inside-properties">
-                                        <!-- Main Title 2 -->
-                                        <div class="main-title-2">
-                                            <h1><span>口コミ</span></h1>
-                                        </div>
-                                    </div>
-                                    <!-- Inside properties end -->
                                 </div>
                             </div>
                         </div>
@@ -205,7 +195,7 @@
             let userID = {{ user.id }};
             let nurseryID = {{ nursery.id }};
 
-            $('#bookmark-btn').on('click', function () {
+            $('#add-bookmark').on('click', function () {
                 $.ajax({
                     type: 'POST',
                     url: '/api/v1/bookmark/nursery/register',
@@ -215,11 +205,22 @@
                     dataType: 'json',
                     data: {user_id: userID, nursery_id: nurseryID},
                     success: function () {
-                        $('#bookmark-btn').addClass('btn btn-success pull-left').removeClass('btn btn-info pull-left');
-                        $('#bookmark-btn').html('<span class="glyph-icon glyphicon-bookmark"></span>お気に入りに追加しました');
+                        $('.bookmark-btn').addClass('favorite-active');
+                        $('.bookmark-btn').addClass('favorite-active-2');
+                        setTimeout(function () {
+                            $('.favorite-fa').addClass('fa-star');
+                            $('.favorite-fa').removeClass('fa-star-o');
+                        }, 150);
+                        setTimeout(function () {
+                            $('.bookmark-btn').addClass('favorite-active-3');
+                        }, 150);
+                        $('.favorite-info').addClass('favorite-info-tog');
+                        setTimeout(function () {
+                            $('.favorite-info').removeClass('favorite-info-tog')
+                        }, 1000)
                     }
                 })
-            })
+            });
         });
     </script>
 {% endblock %}
