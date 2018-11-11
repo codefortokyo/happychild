@@ -19,7 +19,7 @@ case $1 in
     shift
     run
     ;;
-  run)
+  run_develop)
     shift
     run_develop
     ;;
