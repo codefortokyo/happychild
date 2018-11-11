@@ -361,23 +361,6 @@ class NurseryScore(models.Model):
         )
 
 
-class CrawledGuid(models.Model):
-    id = models.AutoField(primary_key=True)
-    guid = models.CharField(max_length=255, null=False)
-    created_at = models.DateTimeField(default=timezone.now)
-
-    class Meta:
-        managed = False
-        db_table = 'crawled_guid'
-
-    @classmethod
-    @lru_cache()
-    def is_crawled(cls, guid: str) -> bool:
-        """ 既に収集済みかを確認し、なかったらsaveする
-        """
-        return True if not cls.objects.get_or_create(guid=guid)[1] else False
-
-
 class Line(models.Model):
     id = models.AutoField(primary_key=True)
     api_id = models.IntegerField(null=False)
