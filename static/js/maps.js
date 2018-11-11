@@ -220,7 +220,7 @@ function insertPropertyToArray(property, layout) {
     var element = '';
 
     if (layout == 'grid_layout') {
-        element = '<div class="col-lg-6 col-md-6 col-sm-6 col-xs-12"><div class="property">' +
+        element = '<div class="col-lg-6 col-md-6 col-sm-6 col-xs-12 js-matchHeight"><div class="property">' +
             '<!-- Property img --> ' +
             '<a href="/nursery/' + id + '" class="property-img" target="_blank">' +
             '<div class="property-tag button sale">' + image + '</div> ' +
@@ -268,7 +268,7 @@ function insertPropertyToArray(property, layout) {
     else {
         element = '' +
             '<div class="property map-properties-list clearfix"> ' +
-            '<div class="col-lg-5 col-md-5 col-sm-5 col-xs-12 col-pad"> ' +
+            '<div class="col-lg-5 col-md-5 col-sm-5 col-xs-12 js-matchHeight"> ' +
             '<a href="properties-details.html" class="property-img height"> ' +
             '<div class="property-tag button sale">' + image + '</div> ' +
             '<img src="' + image + '" alt="properties" class="img-responsive img-inside-map"> ' +
