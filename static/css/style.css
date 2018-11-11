@@ -1249,14 +1249,11 @@ input[type=checkbox]:checked + label:before {
 
 .property .button, input[type="submit"] {
     font-size: 10px;
-    font-weight: 600;
     padding: 6px 14px;
     border-radius: 2px;
     color: white;
     border: none;
     background-color: rgba(0, 0, 0, 0.5);
-    text-transform: uppercase;
-    letter-spacing: 1px;
     display: inline-block;
     z-index: 20;
 }
@@ -2107,19 +2104,19 @@ input[type=checkbox]:checked + label:before {
     height: 200px;
 }
 
-.cat-1-bg{
+.cat-1-bg {
     background-image: url('../img/category-education.jpg');
 }
 
-.cat-2-bg{
+.cat-2-bg {
     background-image: url('../img/category-park.jpg');
 }
 
-.cat-3-bg{
+.cat-3-bg {
     background-image: url('../img/category-relation.jpg');
 }
 
-.cat-4-bg{
+.cat-4-bg {
     background-image: url('../img/category-interest.jpg');
 }
 
@@ -3904,7 +3901,7 @@ a:hover {
     padding: 16px 12px;
 }
 
-.blog-box-2 .post-meta ul li:last-child{
+.blog-box-2 .post-meta ul li:last-child {
     padding: 16px 0 16px 12px;
 }
 
@@ -4104,7 +4101,7 @@ a:hover {
     border-bottom: dashed 1px #ededed;
 }
 
-.category-posts ul li a{
+.category-posts ul li a {
     color: #535353;
 }
 
