@@ -361,23 +361,6 @@ class NurseryScore(models.Model):
         )
 
 
-class CrawledGuid(models.Model):
-    id = models.AutoField(primary_key=True)
-    guid = models.CharField(max_length=255, null=False)
-    created_at = models.DateTimeField(default=timezone.now)
-
-    class Meta:
-        managed = False
-        db_table = 'crawled_guid'
-
-    @classmethod
-    @lru_cache()
-    def is_crawled(cls, guid: str) -> bool:
-        """ 既に収集済みかを確認し、なかったらsaveする
-        """
-        return True if not cls.objects.get_or_create(guid=guid)[1] else False
-
-
 class Line(models.Model):
     id = models.AutoField(primary_key=True)
     api_id = models.IntegerField(null=False)
@@ -415,13 +398,13 @@ class Station(models.Model):
     @classmethod
     @lru_cache()
     def get_stations(cls, ward_id: int):
-        ward = cls.objects.filter(id=ward_id).first()
+        ward = Ward.objects.filter(id=ward_id).first()
         return get_near_stations(ward.latitude, ward.longitude)
 
     @classmethod
     @lru_cache()
     def get_stations_api(cls, ward_id: int) -> Dict[int, str]:
-        ward = cls.objects.filter(id=ward_id).first()
+        ward = Ward.objects.filter(id=ward_id).first()
         stations = []
         for i, station in enumerate(get_near_stations(ward.latitude, ward.longitude)):
             stations.append({

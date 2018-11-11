@@ -1249,14 +1249,11 @@ input[type=checkbox]:checked + label:before {
 
 .property .button, input[type="submit"] {
     font-size: 10px;
-    font-weight: 600;
     padding: 6px 14px;
     border-radius: 2px;
     color: white;
     border: none;
     background-color: rgba(0, 0, 0, 0.5);
-    text-transform: uppercase;
-    letter-spacing: 1px;
     display: inline-block;
     z-index: 20;
 }
@@ -2107,19 +2104,19 @@ input[type=checkbox]:checked + label:before {
     height: 200px;
 }
 
-.cat-1-bg{
+.cat-1-bg {
     background-image: url('../img/category-education.jpg');
 }
 
-.cat-2-bg{
+.cat-2-bg {
     background-image: url('../img/category-park.jpg');
 }
 
-.cat-3-bg{
+.cat-3-bg {
     background-image: url('../img/category-relation.jpg');
 }
 
-.cat-4-bg{
+.cat-4-bg {
     background-image: url('../img/category-interest.jpg');
 }
 
@@ -3904,7 +3901,7 @@ a:hover {
     padding: 16px 12px;
 }
 
-.blog-box-2 .post-meta ul li:last-child{
+.blog-box-2 .post-meta ul li:last-child {
     padding: 16px 0 16px 12px;
 }
 
@@ -4104,7 +4101,7 @@ a:hover {
     border-bottom: dashed 1px #ededed;
 }
 
-.category-posts ul li a{
+.category-posts ul li a {
     color: #535353;
 }
 
@@ -7273,4 +7270,93 @@ table.manage-table .title-container .title span {
     height: 220px;
 }
 
+/** Twitter like button **/
+.favorite-btn {
+	font-size: 33px;
+	color: rgba(0,0,0,.5);
+	width: 38px;
+	height: 38px;
+	margin: 0 auto;
+	margin-top: 20px;
+	position: relative;
+	cursor: pointer;
+}
 
+.favorite-btn span {
+	margin-left: 4px;
+	margin-top: 3px;
+	z-index: 999;
+	position: absolute;
+}
+
+.favorite-btn span:hover {
+	opacity: 0.8;
+}
+
+.favorite-btn span:active {
+	transform: scale(0.93,0.93) translateY(2px)
+}
+
+.favorite-ring, .favorite-ring2 {
+	opacity: 0;
+	background: grey;
+	width: 1px;
+	height: 1px;
+	position: absolute;
+	top: 19px;
+	left: 18px;
+	border-radius: 50%;
+	cursor: pointer;
+}
+
+.favorite-active span, .favorite-active-2 span {
+	color: #F5CC27 !important;
+}
+
+.favorite-active-2 .ring {
+	width: 58px !important;
+	height: 58px !important;
+	top: -10px !important;
+	left: -10px !important;
+	position: absolute;
+	border-radius: 50%;
+	opacity: 1 !important;
+}
+
+.favorite-active-2 .ring {
+	background: #F5CC27 !important;
+}
+
+.favorite-active-2 .ring2 {
+	background: #fff !important;
+}
+
+.favorite-active-3 .ring2 {
+	width: 60px !important;
+	height: 60px !important;
+	top: -11px !important;
+	left: -11px !important;
+	position: absolute;
+	border-radius: 50%;
+	opacity: 1 !important;
+}
+
+.favorite-info {
+	font-size: 12px;
+	font-weight: 600;
+	text-transform: uppercase;
+	white-space: nowrap;
+	color: grey;
+	position: relative;
+	top: 30px;
+	left: -46px;
+	opacity: 0;
+	transition: all 0.3s ease;
+}
+
+.favorite-info-tog {
+	color: #F5CC27;
+	position: relative;
+	top: 45px;
+	opacity: 1;
+}

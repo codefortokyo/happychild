@@ -96,7 +96,7 @@ function drawInfoWindow(property) {
         "<img src='" + image + "'/>" +
         "</div>" +
         "<div class='map-content'>" +
-        "<h4><a href='#'>" + name + "</a></h4>" +
+        "<h4><a href='/nursery/" + id + "'>" + name + "</a></h4>" +
         "<p class='address'> <i class='fa fa-map-marker'></i>" + address + "</p>" +
         "<p class='description'>最寄り " + station_info + "</p>" +
         "<div class='map-properties-fetures'> " +
@@ -116,7 +116,7 @@ function drawInfoWindow(property) {
     allday_childcare +
     evaluation +
     "</div>" +
-    "<div class='map-properties-btns'><a href='/nursery/" + id + "' class='button-sm button-theme' target='_blank'>詳細情報</a></div>" +
+    "<div class='map-properties-btns'><a href='/nursery/" + id + "' class='button-sm button-theme'>詳細情報</a></div>" +
     "</div>";
     return ibContent;
 }
@@ -220,9 +220,9 @@ function insertPropertyToArray(property, layout) {
     var element = '';
 
     if (layout == 'grid_layout') {
-        element = '<div class="col-lg-6 col-md-6 col-sm-6 col-xs-12"><div class="property">' +
+        element = '<div class="col-lg-6 col-md-6 col-sm-6 col-xs-12 js-matchHeight"><div class="property">' +
             '<!-- Property img --> ' +
-            '<a href="/nursery/' + id + '" class="property-img" target="_blank">' +
+            '<a href="/nursery/' + id + '" class="property-img">' +
             '<div class="property-tag button sale">' + image + '</div> ' +
             '<img src="' + image + '" alt="properties-3" class="img-responsive"> ' +
             '</a>' +
@@ -230,7 +230,7 @@ function insertPropertyToArray(property, layout) {
             '<div class="property-content"> ' +
             '<!-- title --> ' +
             '<h1 class="title">' +
-            '<a href="/nursery/' + id + '" target="_blank">' + name + '</a> ' +
+            '<a href="/nursery/' + id + '">' + name + '</a> ' +
             '</h1> ' +
             '<!-- Property address --> ' +
             '<h3 class="property-address"> ' +
@@ -268,8 +268,8 @@ function insertPropertyToArray(property, layout) {
     else {
         element = '' +
             '<div class="property map-properties-list clearfix"> ' +
-            '<div class="col-lg-5 col-md-5 col-sm-5 col-xs-12 col-pad"> ' +
-            '<a href="properties-details.html" class="property-img height"> ' +
+            '<div class="col-lg-5 col-md-5 col-sm-5 col-xs-12 js-matchHeight"> ' +
+            '<a href="/nursery/' + id + '" class="property-img height">' +
             '<div class="property-tag button sale">' + image + '</div> ' +
             '<img src="' + image + '" alt="properties" class="img-responsive img-inside-map"> ' +
             '</a> ' +
@@ -277,7 +277,7 @@ function insertPropertyToArray(property, layout) {
             '<div class="col-lg-7 col-md-7 col-sm-7 col-xs-12 property-content "> ' +
             '<!-- title --> ' +
             '<h1 class="title"> ' +
-            '<a href="">' + name + '</a> </h1> ' +
+            '<a href="/nursery/"' + id + '">' + name + '</a> </h1> ' +
             '<!-- Property address --> ' +
             '<h3 class="property-address"> ' +
             '<a href=""> ' +
