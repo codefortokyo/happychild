@@ -116,7 +116,7 @@ function drawInfoWindow(property) {
     allday_childcare +
     evaluation +
     "</div>" +
-    "<div class='map-properties-btns'><a href='/nursery/" + id + "' class='button-sm button-theme' target='_blank'>詳細情報</a></div>" +
+    "<div class='map-properties-btns'><a href='/nursery/" + id + "' class='button-sm button-theme'>詳細情報</a></div>" +
     "</div>";
     return ibContent;
 }
