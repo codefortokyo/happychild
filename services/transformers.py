@@ -36,7 +36,7 @@ def transform_forms_to_search_nursery(location_form: SearchLocationForm,
         overnight_childcare=feature_form.cleaned_data.get('overnight_childcare'),
         allday_childcare=feature_form.cleaned_data.get('allday_childcare'),
         evaluation=feature_form.cleaned_data.get('evaludation'),
-        score=score,
+        score=int(score) if score else None,
         hierarchy=hierarchy
     )
 
