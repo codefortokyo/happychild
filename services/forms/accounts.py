@@ -6,6 +6,7 @@ from infrastructure.models import Age
 
 
 class SignUpForm(UserCreationForm):
+    error_css_class = 'has-error'
     username = forms.CharField(max_length=20,
                                required=True,
                                error_messages={

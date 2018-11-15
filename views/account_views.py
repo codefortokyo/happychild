@@ -13,6 +13,7 @@ def signup(request: HttpRequest) -> redirect or render:
         })
 
     form = SignUpForm(request.POST)
+    form.is_valid()
     if form.is_valid():
         form.save()
         # login
