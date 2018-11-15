@@ -64,12 +64,6 @@ class LoginForm(forms.Form):
     def __init__(self, *args, **kwargs):
         super(LoginForm, self).__init__(*args, **kwargs)
 
-    def clean_username(self):
-        username = self.cleaned_data['username']
-        if not User.is_exist_username(username):
-            raise forms.ValidationError(self.error_messages['invalid_username'], code='invalid_username', )
-        return username
-
     def clean(self):
         username = self.cleaned_data['username']
         password = self.cleaned_data['password']
