@@ -45,5 +45,5 @@ def search_nurseries(request: HttpRequest) -> render:
         'longitude': geo_parameters.origin_coordinate.get('longitude'),
         'nurseries': json.dumps({'data': nurseries}),
         'score': score if score else 0,
-        'hierarchy': hierarchy if score else 0
+        'hierarchy': hierarchy if hierarchy else 0
     })

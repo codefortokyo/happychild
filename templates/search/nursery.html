@@ -84,9 +84,11 @@
                                                 {{ field }}
                                             {% endfor %}
                                             <p>指数</p>
-                                            <input name="score" type="text" value={{ score }} style="text-align:right">
+                                            <input name="score" type="text"
+                                                   value="{{ score }}" style="text-align:right">
                                             <p>階層</p>
-                                            <input name="hierarchy" type="text" value={{ hierarchy }} style="text-align:right">
+                                            <input name="hierarchy" type="text"
+                                                   value="{{ hierarchy }}" style="text-align:right">
                                             <button type="button" class="btn button-theme pull-right"
                                                     data-dismiss="modal">閉じる
                                             </button>
