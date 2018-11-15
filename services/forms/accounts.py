@@ -6,6 +6,7 @@ from infrastructure.models import Age
 
 
 class SignUpForm(UserCreationForm):
+    error_css_class = 'has-error'
     username = forms.CharField(max_length=20,
                                required=True,
                                error_messages={
@@ -63,12 +64,6 @@ class LoginForm(forms.Form):
 
     def __init__(self, *args, **kwargs):
         super(LoginForm, self).__init__(*args, **kwargs)
-
-    def clean_username(self):
-        username = self.cleaned_data['username']
-        if not User.is_exist_username(username):
-            raise forms.ValidationError(self.error_messages['invalid_username'], code='invalid_username', )
-        return username
 
     def clean(self):
         username = self.cleaned_data['username']
