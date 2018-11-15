@@ -360,6 +360,10 @@ class NurseryScore(models.Model):
             }
         )
 
+    @classmethod
+    def get_last_year_score(cls, nursery_id: int, age_id: int, year='2018'):
+        return cls.objects.filter(year=year, nursery_id=nursery_id, age_id=age_id).first()
+
 
 class Line(models.Model):
     id = models.AutoField(primary_key=True)

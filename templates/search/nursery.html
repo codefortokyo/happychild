@@ -13,11 +13,6 @@
                 <form method="get">
                     <div class="properties-map-search-content">
                         <div class="row">
-                            {% for error in location_form.non_field_errors %}
-                                <div class="form-group has-errors text-danger small">
-                                    {{ error }}
-                                </div>
-                            {% endfor %}
                             {% for field in location_form.visible_fields %}
                                 <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12">
                                     <div class="form-group">
@@ -54,13 +49,52 @@
                             </div>
                         </div>
                         <div class="row">
-                            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-                                <button class="btn btn-default pull-right" type="submit"> 検索 </button>
+                            <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
+                                <button type="button" class="btn border-button-theme" data-toggle="modal"
+                                        data-target=".nursery-score-modal">調整指数を設定する
+                                </button>
+                            </div>
+                            <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
+                                <button class="btn btn-default pull-right" type="submit"> 検索</button>
                                 <button class="btn btn-default pull-right" type="button"><i
                                         class="fa fa-map-marker geolocation" data-toggle="tooltip"
                                         data-placement="bottom" title="現在位置から検索"
                                         onclick="cmanPosGet();"></i>
                                 </button>
+                            </div>
+                        </div>
+
+                        <div class="modal fade nursery-score-modal" tabindex="-1" role="dialog"
+                             aria-labelledby="nurseryScoreModel" aria-hidden="true">
+                            <div class="modal-dialog modal-lg">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <p>
+                                            現在の状況を選択することで保育園の入所指数を計算し, 過去の入所実績値
+                                            から入所可能性の高い保育園を検索することができます.<br>
+                                        </p>
+                                        <a href="http://www.city.shinagawa.tokyo.jp/hp/page000028000/hpg000027969.htm"
+                                           target="_blank">
+                                            <p> 参考: 品川区 保育所等利用調整基準(選考基準)</p></a>
+                                    </div>
+                                    <div class="modal-body">
+                                        <div class="form-group">
+                                            {% for field in score_form %}
+                                                {{ field.label_tag }}
+                                                {{ field }}
+                                            {% endfor %}
+                                            <p>指数</p>
+                                            <input name="score" type="text"
+                                                   value="{{ score }}" style="text-align:right">
+                                            <p>階層</p>
+                                            <input name="hierarchy" type="text"
+                                                   value="{{ hierarchy }}" style="text-align:right">
+                                            <button type="button" class="btn button-theme pull-right"
+                                                    data-dismiss="modal">閉じる
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -77,6 +111,17 @@
 {% endblock %}
 
 {% block js %}
+    <script type="text/javascript" language="javascript">
+        function calc(f) {
+            f.score.value = parseInt(f.father_score.value) + parseInt(f.mother_score.value) + parseInt(f.adjust_score.value);
+            return f.score.value;
+        }
+
+        function judge(f) {
+            f.hierarchy.value = f.hierarchy_score.value;
+            return f.hierarchy.value;
+        }
+    </script>
     <script>
         let providerName = 'OpenStreetMap.Mapnik';
 

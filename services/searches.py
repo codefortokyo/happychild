@@ -2,7 +2,7 @@ import json
 from decimal import Decimal
 from typing import Dict, List, Tuple
 
-from infrastructure.models import Nursery, NurseryFreeNum, Station, Ward
+from infrastructure.models import Nursery, NurseryFreeNum, NurseryScore, Station, Ward
 from infrastructure.consts import (
     NURSERY_FREE_NUM_FMT,
     NOT_ONE_AGE_ID,
@@ -27,6 +27,7 @@ def get_nurseries(search: SearchNurseryEntity, limit: int = 50) -> Tuple[List[st
     last_updated_dates = NurseryFreeNum.get_last_updated_date(nursery_ids)
 
     nurseries = _filter_by_free_nums(nurseries, search, free_nums)
+    nurseries = _filter_by_scores(nurseries, search)
 
     nurseries = sorted(nurseries, key=lambda x: x.updated_at, reverse=True)
 
@@ -147,6 +148,39 @@ def _filter_by_free_nums(nurseries: List[Nursery], search: SearchNurseryEntity, 
         sum_free_num = sum([free_nums.get(NURSERY_FREE_NUM_FMT.format(nursery.id, age_id), 0) for age_id in AGE_IDS])
         if sum_free_num > 0:
             ret.append(nursery)
+    return ret
+
+
+def _filter_by_scores(nurseries: List[Nursery], search: SearchNurseryEntity) -> List[Nursery]:
+    """
+    Filtering nurseries by score and hierarchy
+    TODO: filter by hierarchy
+
+    Parameters
+    ---------
+    nurseries ``Nursery.objects``, required
+    search ``SearchNurseryEntity``, required
+
+    Returns
+    -------
+    Result of filtering by score and hierarchy
+    """
+    if not search.score or not search.hierarchy:
+        return nurseries
+
+    ret = []
+    for nursery in nurseries:
+        if not search.score:
+            ret.append(nursery)
+            continue
+
+        nursery_score = NurseryScore.get_last_year_score(nursery.id, search.age_id)
+        if not nursery_score or not nursery_score.score:
+            continue
+
+        if nursery_score.score >= search.score:
+            ret.append(nursery)
+            continue
     return ret
 
 

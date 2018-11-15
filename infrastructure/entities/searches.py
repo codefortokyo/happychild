@@ -19,6 +19,8 @@ class SearchNurseryEntity:
     overnight_childcare: Optional[bool] = False
     allday_childcare: Optional[bool] = False
     evaluation: Optional[bool] = False
+    score: Optional[int] = None
+    hierarchy: Optional[str] = None
 
 
 @dataclass

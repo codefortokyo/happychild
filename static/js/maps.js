@@ -98,7 +98,7 @@ function drawInfoWindow(property) {
         "<div class='map-content'>" +
         "<h4><a href='/nursery/" + id + "'>" + name + "</a></h4>" +
         "<p class='address'> <i class='fa fa-map-marker'></i>" + address + "</p>" +
-        "<p class='description'>最寄り " + station_info + "</p>" +
+        "<p class='description'>" + station_info + "</p>" +
         "<div class='map-properties-fetures'> " +
         licence +
         school_type +
@@ -239,7 +239,7 @@ function insertPropertyToArray(property, layout) {
             '</a> ' +
             '</h3> ' +
             '<!-- Property description --> ' +
-            "<p>最寄り駅: " + station_info + "</p>" +
+            "<p>" + station_info + "</p>" +
             '<!-- Facilities List --> ' +
             '<ul class="facilities-list clearfix"> ' +
             licence +
@@ -285,7 +285,7 @@ function insertPropertyToArray(property, layout) {
             '</a>' +
             '</h3>' +
             '<!-- Property description --> ' +
-            "<p>最寄り " + station_info + "</p>" +
+            "<p>" + station_info + "</p>" +
             '<!-- Facilities List --> ' +
             '<ul class="facilities-list clearfix"> ' +
             licence +
