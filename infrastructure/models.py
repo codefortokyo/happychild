@@ -544,3 +544,50 @@ class NurseryTours(models.Model):
                     date=target_date
                 ))
         cls.objects.bulk_create(schedules)
+
+    @property
+    def start_time(self):
+        if self.special_start_time:
+            return self.special_start_time
+        return self.nursery_default_tour_setting.start_time
+
+    @property
+    def end_time(self):
+        if self.special_end_time:
+            return self.special_end_time
+        return self.nursery_default_tour_setting.end_time
+
+    @property
+    def capacity(self):
+        if self.special_capacity:
+            return self.special_capacity
+        return self.nursery_default_tour_setting.capacity
+
+    @property
+    def note(self):
+        if self.special_note:
+            return self.special_note
+        return self.nursery_default_tour_setting.note
+
+    @property
+    def applied_count(self):
+        return NurseryReservation.objects.filter(nursery_tour_id=self.id, is_active=True).count()
+
+    @classmethod
+    def get_nursery_tours(cls, nursery_id: int, limit: int = 5):
+        return cls.objects.filter(nursery_id=nursery_id, is_active=True).order_by('date')[:limit]
+
+
+class NurseryReservation(models.Model):
+    id = models.AutoField(primary_key=True)
+    nursery_tour = models.ForeignKey(NurseryTours, models.PROTECT)
+    user = models.ForeignKey(CustomUser, models.PROTECT)
+    is_active = Bit1BooleanField(default=True)
+    status = models.IntegerField(default=0, null=False)
+    reservation_at = models.DateTimeField(default=timezone.now)
+    created_at = models.DateTimeField(default=timezone.now)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        managed = False
+        db_table = 'nursery_reservations'

@@ -246,3 +246,20 @@ CREATE TABLE `nursery_tours` (
   UNIQUE KEY `nursery_id_and_date_and_setting_id` (`nursery_id`, `date`, `nursery_default_tour_setting_id`),
   UNIQUE KEY `nursery_id_and_date_special_time` (`nursery_id`, `date`, `special_start_time`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+
+CREATE TABLE `nursery_reservations` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `nursery_tour_id` int(11) UNSIGNED NOT NULL,
+  `user_id` int(11) UNSIGNED NOT NULL,
+  `is_active` tinyint(1) DEFAULT '1',
+  `status` tinyint(4) DEFAULT '0',
+  `reservation_at` datetime(6) NOT NULL,
+  `created_at` datetime(6) NOT NULL,
+  `updated_at` datetime(6) NOT NULL,
+  PRIMARY KEY (`id`),
+  KEY `idx_nursery_tour_id_and_is_active` (`nursery_tour_id`, `is_active`),
+  KEY `idx_user_id_and_is_active` (`user_id`, `is_active`),
+  KEY `is_active` (`is_active`),
+  UNIQUE KEY `nursery_tour_id_and_user_id` (`nursery_tour_id`, `user_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
