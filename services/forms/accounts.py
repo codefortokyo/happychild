@@ -136,6 +136,12 @@ class EmailChangeForm(forms.Form):
 
 
 class ProfileForm(forms.ModelForm):
+    name = forms.CharField(max_length=255,
+                           required=False,
+                           label='お名前',
+                           widget=forms.TextInput(attrs={
+                               'class': 'input-text',
+                           }))
     address = forms.CharField(max_length=255,
                               required=False,
                               label='住所',
@@ -159,6 +165,4 @@ class ProfileForm(forms.ModelForm):
 
     class Meta:
         model = User
-        fields = (
-            "address", "phone_number", "child_age",
-        )
+        fields = ("name", "address", "phone_number", "child_age",)
