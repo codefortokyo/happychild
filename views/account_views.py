@@ -11,7 +11,6 @@ def signup(request: HttpRequest) -> redirect or render:
         return render(request, 'account/signup.html', context={
             'form': SignUpForm()
         })
-
     form = SignUpForm(request.POST)
     if form.is_valid():
         form.save()
