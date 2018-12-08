@@ -495,7 +495,7 @@ class NurseryDefaultTourSetting(models.Model):
             return None
 
 
-class NurseryTours(models.Model):
+class NurseryTour(models.Model):
     id = models.AutoField(primary_key=True)
     nursery = models.ForeignKey(Nursery, models.PROTECT)
     nursery_default_tour_setting = models.ForeignKey(NurseryDefaultTourSetting, models.PROTECT, null=True)
@@ -564,6 +564,10 @@ class NurseryTours(models.Model):
         return self.nursery_default_tour_setting.capacity
 
     @property
+    def description(self):
+        return self.nursery_default_tour_setting.description
+
+    @property
     def note(self):
         if self.special_note:
             return self.special_note
@@ -581,7 +585,7 @@ class NurseryTours(models.Model):
 
 class NurseryReservation(models.Model):
     id = models.AutoField(primary_key=True)
-    nursery_tour = models.ForeignKey(NurseryTours, models.PROTECT)
+    nursery_tour = models.ForeignKey(NurseryTour, models.PROTECT)
     user = models.ForeignKey(CustomUser, models.PROTECT)
     note = models.CharField(max_length=255, null=True)
     is_active = Bit1BooleanField(default=True)
@@ -593,3 +597,21 @@ class NurseryReservation(models.Model):
     class Meta:
         managed = False
         db_table = 'nursery_reservations'
+
+    @classmethod
+    def get_reserved_nurseries_held_after(cls, user_id: int):
+        return cls.objects.select_related('nursery_tour__nursery').filter(
+            user_id=user_id, nursery_tour__date__lt=timezone.now().date()).order_by('nursery_tour__date')
+
+    @classmethod
+    def get_reserved_nurseries_held_before(cls, user_id: int):
+        return cls.objects.select_related('nursery_tour__nursery').filter(
+            user_id=user_id, nursery_tour__date__gte=timezone.now().date()).order_by('nursery_tour__date')
+
+    @property
+    def nursery(self):
+        return self.nursery_tour.nursery
+
+    @property
+    def date(self):
+        return self.nursery_tour.date

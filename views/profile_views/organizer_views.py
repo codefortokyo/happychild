@@ -3,7 +3,7 @@ from django.http import HttpRequest
 from django.shortcuts import render, redirect
 
 from infrastructure.consts import DayOfWeek
-from infrastructure.models import Nursery, UserNurseryMapping, NurseryDefaultTourSetting, NurseryTours
+from infrastructure.models import Nursery, UserNurseryMapping, NurseryDefaultTourSetting, NurseryTour
 from services.forms.admins import NurseryForm, NurseryFreeNumForm, NurseryDefaultTourForm
 
 
@@ -75,7 +75,7 @@ def nursery_tour_profile(request: HttpRequest, user_id: int, nursery_id: int) ->
                 'description': form.cleaned_data['description'],
                 'note': form.cleaned_data['note'],
             })
-        NurseryTours.create_tour_schedules_in_a_month(nursery_id, DayOfWeek.get_default_held_days(), True)
+        NurseryTour.create_tour_schedules_in_a_month(nursery_id, DayOfWeek.get_default_held_days(), True)
         return redirect('/user/{}/nurseries/{}/tour'.format(user_id, nursery_id))
     return render(request, 'profile/organizer/nursery.html', context={
         'nursery_id': nursery_id,
