@@ -180,10 +180,18 @@
                                                     <td>{{ nursery_tour.capacity }}</td>
                                                     <td>{{ nursery_tour.applied_count }}</td>
                                                     <td>
-                                                        {% if nursery_tour.capacity > nursery_tour.applied_count %}
+                                                        {% if nursery_tour.capacity > nursery_tour.applied_count and not nursery_tour.is_reserved %}
                                                             <a href="{% url 'nursery_reservation_page' nursery_id=nursery.id nursery_tour_id=nursery_tour.id %}"
                                                                target="_blank"
                                                                class="btn button-sm border-button-theme pull-right">見学会に申し込む</a>
+                                                        {% elif nursery_tour.is_reserved %}
+                                                        <button class="btn button-sm button-default pull-right">
+                                                            既に申し込み済みです
+                                                        </button>
+                                                        {% elif nursery_tour.capacity <= nursery_tour.applied_count  %}
+                                                            <button class="btn button-sm button-danger pull-right">
+                                                                既に定員に達しました
+                                                            </button>
                                                         {% endif %}
                                                     </td>
                                                 </tr>

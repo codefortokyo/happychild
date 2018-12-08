@@ -575,7 +575,8 @@ class NurseryTours(models.Model):
 
     @classmethod
     def get_nursery_tours(cls, nursery_id: int, limit: int = 5):
-        return cls.objects.filter(nursery_id=nursery_id, is_active=True).order_by('date')[:limit]
+        return cls.objects.filter(
+            nursery_id=nursery_id, is_active=True, date__gte=timezone.now().date()).order_by('date')[:limit]
 
 
 class NurseryReservation(models.Model):

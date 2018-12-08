@@ -12,6 +12,10 @@ from services.forms.reservations import NurseryReservationForm
 def nursery_detail(request: HttpRequest, nursery_id: int) -> render:
     nursery = get_nursery(nursery_id)
     nursery_tours = NurseryTours.get_nursery_tours(nursery_id)
+    for nursery_tour in nursery_tours:
+        if not request.user:
+            nursery_tour.is_reserved = False
+        nursery_tour.is_reserved = NurseryReservation.objects.filter(nursery_tour_id=nursery_tour.id, user_id=request.user.id).exists()
     return render(request, 'nursery/detail.html', context={
         'nursery': nursery,
         'nursery_tours': nursery_tours,
