@@ -181,7 +181,8 @@
                                                     <td>{{ nursery_tour.applied_count }}</td>
                                                     <td>
                                                         {% if nursery_tour.capacity > nursery_tour.applied_count %}
-                                                            <a href="#" target="_blank"
+                                                            <a href="{% url 'nursery_reservation_page' nursery_id=nursery.id nursery_tour_id=nursery_tour.id %}"
+                                                               target="_blank"
                                                                class="btn button-sm border-button-theme pull-right">見学会に申し込む</a>
                                                         {% endif %}
                                                     </td>

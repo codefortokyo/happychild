@@ -582,6 +582,7 @@ class NurseryReservation(models.Model):
     id = models.AutoField(primary_key=True)
     nursery_tour = models.ForeignKey(NurseryTours, models.PROTECT)
     user = models.ForeignKey(CustomUser, models.PROTECT)
+    note = models.CharField(max_length=255, null=True)
     is_active = Bit1BooleanField(default=True)
     status = models.IntegerField(default=0, null=False)
     reservation_at = models.DateTimeField(default=timezone.now)

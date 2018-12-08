@@ -252,6 +252,7 @@ CREATE TABLE `nursery_reservations` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `nursery_tour_id` int(11) UNSIGNED NOT NULL,
   `user_id` int(11) UNSIGNED NOT NULL,
+  `note` varchar(255) DEFAULT NULL,
   `is_active` tinyint(1) DEFAULT '1',
   `status` tinyint(4) DEFAULT '0',
   `reservation_at` datetime(6) NOT NULL,
