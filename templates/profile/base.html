@@ -12,7 +12,7 @@
                             <ul>
                                 {% if user.is_organizer %}
                                     <li>
-                                        <a href="#">
+                                        <a href="{% url 'user_reserved_page' user_id=user.id %}">
                                             <i class="fa fa-pagelines"></i> 見学会応募状況
                                         </a>
                                     </li>

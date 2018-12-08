@@ -1,0 +1,52 @@
+{% extends "profile/base.html" %}
+{% block profile %}
+    <div class="main-title-2">
+        <h1>見学会予約済みの保育園</h1>
+    </div>
+    <!-- table start -->
+    <h4> 開催前の見学会 </h4>
+    <table class="manage-table responsive-table">
+        <tbody>
+        {% for nursery_reservation in nursery_reservations_held_before %}
+            <tr>
+                <td class="title-container">
+                    <img src="{{ nursery_reservation.nursery.default_thumbnail_url }}" alt="nursery"
+                         class="img-responsive hidden-xs">
+                    <div class="title">
+                        <h4><a href="#"> {{ nursery_reservation.nursery.name }} </a></h4>
+                        <p>見学会日: {{ nursery_reservation.date }} </p>
+                        <span><i class="fa fa-map-marker"></i> {{ nursery_reservation.nursery.address }} </span>
+                        <div class="form-group">
+                            <a href="{% url 'edit_user_reserved_page' nursery_id=nursery_reservation.nursery_tour.nursery_id nursery_tour_id=nursery_reservation.nursery_tour.id reservation_id=nursery_reservation.id %}">
+                                <button class="btn button-md btn-outline pull-right" type="submit">見学会の情報を確認する</button>
+                            </a>
+                        </div>
+                    </div>
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+    <!-- table end -->
+
+    <!-- table start -->
+    <h4> 終了済の見学会 </h4>
+    <table class="manage-table responsive-table">
+        <tbody>
+        {% for nursery_reservation in nursery_reservations_held_after %}
+            <tr>
+                <td class="title-container">
+                    <img src="{{ nursery_reservation.nursery.default_thumbnail_url }}" alt="nursery"
+                         class="img-responsive hidden-xs">
+                    <div class="title">
+                        <h4>{{ nursery_reservation.nursery.name }}</h4>
+                        <p>見学会日: {{ nursery_reservation.date }} </p>
+                        <span><i class="fa fa-map-marker"></i> {{ nursery_reservation.nursery.address }} </span>
+                    </div>
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+    <!-- table end -->
+{% endblock %}

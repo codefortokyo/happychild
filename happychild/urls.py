@@ -46,7 +46,9 @@ urlpatterns = [
         name='admin_nursery_page'),
     url(r'^admin/wards/(?P<ward_id>\d+)', admin_views.nursery_list, name='admin_nurseries_page'),
 
-    url(r'^nursery/(?P<nursery_id>\d+)/reservation/(?P<nursery_tour_id>\d+)', nursery_views.nursery_reservation,
+    url(r'^nursery/(?P<nursery_id>\d+)/tour/(?P<nursery_tour_id>\d+)/reservation/(?P<reservation_id>\d+)',
+        nursery_views.nursery_reservation, name='edit_user_reserved_page'),
+    url(r'^nursery/(?P<nursery_id>\d+)/tour/(?P<nursery_tour_id>\d+)', nursery_views.nursery_reservation,
         name='nursery_reservation_page'),
     url(r'^nursery/(?P<nursery_id>\d+)', nursery_views.nursery_detail, name='detail_page'),
 
@@ -66,7 +68,8 @@ urlpatterns = [
         name='user_nursery_basic_page'),
     url(r'^user/(?P<user_id>\d+)/nurseries', organizer_views.nursery_list_profile,
         name='user_nursery_list_page'),
-    url(r'^user/(?P<user_id>\d+)/bookmark', user_views.bookmarked_nurseries, name='user_bookmarked_page'),
+    url(r'^user/(?P<user_id>\d+)/reserved', user_views.reserved_nurseries, name='user_reserved_page'),
+    url(r'^user/(?P<user_id>\d+)/bookmarked', user_views.bookmarked_nurseries, name='user_bookmarked_page'),
     url(r'^user/(?P<user_id>\d+)', user_views.user_profile, name='user_profile_page'),
 
     url(r'^accounts/login', account_views.login_view, name='login_page'),

@@ -7,6 +7,21 @@
                 <div class="col-lg-12 col-md-12 col-sm-12">
                     <div class="my-address">
                         <div class="main-title-2" id="basic">
+                            <h1>{{ nursery_tour.nursery.name }} 見学会</h1>
+                        </div>
+                        <p>住所
+                        <div class="text-center">{{ nursery_tour.nursery.address }} </div>
+                        </p>
+                        <p>開催日時
+                        <div class="text-center"> {{ nursery_tour.date }} {{ nursery_tour.start_time }}
+                            ~ {{ nursery_tour.end_time }} </div>
+                        </p>
+                        <p>保育園からお知らせ
+                        <div class="text-center">{{ nursery_tour.description }} </div>
+                        </p>
+                    </div>
+                    <div class="my-address">
+                        <div class="main-title-2" id="basic">
                             <h1>見学会予約フォーム</h1>
                         </div>
                         <form action="{% url 'nursery_reservation_page' nursery_id=nursery_id nursery_tour_id=nursery_tour.id %}"
@@ -19,7 +34,12 @@
                                 </div>
                             {% endfor %}
                             <div class="form-group">
-                                <button class="btn button-md button-theme pull-right" type="submit">見学会を予約する</button>
+                                <button class="btn button-md button-theme pull-right" type="submit">見学会を予約・登録情報を修正する
+                                </button>
+                                {% if reservation_id %}
+                                    <button class="btn button-md button-default pull-left" type="submit">見学会をキャンセルする
+                                    </button>
+                                {% endif %}
                             </div>
                         </form>
                     </div>
