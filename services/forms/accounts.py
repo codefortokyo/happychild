@@ -1,25 +1,24 @@
 from django import forms
 from django.contrib.auth import authenticate
 from django.contrib.auth.forms import UserCreationForm
+
 from infrastructure.models import CustomUser as User
 from infrastructure.models import Age
 
 
 class SignUpForm(UserCreationForm):
-    error_css_class = 'has-error'
+    error_messages = {
+        'invalid_username': "既にそのユーザー名は使用されています",
+        'invalid_email': "既にそのメールアドレスは使用されています",
+        'password_incorrect': "パスワードが正しくありません",
+    }
     username = forms.CharField(max_length=20,
                                required=True,
-                               error_messages={
-                                   'required': 'そのユーザ名は既に使用されています'
-                               },
                                widget=forms.TextInput(attrs={
                                    'class': 'input-text',
                                    'placeholder': 'ユーザー名'
                                }))
     email = forms.EmailField(required=True,
-                             error_messages={
-                                 'required': 'そのメールアドレスは既に使用されています'
-                             },
                              widget=forms.TextInput(attrs={
                                  'class': 'input-text',
                                  'placeholder': 'メールアドレス'
@@ -42,6 +41,30 @@ class SignUpForm(UserCreationForm):
         fields = (
             "username", "email", "password1", "password2",
         )
+
+    def __init__(self, *args, **kwargs):
+        super(SignUpForm, self).__init__(*args, **kwargs)
+
+    def clean_username(self):
+        username = self.cleaned_data['username'].lower()
+        r = User.objects.filter(username=username)
+        if r.count():
+            raise forms.ValidationError(self.error_messages['invalid_username'], code='username invalid', )
+        return username
+
+    def clean_email(self):
+        email = self.cleaned_data['email'].lower()
+        r = User.objects.filter(email=email)
+        if r.count():
+            raise forms.ValidationError(self.error_messages['invalid_email'], code='email invalid',)
+        return email
+
+    def clean_password2(self):
+        password1 = self.cleaned_data.get('password1')
+        password2 = self.cleaned_data.get('password2')
+        if password1 and password2 and password1 != password2:
+            raise forms.ValidationError(self.error_messages['password_incorrect'], code='password incorrect', )
+        return password2
 
 
 class LoginForm(forms.Form):

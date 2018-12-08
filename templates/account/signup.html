@@ -15,6 +15,9 @@
                                 <h1><span>ユーザー登録</span></h1>
                             </div>
                             <!-- Form start-->
+                            <div class="form-group has-errors text-danger small">
+                                {{ form.errors }}
+                            </div>
                             <form action="{% url 'signup_page' %}" method="POST">
                                 {% csrf_token %}
                                 {% for field in form %}
