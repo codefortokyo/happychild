@@ -13,7 +13,8 @@
                     <img src="{{ nursery_reservation.nursery.default_thumbnail_url }}" alt="nursery"
                          class="img-responsive hidden-xs">
                     <div class="title">
-                        <h4><a href="#"> {{ nursery_reservation.nursery.name }} </a></h4>
+                        <a href="{% url 'detail_page' nursery_id=nursery_reservation.nursery.id %}">
+                            <h4>{{ nursery_reservation.nursery.name }}</h4></a>
                         <p>見学会日: {{ nursery_reservation.date }} </p>
                         <span><i class="fa fa-map-marker"></i> {{ nursery_reservation.nursery.address }} </span>
                         <div class="form-group">
@@ -39,7 +40,8 @@
                     <img src="{{ nursery_reservation.nursery.default_thumbnail_url }}" alt="nursery"
                          class="img-responsive hidden-xs">
                     <div class="title">
-                        <h4>{{ nursery_reservation.nursery.name }}</h4>
+                        <a href="{% url 'detail_page' nursery_id=nursery_reservation.nursery.id %}">
+                            <h4>{{ nursery_reservation.nursery.name }}</h4></a>
                         <p>見学会日: {{ nursery_reservation.date }} </p>
                         <span><i class="fa fa-map-marker"></i> {{ nursery_reservation.nursery.address }} </span>
                     </div>

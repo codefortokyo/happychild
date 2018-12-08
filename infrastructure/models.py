@@ -599,12 +599,12 @@ class NurseryReservation(models.Model):
         db_table = 'nursery_reservations'
 
     @classmethod
-    def get_reserved_nurseries_held_before(cls, user_id: int):
+    def get_reserved_nurseries_held_after(cls, user_id: int):
         return cls.objects.select_related('nursery_tour__nursery').filter(
             user_id=user_id, nursery_tour__date__lt=timezone.now().date()).order_by('nursery_tour__date')
 
     @classmethod
-    def get_reserved_nurseries_held_after(cls, user_id: int):
+    def get_reserved_nurseries_held_before(cls, user_id: int):
         return cls.objects.select_related('nursery_tour__nursery').filter(
             user_id=user_id, nursery_tour__date__gte=timezone.now().date()).order_by('nursery_tour__date')
 

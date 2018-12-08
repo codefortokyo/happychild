@@ -70,3 +70,11 @@ def nursery_reservation(request: HttpRequest, nursery_id: int, nursery_tour_id: 
         'reservation_id': reservation_id or None,
         'form': form,
     })
+
+
+@login_required
+def delete_nursery_reservation(request: HttpRequest, nursery_id: int, nursery_tour_id: int,
+                               reservation_id: int) -> render:
+    reservation = NurseryReservation.objects.get(pk=reservation_id)
+    reservation.delete()
+    return redirect('/nursery/{}'.format(nursery_id))

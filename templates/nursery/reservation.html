@@ -37,8 +37,10 @@
                                 <button class="btn button-md button-theme pull-right" type="submit">見学会を予約・登録情報を修正する
                                 </button>
                                 {% if reservation_id %}
-                                    <button class="btn button-md button-default pull-left" type="submit">見学会をキャンセルする
-                                    </button>
+                                    <a href="{% url 'delete_user_reserved_page' nursery_id=nursery_id nursery_tour_id=nursery_tour.id reservation_id=reservation_id %}">
+                                        <button class="btn button-md button-default pull-left" type="submit" onclick="return confirm('本当に見学会をキャンセルしますか？');">見学会をキャンセルする
+                                        </button>
+                                    </a>
                                 {% endif %}
                             </div>
                         </form>
