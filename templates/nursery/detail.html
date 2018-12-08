@@ -90,6 +90,8 @@
                     <ul class="nav nav-tabs">
                         <li class="active"><a href="#service" data-toggle="tab"
                                               aria-expanded="true">サービス内容</a></li>
+                        <li class=""><a href="#reservation" data-toggle="tab" aria-expanded="false">見学会の予約</a>
+                        </li>
                         <li class=""><a href="#free-num" data-toggle="tab" aria-expanded="false">空き状況</a>
                         </li>
                     </ul>
@@ -151,6 +153,49 @@
                                                 <td>{{ nursery.free_num_four_year_old }}</td>
                                                 <td>{{ nursery.free_num_extent }}</td>
                                             </tr>
+                                        </table>
+                                    </div>
+                                    <!-- Floor Plans end -->
+                                </div>
+                                <div class="tab-pane fade" id="reservation">
+                                    <!-- Floor Plans start -->
+                                    <div class="floor-plans">
+                                        <div class="main-title-2">
+                                            <h1><span>見学会の予約</span></h1>
+                                        </div>
+                                        <table>
+                                            <tr>
+                                                <td>日付</td>
+                                                <td>開始時間</td>
+                                                <td>終了時間</td>
+                                                <td>参加可能人数</td>
+                                                <td>申込数</td>
+                                                <td></td>
+                                            </tr>
+                                            {% for nursery_tour in nursery_tours %}
+                                                <tr>
+                                                    <td>{{ nursery_tour.date }}</td>
+                                                    <td>{{ nursery_tour.start_time }}</td>
+                                                    <td>{{ nursery_tour.end_time }}</td>
+                                                    <td>{{ nursery_tour.capacity }}</td>
+                                                    <td>{{ nursery_tour.applied_count }}</td>
+                                                    <td>
+                                                        {% if nursery_tour.capacity > nursery_tour.applied_count and not nursery_tour.is_reserved %}
+                                                            <a href="{% url 'nursery_reservation_page' nursery_id=nursery.id nursery_tour_id=nursery_tour.id %}"
+                                                               target="_blank"
+                                                               class="btn button-sm border-button-theme pull-right">見学会に申し込む</a>
+                                                        {% elif nursery_tour.is_reserved %}
+                                                        <button class="btn button-sm button-default pull-right">
+                                                            既に申し込み済みです
+                                                        </button>
+                                                        {% elif nursery_tour.capacity <= nursery_tour.applied_count  %}
+                                                            <button class="btn button-sm button-danger pull-right">
+                                                                既に定員に達しました
+                                                            </button>
+                                                        {% endif %}
+                                                    </td>
+                                                </tr>
+                                            {% endfor %}
                                         </table>
                                     </div>
                                     <!-- Floor Plans end -->

@@ -1,11 +1,11 @@
 import decimal
 from typing import Dict, List
 
-from django.db import connections
+from django.db import connection
 from django.utils.lru_cache import lru_cache
 
 
-def dictfetchall(cursor: connections) -> List[Dict]:
+def dictfetchall(cursor: connection) -> List[Dict]:
     desc = cursor.description
     return [
         dict(zip([col[0] for col in desc], row))
@@ -16,7 +16,7 @@ def dictfetchall(cursor: connections) -> List[Dict]:
 def get_near_nurseries(latitude: decimal, longitude: decimal, distance: int = 10, limit: int = 50) -> List[Dict]:
     """ 指定された地点に近い保育園情報を取得する
     """
-    cursor = connections['replica'].cursor()
+    cursor = connection.cursor()
     cursor.execute("""
         SELECT
           id,
@@ -38,7 +38,7 @@ def get_near_nurseries(latitude: decimal, longitude: decimal, distance: int = 10
 def get_near_stations(latitude: decimal, longitude: decimal, distance: int = 10, limit: int = 20) -> List[Dict]:
     """ 指定された地点に近い駅情報を取得する
     """
-    cursor = connections['replica'].cursor()
+    cursor = connection.cursor()
     cursor.execute("""
         SELECT
           MIN(id) as id,
@@ -62,7 +62,7 @@ def get_near_stations(latitude: decimal, longitude: decimal, distance: int = 10,
 def get_nearest_ward(latitude: decimal, longitude: decimal) -> int:
     """ 最も近い地区を返す
     """
-    cursor = connections['replica'].cursor()
+    cursor = connection.cursor()
     cursor.execute("""
       SELECT
         *,
