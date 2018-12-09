@@ -12,16 +12,16 @@
                             <ul>
                                 {% if user.is_organizer %}
                                     <li>
-                                        <a href="{% url 'user_reserved_page' user_id=user.id %}">
-                                            <i class="fa fa-pagelines"></i> 見学会応募状況
-                                        </a>
-                                    </li>
-                                    <li>
                                         <a href="{% url 'user_nursery_list_page' user_id=user.id %}">
                                             <i class="flaticon-apartment"></i>運営保育園設定
                                         </a>
                                     </li>
                                 {% endif %}
+                                <li>
+                                    <a href="{% url 'user_reserved_page' user_id=user.id %}">
+                                        <i class="fa fa-pagelines"></i> 見学会応募状況
+                                    </a>
+                                </li>
                                 <li>
                                     <a href="{% url 'user_bookmarked_page' user_id=user.id %}">
                                         <i class="fa fa-heart"></i> お気に入りの保育園
