@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/2.1/ref/settings/
 """
 
 import os
+from zenpy import Zenpy
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -204,6 +205,14 @@ CACHES = {
         'LOCATION': '/var/tmp/django_cache',
     }
 }
+
+# Create a Zenpy instance
+ZENDESK_CREDENTIAL = {
+    'token': os.getenv('ZENDESK_TOKEN'),
+    'email': os.getenv('ZENDESK_EMAIL'),
+    'subdomain': os.getenv('ZENDESK_SUBDOMAIN')
+}
+ZENPY_CLIENT = Zenpy(**ZENDESK_CREDENTIAL)
 
 AUTH_USER_MODEL = 'infrastructure.CustomUser'
 LOGIN_REDIRECT_URL = '/'

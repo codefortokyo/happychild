@@ -8,59 +8,31 @@
                 <h1>お問い合わせ</h1>
             </div>
             <div class="row">
-                <div class="col-lg-7 col-md-7 col-sm-6 col-xs-12">
+                <div class="col-lg-12 col-md-12 col-sm-612col-xs-12">
+                    {% if messages %}
+                        <h4 style="text-align: center"> {{ messages }}</h4>
+                    {% endif %}
                     <!-- Contact form start -->
                     <div class="contact-form">
-                        <form id="contact_form" action="index.html" method="GET" enctype="multipart/form-data">
+                        <form id="contact_form" action="{% url 'contact_page' %}" method="POST"
+                              enctype="multipart/form-data">
+                            {% csrf_token %}
                             <div class="row">
-                                <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
-                                    <div class="form-group fullname">
-                                        <input type="text" name="full-name" class="input-text" placeholder="お名前">
+                                {% for field in form %}
+                                    <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
+                                        <div class="form-group">
+                                            {{ field.label }}
+                                            {{ field }}
+                                        </div>
                                     </div>
-                                </div>
-                                <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
-                                    <div class="form-group enter-email">
-                                        <input type="email" name="email" class="input-text" placeholder="返信用のメールアドレス">
-                                    </div>
-                                </div>
-                                <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
-                                    <div class="form-group subject">
-                                        <input type="text" name="subject" class="input-text" placeholder="タイトル">
-                                    </div>
-                                </div>
-                                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 clearfix">
-                                    <div class="form-group message">
-                                        <textarea class="input-text" name="message" placeholder="お問い合わせ内容"></textarea>
-                                    </div>
-                                </div>
-                                <div class="col-lg-12 col-md-6 col-sm-12 col-xs-12">
-                                    <div class="form-group send-btn mb-0">
-                                        <button type="submit" class="button-md button-theme">送信</button>
-                                    </div>
-                                </div>
+                                {% endfor %}
+                            </div>
+                            <div class="form-group">
+                                <button class="btn button-md button-theme pull-right" type="submit">お問い合わせを送信する</button>
                             </div>
                         </form>
                     </div>
                     <!-- Contact form end -->
-                </div>
-                <div class="col-lg-4 col-lg-offset-1 col-md-4 col-md-offset-1 col-sm-6 col-xs-12">
-                    <!-- Contact details start -->
-                    <div class="contact-details">
-                        <div class="media">
-                            <div class="media mb-0">
-                                <div class="media-left">
-                                    <i class="fa fa-envelope"></i>
-                                </div>
-                                <div class="media-body">
-                                    <h4>メールアドレス</h4>
-                                    <p>
-                                        <a href="mailto:mail.ogiwara93@gmail.com">mail.ogiwara93@gmail.com</a>
-                                    </p>
-                                </div>
-                            </div>
-                        </div>
-                        <!-- Contact details end -->
-                    </div>
                 </div>
             </div>
         </div>
