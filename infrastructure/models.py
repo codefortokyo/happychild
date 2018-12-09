@@ -298,7 +298,7 @@ class Nursery(models.Model):
             response.raise_for_status()
             if response.encoding.lower() not in ['utf-8', 'shift-jis', 'euc-jp']:
                 response.encoding = response.apparent_encoding
-        except requests.exceptions.ConnectionError:
+        except (requests.exceptions.ConnectionError, requests.exceptions.ConnectTimeout):
             return None
         try:
             tree = lxml.html.fromstring(response.text)
@@ -315,7 +315,7 @@ class Nursery(models.Model):
 
     @property
     def free_num_url_title(self):
-        key = CACHE_KEY.format(self._meta.db_table, 'free_num_url_title', self.id)
+        key = CACHE_KEY.format(self._meta.db_table, 'free_num_url_title', self.ward_id)
 
         url_title = cache.get(key)
         if url_title:
@@ -326,7 +326,7 @@ class Nursery(models.Model):
             response.raise_for_status()
             if response.encoding.lower() not in ['utf-8', 'shift-jis', 'euc-jp']:
                 response.encoding = response.apparent_encoding
-        except requests.exceptions.ConnectionError:
+        except (requests.exceptions.ConnectionError, requests.exceptions.ConnectTimeout):
             return None
         try:
             tree = lxml.html.fromstring(response.text)
@@ -412,6 +412,12 @@ class NurseryScore(models.Model):
         managed = False
         db_table = 'nursery_scores'
 
+    @property
+    def nursery_score(self):
+        score = self.score or ''
+        hierarchy = self.hierarchy or ''
+        return '{} {}'.format(score, hierarchy)
+
     @classmethod
     def upsert(cls, nursery: Nursery, age: Age, year: str, score: int, hierarchy: str):
         cls.objects.update_or_create(
@@ -424,6 +430,7 @@ class NurseryScore(models.Model):
         )
 
     @classmethod
+    @lru_cache(maxsize=None)
     def get_last_year_score(cls, nursery_id: int, age_id: int, year='2018'):
         return cls.objects.filter(year=year, nursery_id=nursery_id, age_id=age_id).first()
 
