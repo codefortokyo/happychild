@@ -14,6 +14,9 @@ services:
       MYSQL_HOST: mysql
       MYSQL_PASSWORD: ""
       MYSQL_DATABASE: happychild
+      ZENDESK_TOKEN:
+      ZENDESK_EMAIL:
+      ZENDESK_SUBDOMAIN:
     volumes:
     - ./happychild:/usr/src/app/happychild
     - ./infrastructure:/usr/src/app/infrastructure
