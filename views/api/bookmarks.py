@@ -26,6 +26,22 @@ def register_bookmark(request: HttpRequest) -> HttpResponse:
     return HttpResponse(json.dumps(response_data), content_type='application/json', status=200)
 
 
+@csrf_exempt
+def delete_bookmark(request: HttpRequest) -> HttpResponse:
+    user_id = request.POST.get('user_id')
+    nursery_id = request.POST.get('nursery_id')
+    response_data = {}
+
+    try:
+        nursery_bookmark = NurseryBookmark.objects.get(user_id=user_id, nursery_id=nursery_id)
+        nursery_bookmark.delete()
+        response_data['message'] = 'success'
+        return HttpResponse(json.dumps(response_data), content_type='application/json', status=200)
+    except NurseryBookmark.DoesNotExist:
+        response_data['message'] = '指定された保育園は既にお気に入りされていません'
+        return HttpResponse(json.dumps(response_data), content_type='application/json', status=400)
+
+
 def _validate_register_bookmark(user_id: int, nursery_id: int) -> Union[bool, str]:
     return True if _nursery_is_exist(nursery_id) and _user_is_exist(user_id) else False
 
