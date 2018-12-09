@@ -264,3 +264,6 @@ CREATE TABLE `nursery_reservations` (
   KEY `is_active` (`is_active`),
   UNIQUE KEY `nursery_tour_id_and_user_id` (`nursery_tour_id`, `user_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+ALTER TABLE nurseries ADD `web_page_title` varchar(255) AFTER url;
+ALTER TABLE wards ADD `nursery_free_num_info_web_page_title` varchar(255) AFTER nursery_free_num_info_url;

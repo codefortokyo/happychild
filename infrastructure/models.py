@@ -4,11 +4,10 @@ from typing import Dict, List, Optional
 from urllib.parse import urlparse
 from itertools import groupby
 
-import lxml.html
-import requests
-from django.core.cache import cache
+
 from django.contrib.auth.models import AbstractBaseUser
 from django.db import models
+from django.db.utils import DataError
 from django.utils import timezone
 from django.utils.lru_cache import lru_cache
 from django_mysql.models import Bit1BooleanField
@@ -112,6 +111,7 @@ class Ward(models.Model):
     home_url = models.URLField()
     nursery_info_url = models.URLField()
     nursery_free_num_info_url = models.URLField()
+    nursery_free_num_info_web_page_title = models.CharField(max_length=255)
     is_active = Bit1BooleanField(default=True)
     latitude = models.DecimalField(max_digits=9, decimal_places=6, null=False)
     longitude = models.DecimalField(max_digits=9, decimal_places=6, null=False)
@@ -157,6 +157,20 @@ class Ward(models.Model):
         wards = cls.objects.filter(city_id=city_id, is_active=True).values('id', 'name')
         return json.dumps(list(wards))
 
+    @classmethod
+    @lru_cache(maxsize=None)
+    def get_free_nums_url(cls, ward_id):
+        if not ward_id:
+            return ''
+        return cls.objects.filter(id=ward_id).first().nursery_free_num_info_url
+
+    @classmethod
+    @lru_cache(maxsize=None)
+    def get_free_nums_web_page_title(cls, ward_id):
+        if not ward_id:
+            return ''
+        return cls.objects.filter(id=ward_id).first().nursery_free_num_info_web_page_title
+
 
 class License(models.Model):
     id = models.AutoField(primary_key=True)
@@ -197,6 +211,7 @@ class Nursery(models.Model):
     address = models.CharField(max_length=255, null=False)
     station_info = models.CharField(max_length=255, null=True)
     url = models.URLField(max_length=1000)
+    web_page_title = models.CharField(max_length=255)
     phone_number = models.CharField(max_length=15, null=False)
     fax_number = models.CharField(max_length=15)
     thumbnail_url = models.URLField(max_length=1000)
@@ -236,12 +251,6 @@ class Nursery(models.Model):
         """
         name = self.name.split()[0]
         return "{} {}".format(self.ward.city.name, name)
-
-    @property
-    def free_num_info_url(self) -> str:
-        """ 空き情報掲載URLを返す
-        """
-        return Ward.objects.filter(id=self.ward_id).first().nursery_free_num_info_url
 
     @property
     def default_service(self) -> str:
@@ -287,54 +296,15 @@ class Nursery(models.Model):
 
     @property
     def url_title(self):
-        key = CACHE_KEY.format(self._meta.db_table, 'url_title', self.id)
-
-        url_title = cache.get(key)
-        if url_title:
-            return url_title
-
-        try:
-            response = requests.get(self.url, timeout=1)
-            response.raise_for_status()
-            if response.encoding.lower() not in ['utf-8', 'shift-jis', 'euc-jp']:
-                response.encoding = response.apparent_encoding
-        except:
-            return None
-        try:
-            tree = lxml.html.fromstring(response.text)
-        except ValueError:
-            tree = lxml.html.fromstring(response.content)
-        url_title = tree.findtext('.//title')
-        cache.set(key, url_title, None)
-        return url_title
+        return self.web_page_title
 
     @property
-    @lru_cache(maxsize=None)
     def free_num_url(self):
-        return Ward.objects.filter(id=self.ward_id).first().nursery_free_num_info_url
+        return Ward.get_free_nums_url(self.ward_id)
 
     @property
     def free_num_url_title(self):
-        key = CACHE_KEY.format(self._meta.db_table, 'free_num_url_title', self.ward_id)
-
-        url_title = cache.get(key)
-        if url_title:
-            return url_title
-
-        try:
-            response = requests.get(self.free_num_url, timeout=1)
-            response.raise_for_status()
-            if response.encoding.lower() not in ['utf-8', 'shift-jis', 'euc-jp']:
-                response.encoding = response.apparent_encoding
-        except:
-            return None
-        try:
-            tree = lxml.html.fromstring(response.text)
-        except ValueError:
-            tree = lxml.html.fromstring(response.content)
-        url_title = tree.findtext('.//title')
-        cache.set(key, url_title, None)
-        return url_title
+        return Ward.get_free_nums_web_page_title(self.ward_id)
 
     @classmethod
     def get_nursery(cls, nursery_id: int):
