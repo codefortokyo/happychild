@@ -294,7 +294,7 @@ class Nursery(models.Model):
             return url_title
 
         try:
-            response = requests.get(self.url, timeout=3)
+            response = requests.get(self.url, timeout=1)
             response.raise_for_status()
             if response.encoding.lower() not in ['utf-8', 'shift-jis', 'euc-jp']:
                 response.encoding = response.apparent_encoding
@@ -322,7 +322,7 @@ class Nursery(models.Model):
             return url_title
 
         try:
-            response = requests.get(self.free_num_url, timeout=3)
+            response = requests.get(self.free_num_url, timeout=1)
             response.raise_for_status()
             if response.encoding.lower() not in ['utf-8', 'shift-jis', 'euc-jp']:
                 response.encoding = response.apparent_encoding

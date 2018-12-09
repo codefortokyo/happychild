@@ -143,11 +143,16 @@ def _filter_by_free_nums(nurseries: List[Nursery], search: SearchNurseryEntity, 
         return nurseries
 
     if search.age_id:
-        return [nursery for nursery in nurseries if
-                free_nums.get(NURSERY_FREE_NUM_FMT.format(nursery.id, search.age_id), 0) > 0]
+        ret = []
+        for nursery in nurseries:
+            free_num = free_nums.get(NURSERY_FREE_NUM_FMT.format(nursery.id, search.age_id), 0)
+            if free_num and free_num > 0:
+                ret.append(nursery)
+        return ret
     ret = []
     for nursery in nurseries:
-        sum_free_num = sum([free_nums.get(NURSERY_FREE_NUM_FMT.format(nursery.id, age_id), 0) for age_id in AGE_IDS])
+        sum_free_num = sum([free_nums.get(NURSERY_FREE_NUM_FMT.format(nursery.id, age_id), 0) for age_id in AGE_IDS
+                            if free_nums.get(NURSERY_FREE_NUM_FMT.format(nursery.id, age_id), 0)])
         if sum_free_num > 0:
             ret.append(nursery)
     return ret
