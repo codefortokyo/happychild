@@ -4,6 +4,9 @@ from typing import Dict, List, Optional
 from urllib.parse import urlparse
 from itertools import groupby
 
+import lxml.html
+import requests
+from django.core.cache import cache
 from django.contrib.auth.models import AbstractBaseUser
 from django.db import models
 from django.utils import timezone
@@ -14,6 +17,9 @@ from django.db.models.aggregates import Max
 from infrastructure.consts import NURSERY_FREE_NUM_FMT
 from infrastructure.repository.managers import MyUserManager
 from infrastructure.repository.query import get_near_stations
+
+LINK_FMT = '引用: <a href="{}" target="_blank">[{}]</a>'
+CACHE_KEY = 'table:{}:method:{}:id:{}'
 
 
 class Age(models.Model):
@@ -240,18 +246,24 @@ class Nursery(models.Model):
     @property
     def default_service(self) -> str:
         if self.service:
+            if self.url_title:
+                return self.service + LINK_FMT.format(self.url, self.url_title)
             return self.service
         return '詳しくは公式サイトをご覧下さい'
 
     @property
     def default_policy(self) -> str:
         if self.policy:
+            if self.url_title:
+                return self.policy + LINK_FMT.format(self.url, self.url_title)
             return self.policy
         return '詳しくは公式サイトをご覧下さい'
 
     @property
     def default_event(self) -> str:
         if self.event:
+            if self.url_title:
+                return self.event + LINK_FMT.format(self.url, self.url_title)
             return self.event
         return '詳しくは公式サイトをご覧下さい'
 
@@ -259,19 +271,42 @@ class Nursery(models.Model):
     def default_open_time_weekday(self) -> str:
         if self.close_day:
             return self.close_day
-        return '詳しくは公式サイトをご覧下さい'
+        return '詳しくは公式サイト等をご覧下さい'
 
     @property
     def default_open_time_saturday(self) -> str:
         if self.close_day:
             return self.close_day
-        return '詳しくは公式サイトをご覧下さい'
+        return '詳しくは公式サイト等をご覧下さい'
 
     @property
     def default_close_day(self) -> str:
         if self.close_day:
             return self.close_day
-        return '詳しくは公式サイトをご覧下さい'
+        return '詳しくは公式サイト等をご覧下さい'
+
+    @property
+    def url_title(self):
+        key = CACHE_KEY.format(self._meta.db_table, 'url_title', self.id)
+
+        url_title = cache.get(key)
+        if url_title:
+            return url_title
+
+        try:
+            response = requests.get(self.url, timeout=3)
+            response.raise_for_status()
+            if response.encoding.lower() not in ['utf-8', 'shift-jis', 'euc-jp']:
+                response.encoding = response.apparent_encoding
+        except requests.exceptions.ConnectionError:
+            return None
+        try:
+            tree = lxml.html.fromstring(response.text)
+        except ValueError:
+            tree = lxml.html.fromstring(response.content)
+        url_title = tree.findtext('.//title')
+        cache.set(key, url_title, None)
+        return url_title
 
     @classmethod
     def get_nursery(cls, nursery_id: int):
