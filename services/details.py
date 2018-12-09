@@ -46,6 +46,8 @@ def get_nursery(nursery_id: int) -> Optional[NurseryEntity]:
         service=nursery.default_service,
         policy=nursery.default_policy,
         promise=nursery.promise,
+        free_num_url=nursery.free_num_url,
+        free_num_url_title=nursery.free_num_url_title,
         free_num_not_one=free_nums.get(NURSERY_FREE_NUM_FMT.format(nursery.id, NOT_ONE_AGE_ID), '-'),
         free_num_one_year_old=free_nums.get(NURSERY_FREE_NUM_FMT.format(nursery.id, ONE_YEAR_OLD_AGE_ID), '-'),
         free_num_two_year_old=free_nums.get(NURSERY_FREE_NUM_FMT.format(nursery.id, TWO_YEAR_OLD_AGE_ID), '-'),

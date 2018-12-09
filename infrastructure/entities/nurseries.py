@@ -50,6 +50,8 @@ class NurseryEntity:
     service: str
     policy: str
     promise: str
+    free_num_url: str
+    free_num_url_title: str
     free_num_not_one: int or str
     free_num_one_year_old: int or str
     free_num_two_year_old: int or str

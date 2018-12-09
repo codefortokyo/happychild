@@ -308,6 +308,34 @@ class Nursery(models.Model):
         cache.set(key, url_title, None)
         return url_title
 
+    @property
+    @lru_cache(maxsize=None)
+    def free_num_url(self):
+        return Ward.objects.filter(id=self.ward_id).first().nursery_free_num_info_url
+
+    @property
+    def free_num_url_title(self):
+        key = CACHE_KEY.format(self._meta.db_table, 'free_num_url_title', self.id)
+
+        url_title = cache.get(key)
+        if url_title:
+            return url_title
+
+        try:
+            response = requests.get(self.free_num_url, timeout=3)
+            response.raise_for_status()
+            if response.encoding.lower() not in ['utf-8', 'shift-jis', 'euc-jp']:
+                response.encoding = response.apparent_encoding
+        except requests.exceptions.ConnectionError:
+            return None
+        try:
+            tree = lxml.html.fromstring(response.text)
+        except ValueError:
+            tree = lxml.html.fromstring(response.content)
+        url_title = tree.findtext('.//title')
+        cache.set(key, url_title, None)
+        return url_title
+
     @classmethod
     def get_nursery(cls, nursery_id: int):
         try:
