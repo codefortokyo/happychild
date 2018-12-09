@@ -198,6 +198,13 @@ STATICFILES_DIRS = (
     os.path.join(BASE_DIR, "static"),
 )
 
+CACHES = {
+    'default': {
+        'BACKEND': 'django.core.cache.backends.filebased.FileBasedCache',
+        'LOCATION': '/var/tmp/django_cache',
+    }
+}
+
 AUTH_USER_MODEL = 'infrastructure.CustomUser'
 LOGIN_REDIRECT_URL = '/'
 
