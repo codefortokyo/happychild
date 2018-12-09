@@ -9,7 +9,7 @@ from infrastructure.consts import (
     FOUR_YEAR_OLD_AGE_ID,
     EXTENT_AGE_ID,
 )
-from infrastructure.models import Nursery, NurseryFreeNum
+from infrastructure.models import Nursery, NurseryFreeNum, NurseryScore
 from infrastructure.entities.nurseries import NurseryEntity
 
 
@@ -20,6 +20,15 @@ def get_nursery(nursery_id: int) -> Optional[NurseryEntity]:
 
     free_nums = NurseryFreeNum.get_free_nums([nursery_id])
     last_updated_date = NurseryFreeNum.get_last_updated_date([nursery_id])
+
+    scores = dict()
+    year = 2018
+    for age_id in [NOT_ONE_AGE_ID, ONE_YEAR_OLD_AGE_ID, TWO_YEAR_OLD_AGE_ID, THREE_YEAR_OLD_AGE_ID, FOUR_YEAR_OLD_AGE_ID, EXTENT_AGE_ID]:
+        score = NurseryScore.get_last_year_score(nursery_id, age_id, year)
+        if score:
+            scores[age_id] = score
+        else:
+            scores[age_id] = '-'
 
     return NurseryEntity(
         id=nursery.id,
@@ -54,5 +63,12 @@ def get_nursery(nursery_id: int) -> Optional[NurseryEntity]:
         free_num_three_year_old=free_nums.get(NURSERY_FREE_NUM_FMT.format(nursery.id, THREE_YEAR_OLD_AGE_ID), '-'),
         free_num_four_year_old=free_nums.get(NURSERY_FREE_NUM_FMT.format(nursery.id, FOUR_YEAR_OLD_AGE_ID), '-'),
         free_num_extent=free_nums.get(NURSERY_FREE_NUM_FMT.format(nursery.id, EXTENT_AGE_ID), '-'),
-        free_num_updated_at=str(last_updated_date.get(nursery.id, '-'))
+        free_num_updated_at=str(last_updated_date.get(nursery.id, '-')),
+        score_not_one=scores[NOT_ONE_AGE_ID].nursery_score if NOT_ONE_AGE_ID in scores else '-',
+        score_one_year_old=scores[ONE_YEAR_OLD_AGE_ID].nursery_score if ONE_YEAR_OLD_AGE_ID in scores else '-',
+        score_two_year_old=scores[TWO_YEAR_OLD_AGE_ID].nursery_score if TWO_YEAR_OLD_AGE_ID in scores else '-',
+        score_three_year_old=scores[THREE_YEAR_OLD_AGE_ID].nursery_score if THREE_YEAR_OLD_AGE_ID in scores else '-',
+        score_four_year_old=scores[FOUR_YEAR_OLD_AGE_ID].nursery_score if FOUR_YEAR_OLD_AGE_ID in scores else '-',
+        score_extent_year_old=scores[EXTENT_AGE_ID].nursery_score if EXTENT_AGE_ID in scores else '-',
+        score_updated_year=str(year),
     )

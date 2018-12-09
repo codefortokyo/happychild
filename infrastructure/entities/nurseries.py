@@ -59,3 +59,10 @@ class NurseryEntity:
     free_num_four_year_old: int or str
     free_num_extent: int or str
     free_num_updated_at: str or str
+    score_not_one: str = ''
+    score_one_year_old: str = ''
+    score_two_year_old: str = ''
+    score_three_year_old: str = ''
+    score_four_year_old: str = ''
+    score_extent_year_old: str = ''
+    score_updated_year: str = ''
