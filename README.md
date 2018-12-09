@@ -7,3 +7,6 @@ docker build -t happychild .
 docker-compose up
 ```
 then web app show up on http://127.0.0.1:8000
+
+### Infra
+https://github.com/ogiogi93/happychild-aws-settings
