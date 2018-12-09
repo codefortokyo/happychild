@@ -298,7 +298,7 @@ class Nursery(models.Model):
             response.raise_for_status()
             if response.encoding.lower() not in ['utf-8', 'shift-jis', 'euc-jp']:
                 response.encoding = response.apparent_encoding
-        except (requests.exceptions.ConnectionError, requests.exceptions.ConnectTimeout):
+        except:
             return None
         try:
             tree = lxml.html.fromstring(response.text)
@@ -326,7 +326,7 @@ class Nursery(models.Model):
             response.raise_for_status()
             if response.encoding.lower() not in ['utf-8', 'shift-jis', 'euc-jp']:
                 response.encoding = response.apparent_encoding
-        except (requests.exceptions.ConnectionError, requests.exceptions.ConnectTimeout):
+        except:
             return None
         try:
             tree = lxml.html.fromstring(response.text)
