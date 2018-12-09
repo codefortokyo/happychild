@@ -41,6 +41,8 @@ urlpatterns = [
         name='get_near_ward_and_stations'),
     url(r'^api/v1/bookmark/nursery/register', bookmarks.register_bookmark,
         name='register_nursery_bookmark'),
+    url(r'^api/v1/bookmark/nursery/delete', bookmarks.delete_bookmark,
+        name='delete_nursery_bookmark'),
 
     url(r'^admin/wards/(?P<ward_id>\d+)/nurseries/(?P<nursery_id>\d+)/$', admin_views.nursery,
         name='admin_nursery_page'),

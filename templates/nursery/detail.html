@@ -12,12 +12,18 @@
                             <div class="col-md-8 col-sm-8 col-xs-8">
                                 <h3>
                                     {{ nursery.name }}
-                                    {% if user.is_authenticated  and is_bookmarked %}
-                                        <span class="fa fa-star"></span>
-                                    {% elif user.is_authenticated %}
-                                        <span class="favorite-btn" id="add-bookmark">
+                                    {% if user.is_authenticated and is_bookmarked %}
+                                        <span class="favorite-btn" id="bookmark">
+                                            <span class="fa fa-star favorite-fa"></span>
+                                            <div class="ring"></div>
+                                            <div class="ring2"></div>
+                                        </span>
+                                    {% elif user.is_authenticated and not is_bookmarked %}
+                                        <span class="favorite-btn" id="bookmark">
                                             <span class="fa fa-star-o favorite-fa"></span>
-                                            <p class="favorite-info" style="text-align: right">お気に入りに追加しました
+                                            <div class="ring"></div>
+                                            <div class="ring2"></div>
+                                            <p class="favorite-info" style="text-align: right">お気に入りに追加しました </p>
                                         </span>
                                     {% endif %}
                                 </h3>
@@ -185,10 +191,10 @@
                                                                target="_blank"
                                                                class="btn button-sm border-button-theme pull-right">見学会に申し込む</a>
                                                         {% elif nursery_tour.is_reserved %}
-                                                        <button class="btn button-sm button-default pull-right">
-                                                            既に申し込み済みです
-                                                        </button>
-                                                        {% elif nursery_tour.capacity <= nursery_tour.applied_count  %}
+                                                            <button class="btn button-sm button-default pull-right">
+                                                                既に申し込み済みです
+                                                            </button>
+                                                        {% elif nursery_tour.capacity <= nursery_tour.applied_count %}
                                                             <button class="btn button-sm button-danger pull-right">
                                                                 既に定員に達しました
                                                             </button>
@@ -236,36 +242,60 @@
     <script>
         //bookmark button
         $(function () {
-            let csrftoken = $("[name=csrfmiddlewaretoken]").val();
-            let userID = {{ user.id }};
-            let nurseryID = {{ nursery.id }};
+                let csrftoken = $("[name=csrfmiddlewaretoken]").val();
+                let userID = {{ user.id }};
+                let nurseryID = {{ nursery.id }};
 
-            $('#add-bookmark').on('click', function () {
-                $.ajax({
-                    type: 'POST',
-                    url: '/api/v1/bookmark/nursery/register',
-                    headers: {
-                        "X-CSRFToken": csrftoken
-                    },
-                    dataType: 'json',
-                    data: {user_id: userID, nursery_id: nurseryID},
-                    success: function () {
-                        $('.bookmark-btn').addClass('favorite-active');
-                        $('.bookmark-btn').addClass('favorite-active-2');
-                        setTimeout(function () {
-                            $('.favorite-fa').addClass('fa-star');
-                            $('.favorite-fa').removeClass('fa-star-o');
-                        }, 150);
-                        setTimeout(function () {
-                            $('.bookmark-btn').addClass('favorite-active-3');
-                        }, 150);
-                        $('.favorite-info').addClass('favorite-info-tog');
-                        setTimeout(function () {
-                            $('.favorite-info').removeClass('favorite-info-tog')
-                        }, 1000)
+                $('#bookmark').on('click', function () {
+                    if ($('span').hasClass("fa-star")) {
+                        $.ajax({
+                            type: 'POST',
+                            url: '/api/v1/bookmark/nursery/delete',
+                            headers: {
+                                "X-CSRFToken": csrftoken
+                            },
+                            dataType: 'json',
+                            data: {user_id: userID, nursery_id: nurseryID},
+                            success: function () {
+                                $('.bookmark-btn').removeClass('favorite-active');
+                                $('.bookmark-btn').removeClass('favorite-active-2');
+                                setTimeout(function () {
+                                    $('.favorite-fa').addClass('fa-star-o');
+                                    $('.favorite-fa').removeClass('fa-star');
+                                }, 150);
+                                setTimeout(function () {
+                                    $('.bookmark-btn').addClass('favorite-active-3');
+                                }, 150);
+                            }
+                        });
+                    } else {
+                        $.ajax({
+                            type: 'POST',
+                            url: '/api/v1/bookmark/nursery/register',
+                            headers: {
+                                "X-CSRFToken": csrftoken
+                            },
+                            dataType: 'json',
+                            data: {user_id: userID, nursery_id: nurseryID},
+                            success: function () {
+                                $('.bookmark-btn').addClass('favorite-active');
+                                $('.bookmark-btn').addClass('favorite-active-2');
+                                setTimeout(function () {
+                                    $('.favorite-fa').removeClass('fa-star-o');
+                                    $('.favorite-fa').addClass('fa-star');
+                                }, 150);
+                                setTimeout(function () {
+                                    $('.bookmark-btn').removeClass('favorite-active-3');
+                                }, 150);
+                                $('.favorite-info').addClass('favorite-info-tog');
+                                setTimeout(function () {
+                                    $('.favorite-info').removeClass('favorite-info-tog')
+                                }, 1000);
+                            }
+                        });
                     }
                 })
-            });
-        });
+            }
+        );
     </script>
 {% endblock %}
