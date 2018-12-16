@@ -1,5 +1,8 @@
+import re
+import datetime
 from typing import Optional
 
+import tabula
 import pandas as pd
 
 from infrastructure.models import Age, Nursery, NurseryFreeNum, NurseryScore
@@ -11,9 +14,8 @@ logger = logging.getLogger(__name__)
 COLUMNS = ['name', 'year', 'min_age', 'max_age', 'capacity', 'free_num', 'score', 'hierarchy', 'note', 'code']
 
 
-class ShinagawaNurseryrawler(object):
+class ShinagawaNurseryCrawlerFromOpenData(object):
     def search_nursery(self, name: str, ward_id: int) -> Optional[Nursery]:
-        # TODO: Search nursery word by Google Search API if cannot search the nursery
         nursery = self._search_nursery_directly(name, ward_id)
         return nursery
 
@@ -61,4 +63,60 @@ class ShinagawaNurseryrawler(object):
             logger.exception('[ERROR] failed to run shinagawa nursery crawler. %s', e)
 
 
-shinagawa_crawler = ShinagawaNurseryrawler()
+shinagawa_crawler_from_opendata = ShinagawaNurseryCrawlerFromOpenData()
+
+DOWNLOAD_LINK = {
+    'url': 'http://www.city.shinagawa.tokyo.jp/ct/pdf/201811191366_1.pdf',
+    'modified_date': datetime.date(2018, 11, 20),
+    'page': 2,
+}
+COULUMN_KODOMO_HOIKUEN = ['night_hoiku', 'zero', 'name', 'infant', 'infant_', 'infant_sum', 'free_num_not_one',
+                          'free_num_one_year_old', 'free_num_two_year_old', 'free_num_subtotal',
+                          'free_num_three_year_old', 'free_num_four_year_old', 'free_num_extent', 'subtotal', 'sum',
+                          'note']
+
+
+class ShinagawaNurseryCrawlerFromKodomoHoikuen(ShinagawaNurseryCrawlerFromOpenData):
+    def update_kodomo_hoikuen(self):
+        for page in range(DOWNLOAD_LINK['page']):
+            df = tabula.read_pdf(DOWNLOAD_LINK['url'], pages=str(page + 1))
+            df.columns = COULUMN_KODOMO_HOIKUEN
+
+            # delete header
+            df = df.iloc[1:].reset_index(drop=True)
+            # convert from None to nan
+            df = df.where((pd.notnull(df)), None)
+
+            nurseries = list(name for name in df['name'] if name)
+            free_num_not_one = list(re.sub('歳', '', free) for free in df['free_num_not_one'] if free)[1:]
+            free_num_one_year_old = list(re.sub('歳', '', free) for free in df['free_num_one_year_old'] if free)[1:]
+            free_num_two_year_old = list(re.sub('歳', '', free) for free in df['free_num_two_year_old'] if free)[1:]
+            free_num_three_year_old = list(re.sub('歳', '', free) for free in df['free_num_three_year_old'] if free)[1:]
+            free_num_four_year_old = list(re.sub('歳', '', free) for free in df['free_num_four_year_old'] if free)[1:]
+            free_num_extent = list(re.sub('歳', '', free) for free in df['free_num_extent'] if free)[1:]
+
+            for i, name in enumerate(nurseries):
+                if '保育園' in name:
+                    name += '保育園'
+                nursery = self.search_nursery(name=name, ward_id=SHINAGAWA_WARD_ID)
+                if not nursery:
+                    logger.warning('該当の保育園情報がありません: {}'.format(name))
+                    continue
+
+                for age_id in range(1, 6):
+                    if age_id == 1:
+                        free_num = free_num_not_one[i]
+                    elif age_id == 2:
+                        free_num = free_num_one_year_old[i]
+                    elif age_id == 3:
+                        free_num = free_num_two_year_old[i]
+                    elif age_id == 4:
+                        free_num = free_num_three_year_old[i]
+                    elif age_id == 5:
+                        free_num = free_num_four_year_old[i]
+                    else:
+                        free_num = free_num_extent[i]
+                    if free_num.isdigit():
+                        # upsert of nursery free num
+                        age = Age.objects.get(pk=age_id)
+                        NurseryFreeNum.upsert(nursery, age, DOWNLOAD_LINK['modified_date'], int(free_num))
