@@ -26,6 +26,27 @@
                         </div>
                     </div>
 
+                    <div class="row">
+                        <div class="col-lg-10 col-md-10 col-sm-10 col-xs-10">
+                            <p id="location-error-message"></p>
+                            {% for field in address_form %}
+                                <div class="form-group">
+                                    {{ field }}
+                                </div>
+                            {% endfor %}
+                        </div>
+                        <div class="col-lg-2 col-md-2 col-sm-2 col-xs-2">
+                            <p></p>
+                            <div class="form-group">
+                                <button class="btn btn-default" type="button"><i
+                                        class="fa fa-map-marker geolocation" data-toggle="tooltip"
+                                        data-placement="bottom" title="現在位置から検索"
+                                        onclick="cmanPosGet();"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
                     <div id="options-content">
                         <div class="row">
                             {% for field in type_form.visible_fields %}
@@ -48,6 +69,7 @@
                                 {% endfor %}
                             </div>
                         </div>
+
                         <div class="row">
                             <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
                                 <button type="button" class="btn border-button-theme" data-toggle="modal"
@@ -56,11 +78,6 @@
                             </div>
                             <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
                                 <button class="btn btn-default pull-right" type="submit"> 検索</button>
-                                <button class="btn btn-default pull-right" type="button"><i
-                                        class="fa fa-map-marker geolocation" data-toggle="tooltip"
-                                        data-placement="bottom" title="現在位置から検索"
-                                        onclick="cmanPosGet();"></i>
-                                </button>
                             </div>
                         </div>
 
@@ -125,6 +142,6 @@
     <script>
         let providerName = 'OpenStreetMap.Mapnik';
 
-        generateMap({{ latitude }}, {{ longitude }}, providerName, 'grid_layout', {{ nurseries|safe }}, 14);
+        generateMap({{ latitude }}, {{ longitude }}, providerName, 'grid_layout', {{ nurseries|safe }}, {{ zoom_ratio }});
     </script>
 {% endblock %}
