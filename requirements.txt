@@ -1,3 +1,4 @@
+beautifulsoup4==4.6.3
 colorlog==3.1.4
 dataclasses-json==0.0.20
 Django==2.1.2

@@ -87,6 +87,16 @@ class SearchLocationForm(forms.Form):
                                                        }))
 
 
+class SearchAddressForm(forms.Form):
+    address = forms.CharField(required=False,
+                              label='住所から検索',
+                              max_length=255,
+                              widget=forms.TextInput(attrs={
+                                  'class': 'form-control input-text search-fields',
+                                  'placeholder': '住所から検索',
+                              }))
+
+
 class SearchTypeForm(forms.Form):
     age = forms.ChoiceField(required=True,
                             choices=[('', '年齢を選択')] + [(age.id, age.name) for age in

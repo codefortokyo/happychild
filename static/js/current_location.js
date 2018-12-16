@@ -9,22 +9,33 @@ function cmanGetOk() {
 
             $('select#ward option').remove();
             $('select#station option').remove();
+
+            let locationCenter = new google.maps.LatLng(latitude, longitude);
+            let geocoder = new google.maps.Geocoder();
+            geocoder.geocode({
+                "latLng": locationCenter
+            }, function (results, status) {
+                if (status == google.maps.GeocoderStatus.OK) {
+                    document.getElementById("address").value = results[0].formatted_address;
+                }
+            });
+
             $.ajax({
                 url: '/api/v1/location/near',
                 dataType: 'json',
                 data: {latitude: latitude, longitude: longitude},
                 success: function (dataArray) {
                     $.each(dataArray.wards, function (i) {
-                       $('#ward').append($('<option>', {
-                           value: dataArray.wards[i].id,
-                           text: dataArray.wards[i].name
-                       }))
+                        $('#ward').append($('<option>', {
+                            value: dataArray.wards[i].id,
+                            text: dataArray.wards[i].name
+                        }))
                     });
                     $.each(dataArray.stations, function (i) {
-                       $('#station') .append($('<option>', {
-                           value: dataArray.stations[i].id,
-                           text: dataArray.stations[i].name
-                       }))
+                        $('#station').append($('<option>', {
+                            value: dataArray.stations[i].id,
+                            text: dataArray.stations[i].name
+                        }))
                     });
 
                     document.getElementById('city').value = dataArray.selected_city_id;
@@ -35,12 +46,12 @@ function cmanGetOk() {
                     $('#station').selectpicker('refresh');
                 }
             })
-    });
+        });
 
 }
 
 function cmanGetErr(argErr) {
-    var wErrMsg = "";
+    let wErrMsg = "";
     switch (argErr.code) {
         case 1 :
             wErrMsg = "位置情報の利用が許可されていません";
@@ -56,7 +67,7 @@ function cmanGetErr(argErr) {
         wErrMsg = argErr.message;
     }
 
-    document.getElementById("getErrMag").innerHTML = wErrMsg;
+    document.getElementById("location-error-message").innerHTML = wErrMsg;
 }
 
 function cmanPosGet(url) {

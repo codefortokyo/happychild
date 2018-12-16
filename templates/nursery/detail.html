@@ -278,64 +278,66 @@
         generateMap({{ nursery.latitude }}, {{ nursery.longitude }}, providerName, 'grid_layout', {{ nursery_json|safe }}, 17);
     </script>
 
-    {% csrf_token %}
-    <script>
-        //bookmark button
-        $(function () {
-                let csrftoken = $("[name=csrfmiddlewaretoken]").val();
-                let userID = {{ user.id }};
-                let nurseryID = {{ nursery.id }};
+    {% if user.is_authenticated %}
+        {% csrf_token %}
+        <script>
+            //bookmark button
+            $(function () {
+                    let csrftoken = $("[name=csrfmiddlewaretoken]").val();
+                    let userID = {{ user.id }};
+                    let nurseryID = {{ nursery.id }};
 
-                $('#bookmark').on('click', function () {
-                    if ($('span').hasClass("fa-star")) {
-                        $.ajax({
-                            type: 'POST',
-                            url: '/api/v1/bookmark/nursery/delete',
-                            headers: {
-                                "X-CSRFToken": csrftoken
-                            },
-                            dataType: 'json',
-                            data: {user_id: userID, nursery_id: nurseryID},
-                            success: function () {
-                                $('.bookmark-btn').removeClass('favorite-active');
-                                $('.bookmark-btn').removeClass('favorite-active-2');
-                                setTimeout(function () {
-                                    $('.favorite-fa').addClass('fa-star-o');
-                                    $('.favorite-fa').removeClass('fa-star');
-                                }, 150);
-                                setTimeout(function () {
-                                    $('.bookmark-btn').addClass('favorite-active-3');
-                                }, 150);
-                            }
-                        });
-                    } else {
-                        $.ajax({
-                            type: 'POST',
-                            url: '/api/v1/bookmark/nursery/register',
-                            headers: {
-                                "X-CSRFToken": csrftoken
-                            },
-                            dataType: 'json',
-                            data: {user_id: userID, nursery_id: nurseryID},
-                            success: function () {
-                                $('.bookmark-btn').addClass('favorite-active');
-                                $('.bookmark-btn').addClass('favorite-active-2');
-                                setTimeout(function () {
-                                    $('.favorite-fa').removeClass('fa-star-o');
-                                    $('.favorite-fa').addClass('fa-star');
-                                }, 150);
-                                setTimeout(function () {
-                                    $('.bookmark-btn').removeClass('favorite-active-3');
-                                }, 150);
-                                $('.favorite-info').addClass('favorite-info-tog');
-                                setTimeout(function () {
-                                    $('.favorite-info').removeClass('favorite-info-tog')
-                                }, 1000);
-                            }
-                        });
-                    }
-                })
-            }
-        );
-    </script>
+                    $('#bookmark').on('click', function () {
+                        if ($('span').hasClass("fa-star")) {
+                            $.ajax({
+                                type: 'POST',
+                                url: '/api/v1/bookmark/nursery/delete',
+                                headers: {
+                                    "X-CSRFToken": csrftoken
+                                },
+                                dataType: 'json',
+                                data: {user_id: userID, nursery_id: nurseryID},
+                                success: function () {
+                                    $('.bookmark-btn').removeClass('favorite-active');
+                                    $('.bookmark-btn').removeClass('favorite-active-2');
+                                    setTimeout(function () {
+                                        $('.favorite-fa').addClass('fa-star-o');
+                                        $('.favorite-fa').removeClass('fa-star');
+                                    }, 150);
+                                    setTimeout(function () {
+                                        $('.bookmark-btn').addClass('favorite-active-3');
+                                    }, 150);
+                                }
+                            });
+                        } else {
+                            $.ajax({
+                                type: 'POST',
+                                url: '/api/v1/bookmark/nursery/register',
+                                headers: {
+                                    "X-CSRFToken": csrftoken
+                                },
+                                dataType: 'json',
+                                data: {user_id: userID, nursery_id: nurseryID},
+                                success: function () {
+                                    $('.bookmark-btn').addClass('favorite-active');
+                                    $('.bookmark-btn').addClass('favorite-active-2');
+                                    setTimeout(function () {
+                                        $('.favorite-fa').removeClass('fa-star-o');
+                                        $('.favorite-fa').addClass('fa-star');
+                                    }, 150);
+                                    setTimeout(function () {
+                                        $('.bookmark-btn').removeClass('favorite-active-3');
+                                    }, 150);
+                                    $('.favorite-info').addClass('favorite-info-tog');
+                                    setTimeout(function () {
+                                        $('.favorite-info').removeClass('favorite-info-tog')
+                                    }, 1000);
+                                }
+                            });
+                        }
+                    })
+                }
+            );
+        </script>
+    {% endif %}
 {% endblock %}
