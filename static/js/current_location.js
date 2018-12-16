@@ -7,8 +7,6 @@ function cmanGetOk() {
             document.getElementById("latitude").value = latitude;
             document.getElementById("longitude").value = longitude;
 
-            console.log(latitude);
-            console.log(longitude);
             $('select#ward option').remove();
             $('select#station option').remove();
 
