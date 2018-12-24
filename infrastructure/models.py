@@ -342,7 +342,7 @@ class NurseryFreeNum(models.Model):
 
     @classmethod
     def get_free_nums(cls, nursery_ids: List[int]) -> dict:
-        free_nums = cls.objects.filter(nursery__id__in=nursery_ids)
+        free_nums = cls.objects.filter(nursery__id__in=nursery_ids, is_active=True)
 
         ret = dict()
         for k, g in groupby(sorted(free_nums, key=lambda x: (x.nursery_id, x.age_id)),
@@ -353,7 +353,7 @@ class NurseryFreeNum(models.Model):
 
     @classmethod
     def get_last_updated_date(cls, nursery_ids: List[int]) -> dict:
-        dates = cls.objects.filter(nursery__id__in=nursery_ids).values('nursery_id').annotate(
+        dates = cls.objects.filter(nursery__id__in=nursery_ids, is_active=True).values('nursery_id').annotate(
             last_updated_date=Max('modified_date'))
 
         ret = dict()
