@@ -28,7 +28,7 @@
 
                     <div class="row">
                         <div class="col-lg-10 col-md-10 col-sm-10 col-xs-10">
-                            <p id="location-error-message"></p>
+                            <p class="text-danger">{{ address_form.errors }}</p>
                             {% for field in address_form %}
                                 <div class="form-group">
                                     {{ field }}
