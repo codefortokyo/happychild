@@ -206,6 +206,7 @@ class Nursery(models.Model):
     license = models.ForeignKey(License, models.PROTECT)
     school_type = models.ForeignKey(SchoolType, models.PROTECT)
     name = models.CharField(max_length=255, null=False)
+    normalized_name = models.CharField(max_length=255)
     is_active = Bit1BooleanField(default=True)
     postcode = models.CharField(max_length=8)
     address = models.CharField(max_length=255, null=False)
@@ -306,12 +307,24 @@ class Nursery(models.Model):
     def free_num_url_title(self):
         return Ward.get_free_nums_web_page_title(self.ward_id)
 
+    @property
+    def clean_name(self):
+        if '保育園' not in self.name:
+            return self.name + '保育園'
+        return self.name
+
     @classmethod
     def get_nursery(cls, nursery_id: int):
         try:
             return cls.objects.select_related('license', 'school_type').filter(id=nursery_id).first()
         except cls.DoesNotExist:
             return None
+
+    @classmethod
+    def update_normalized_nursery_name(cls, nursery_id: int, normalized_name: str):
+        nursery = cls.objects.get(pk=nursery_id)
+        nursery.normalized_name = normalized_name
+        nursery.save()
 
 
 class NurseryFreeNum(models.Model):

@@ -267,3 +267,4 @@ CREATE TABLE `nursery_reservations` (
 
 ALTER TABLE nurseries ADD `web_page_title` varchar(255) AFTER url;
 ALTER TABLE wards ADD `nursery_free_num_info_web_page_title` varchar(255) AFTER nursery_free_num_info_url;
+ALTER TABLE nurseries ADD `normalized_name` varchar(255) AFTER name;
