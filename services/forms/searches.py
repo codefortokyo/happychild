@@ -3,6 +3,7 @@ from django import forms
 
 from infrastructure.models import Age, City, License, SchoolType, Station, Ward
 from infrastructure.repository.query import get_near_stations
+from services.converter import convert_address_to_geocode
 
 
 class SearchLocationForm(forms.Form):
@@ -95,6 +96,16 @@ class SearchAddressForm(forms.Form):
                                   'class': 'form-control input-text search-fields',
                                   'placeholder': '住所から検索',
                               }))
+
+    def clean_address(self):
+        address = self.cleaned_data.get('address')
+        if not address:
+            return address
+        try:
+            convert_address_to_geocode(address)
+            return address
+        except ValueError:
+            raise forms.ValidationError('住所が正しくありません')
 
 
 class SearchTypeForm(forms.Form):
