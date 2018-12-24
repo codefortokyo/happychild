@@ -212,15 +212,16 @@ LOGIN_REDIRECT_URL = '/'
 AWS_REGION = os.getenv('AWS_REGION', 'ap-northeast-1')
 ENV = os.getenv('ENV', 'DEVELOP')
 
-if ENV != 'DEVELOP':
+# Create a Zenpy instance
+ZENDESK_CREDENTIAL = {
+    'token': os.getenv('ZENDESK_TOKEN'),
+    'email': os.getenv('ZENDESK_EMAIL'),
+    'subdomain': os.getenv('ZENDESK_SUBDOMAIN')
+}
+ZENPY_CLIENT = Zenpy(**ZENDESK_CREDENTIAL)
+
+if ENV == 'PRODUCTION':
     DEBUG = False
-    # Create a Zenpy instance
-    ZENDESK_CREDENTIAL = {
-        'token': os.getenv('ZENDESK_TOKEN'),
-        'email': os.getenv('ZENDESK_EMAIL'),
-        'subdomain': os.getenv('ZENDESK_SUBDOMAIN')
-    }
-    ZENPY_CLIENT = Zenpy(**ZENDESK_CREDENTIAL)
 
 try:
     from .database import *
