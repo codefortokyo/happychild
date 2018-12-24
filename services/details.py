@@ -11,6 +11,7 @@ from infrastructure.consts import (
 )
 from infrastructure.models import Nursery, NurseryFreeNum, NurseryScore
 from infrastructure.entities.nurseries import NurseryEntity
+from services.consts import SHINAGAWA_WARD_ID
 
 
 def get_nursery(nursery_id: int) -> Optional[NurseryEntity]:
@@ -23,7 +24,8 @@ def get_nursery(nursery_id: int) -> Optional[NurseryEntity]:
 
     scores = dict()
     year = 2018
-    for age_id in [NOT_ONE_AGE_ID, ONE_YEAR_OLD_AGE_ID, TWO_YEAR_OLD_AGE_ID, THREE_YEAR_OLD_AGE_ID, FOUR_YEAR_OLD_AGE_ID, EXTENT_AGE_ID]:
+    for age_id in [NOT_ONE_AGE_ID, ONE_YEAR_OLD_AGE_ID, TWO_YEAR_OLD_AGE_ID, THREE_YEAR_OLD_AGE_ID,
+                   FOUR_YEAR_OLD_AGE_ID, EXTENT_AGE_ID]:
         score = NurseryScore.get_last_year_score(nursery_id, age_id, year)
         if score:
             scores[age_id] = score.nursery_score
@@ -71,4 +73,6 @@ def get_nursery(nursery_id: int) -> Optional[NurseryEntity]:
         score_four_year_old=scores[FOUR_YEAR_OLD_AGE_ID],
         score_extent_year_old=scores[EXTENT_AGE_ID],
         score_updated_year=str(year),
+        score_url='http://www.city.shinagawa.tokyo.jp/PC/kuseizyoho/kuseizyoho-opendate/index.html' if nursery.ward_id == SHINAGAWA_WARD_ID else '',  # noqa
+        score_url_title='品川区 | オープンデータ 品川区の認可保育園の入園状況・指数（平成30年度）' if nursery.ward_id == SHINAGAWA_WARD_ID else ''  # noqa
     )
